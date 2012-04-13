@@ -8,14 +8,15 @@ import org.flixel.FlxSprite;
 import utils.Colors;
 
 class Player extends FlxSprite {
+	var coins:Int;
 	
 	public function new(start:FlxPoint) {
 		super();
 		
-		x = start.x * Library.tileSize;
-		y = start.y * Library.tileSize;
-		
 		makeGraphic(Library.tileSize-3, Library.tileSize-3, Colors.YELLOW);
+		
+		x = start.x * Library.tileSize + width/2;
+		y = start.y * Library.tileSize + height/2;
 	}
 	
 	override public function update() {
