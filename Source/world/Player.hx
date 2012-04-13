@@ -7,11 +7,11 @@ import org.flixel.FlxPoint;
 import org.flixel.FlxSprite;
 import utils.Colors;
 
-class Player extends FlxSprite {
+class Player extends WarpSprite {
 	public var coins:Int;
 	
-	public function new(start:FlxPoint) {
-		super();
+	public function new(level:Level, start:FlxPoint) {
+		super(level);
 		
 		makeGraphic(Library.tileSize-4, Library.tileSize-4, Colors.YELLOW);
 		

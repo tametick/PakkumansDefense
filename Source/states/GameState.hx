@@ -15,9 +15,6 @@ import world.Player;
 
 class GameState extends FlxState {
 	var level:Level;
-	var player:Player;
-	var ghosts:FlxGroup;
-	var coins:FlxGroup;
 	
 	var coinCounter:FlxText;
 	
@@ -29,36 +26,9 @@ class GameState extends FlxState {
 		level = new Level();
 		add(FlxGridOverlay.create(Library.tileSize, Library.tileSize, Std.int(level.width), Std.int(level.height), false, true, Colors.DBLUE, Colors.DGREEN));
 		add(level);
-		
-		var playerStart = level.getFreeTile();
-		
-		coins = new FlxGroup();
-		var map = level.getData();
-		var coinStart = new FlxPoint();
-		var x = 0;
-		var y = 0;
-		for (mi in 0...map.length) {
-			if (x >= Library.levelW) {
-				x = 0;
-				y++;
-			}
-			
-			if (map[mi] == 0 && !(x==playerStart.x && y==playerStart.y)) {
-				coinStart.x = x;
-				coinStart.y = y;
-				coins.add(new Coin(coinStart));
-			}
-			
-			x++;
-		}
-		coinStart = null;
-		map = null;
-		add(coins);
-		
-		player = new Player(playerStart);
-		add(player);
-		
-		ghosts = new FlxGroup();
+		add(level.coins);
+		add(level.player);
+		add(level.ghosts);
 		
 		FlxG.camera.scroll.y = FlxG.camera.scroll.x = -Library.tileSize / 2;
 		
@@ -66,19 +36,24 @@ class GameState extends FlxState {
 		coinCounter.scrollFactor.x = 0;
 		coinCounter.scrollFactor.y = 0;
 		add(coinCounter);
+		
+		FlxG.worldBounds.x -= 50; 
+		FlxG.worldBounds.y -= 50;
+		FlxG.worldBounds.width += 100; 
+		FlxG.worldBounds.height += 100;
 	}
 	
 	override public function update() {
 		super.update();
 		
-		FlxG.collide(level, player);
-		FlxG.collide(level, ghosts);
-		FlxG.overlap(player, coins, pickUpCoin);
+		FlxG.collide(level, level.player);
+		FlxG.collide(level, level.ghosts);
+		FlxG.overlap(level.player, level.coins, pickUpCoin);
 	}
 	
 	function pickUpCoin(p:Player, c:Coin) {
-		coins.remove(c);
-		player.coins++;
-		coinCounter.text = "$: " + player.coins;
+		level.coins.remove(c);
+		level.player.coins++;
+		coinCounter.text = "$: " + level.player.coins;
 	}
 }

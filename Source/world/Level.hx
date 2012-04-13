@@ -1,12 +1,17 @@
 package world;
 import data.Library;
 import org.flixel.FlxG;
+import org.flixel.FlxGroup;
 import org.flixel.FlxPoint;
 import org.flixel.FlxTilemap;
 import utils.Utils;
 
 
-class Level extends FlxTilemap{
+class Level extends FlxTilemap {
+	public var player:Player;
+	public var ghosts:FlxGroup;
+	public var coins:FlxGroup;
+	
 	public function new() {
 		super();
 		
@@ -36,6 +41,35 @@ class Level extends FlxTilemap{
 		clearVerticalLine(tilesIndex, w - x - 1);
 		
 		loadMap(FlxTilemap.arrayToCSV(tilesIndex, w), FlxTilemap.imgAuto, 8, 8, FlxTilemap.AUTO);
+		
+		
+		var playerStart = getFreeTile();
+		
+		coins = new FlxGroup();
+		var map = getData();
+		var coinStart = new FlxPoint();
+		var x = 0;
+		var y = 0;
+		for (mi in 0...map.length) {
+			if (x >= Library.levelW) {
+				x = 0;
+				y++;
+			}
+			
+			if (map[mi] == 0 && !(x==playerStart.x && y==playerStart.y)) {
+				coinStart.x = x;
+				coinStart.y = y;
+				coins.add(new Coin(coinStart));
+			}
+			
+			x++;
+		}
+		coinStart = null;
+		map = null;
+		
+		player = new Player(this, playerStart);
+		
+		ghosts = new FlxGroup();
 	}
 	
 	function clearHorizontalLine(tilesIndex:Array<Int>, y:Int) {
