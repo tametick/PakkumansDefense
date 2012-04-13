@@ -16,16 +16,37 @@ import world.Player;
 
 class GameState extends FlxState {
 	var level:Level;
+	var levelNumber:Int;
 	
 	var coinCounter:FlxText;
+	var ghostCounter:FlxText;
+	
+	public var killedGhosts:Int;
+	public var spawnRate:Float;
 	
 	override public function create():Void {
 		Log.setColor(0xFFFFFF);
-		
 		FlxG.mouse.show();
 		FlxG.bgColor = Colors.BLACK;
-		FlxG.fade(0, 0.5, true, null, true);
+
+		FlxG.camera.scroll.y = FlxG.camera.scroll.x = -Library.tileSize / 2;
 		
+		newLevel();
+		
+		coinCounter = new FlxText(level.width + 8, 8, Std.int(FlxG.width - level.width - 8), "$: 0");
+		coinCounter.scrollFactor.x = 0;
+		coinCounter.scrollFactor.y = 0;
+		coinCounter.setColor(Colors.BLUEGRAY);
+		add(coinCounter);
+		
+		FlxG.worldBounds.x -= 50; 
+		FlxG.worldBounds.y -= 50;
+		FlxG.worldBounds.width += 100; 
+		FlxG.worldBounds.height += 100;
+	}
+	
+	function newLevel():Void {
+		FlxG.fade(0, 0.5, true, null, true);
 		level = new Level();
 		add(FlxGridOverlay.create(Library.tileSize, Library.tileSize, Std.int(level.width), Std.int(level.height), false, true, Colors.DBLUE, Colors.DGREEN));
 		add(level);
@@ -33,17 +54,9 @@ class GameState extends FlxState {
 		add(level.player);
 		add(level.ghosts);
 		
-		FlxG.camera.scroll.y = FlxG.camera.scroll.x = -Library.tileSize / 2;
-		
-		coinCounter = new FlxText(level.width + 8, 8, Std.int(FlxG.width - level.width - 8), "$: 0");
-		coinCounter.scrollFactor.x = 0;
-		coinCounter.scrollFactor.y = 0;
-		add(coinCounter);
-		
-		FlxG.worldBounds.x -= 50; 
-		FlxG.worldBounds.y -= 50;
-		FlxG.worldBounds.width += 100; 
-		FlxG.worldBounds.height += 100;
+		for (g in 0...10) {
+			level.spawnGhost();
+		}
 	}
 	
 	override public function update() {

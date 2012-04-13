@@ -4,10 +4,13 @@ import org.flixel.FlxG;
 import org.flixel.FlxGroup;
 import org.flixel.FlxPoint;
 import org.flixel.FlxTilemap;
+import org.flixel.FlxU;
 import utils.Utils;
+import world.Ghost;
 
 
 class Level extends FlxTilemap {
+	var playerStart:FlxPoint;
 	public var player:Player;
 	public var ghosts:FlxGroup;
 	public var coins:FlxGroup;
@@ -43,7 +46,7 @@ class Level extends FlxTilemap {
 		loadMap(FlxTilemap.arrayToCSV(tilesIndex, w), FlxTilemap.imgAuto, 8, 8, FlxTilemap.AUTO);
 		
 		
-		var playerStart = getFreeTile();
+		playerStart = getFreeTile();
 		
 		coins = new FlxGroup();
 		var map = getData();
@@ -70,6 +73,21 @@ class Level extends FlxTilemap {
 		player = new Player(this, playerStart);
 		
 		ghosts = new FlxGroup();
+	}
+	
+	public function spawnGhost():Ghost {
+		var typeName = FlxG.getRandom(Type.getEnumConstructs(GhostType));
+		var pos:FlxPoint = null;
+		
+		do {
+			pos = getFreeTile();
+		} while (FlxU.getDistance(pos, playerStart) < 5);
+		
+		var g = new Ghost(this, pos, typeName);
+		
+		ghosts.add(g);
+		
+		return g;
 	}
 	
 	function clearHorizontalLine(tilesIndex:Array<Int>, y:Int) {
