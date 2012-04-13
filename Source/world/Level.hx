@@ -1,6 +1,9 @@
 package world;
 import data.Library;
+import org.flixel.FlxG;
+import org.flixel.FlxPoint;
 import org.flixel.FlxTilemap;
+import utils.Utils;
 
 
 class Level extends FlxTilemap{
@@ -19,6 +22,19 @@ class Level extends FlxTilemap{
 		}
 		
 		loadMap(FlxTilemap.arrayToCSV(tilesIndex, Library.levelW), FlxTilemap.imgAuto, 8, 8, FlxTilemap.AUTO);
+	}
+	
+	public function getFreeTile():FlxPoint {
+		var x = 0;
+		var y = 0;
+		var map = getData();
+		
+		do {
+			x = Utils.randomInt(Library.levelW);
+			y = Utils.randomInt(Library.levelH);			
+		} while (Utils.get(map, Library.levelW, x, y) != 0);
+		
+		return new FlxPoint(x, y);
 	}
 	
 }

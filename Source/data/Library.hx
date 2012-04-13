@@ -7,9 +7,9 @@ import nme.display.BitmapData;
 import nme.text.Font;
 
 class Library {
-	public static var tileSize = 8;
-	public static var levelW = 19;
-	public static var levelH = 19;
+	public static inline var tileSize = 8;
+	public static inline var levelW = 19;
+	public static inline var levelH = 19;
 	
 	
 	static var assets:Hash<Dynamic> = new Hash<Dynamic>();
