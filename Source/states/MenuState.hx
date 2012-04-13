@@ -5,17 +5,30 @@ import org.flixel.FlxG;
 import org.flixel.FlxState;
 import org.flixel.FlxText;
 import data.Library;
+import org.flixel.plugin.photonstorm.FlxGridOverlay;
+import utils.Colors;
 
 class MenuState extends FlxState {
+	var title:FlxText;
 	var text:FlxText;
 
 	override public function create():Void {
-		FlxG.bgColor = 0xff0080C0;
 		FlxG.mouse.show();
 		
 		FlxG.fade(0, 0.5, true, null, true);
 		
-		text = new FlxText(0, FlxG.height / 2 - 10, FlxG.width, "Click to Start");
+		add(FlxGridOverlay.create(Library.tileSize, Library.tileSize, -1, -1, false, true, Colors.BLACK, Colors.BROWN));
+
+		title = new FlxText(0, FlxG.height / 4, FlxG.width, "Pakkuman's Defense");
+		title.setSize(16);
+		title.setColor(Colors.ORANGE);
+		title.setFont(Library.getFont().fontName);
+		title.setAlignment("center");
+		add(title);
+
+		
+		text = new FlxText(0, FlxG.height / 2, FlxG.width, "Click to Start");
+		text.setColor(Colors.ORANGE);
 		text.setFont(Library.getFont().fontName);
 		text.setAlignment("center");
 		add(text);
