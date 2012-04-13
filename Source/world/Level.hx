@@ -114,4 +114,14 @@ class Level extends FlxTilemap {
 		
 		return new FlxPoint(x, y);
 	}
+	
+	override public function destroy() {
+		super.destroy();
+		
+		playerStart = null;
+		ghosts.destroy();
+		ghosts = null;
+		coins.destroy();
+		coins = null;
+	}
 }

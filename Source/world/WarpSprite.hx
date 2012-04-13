@@ -41,4 +41,9 @@ class WarpSprite extends FlxSprite{
 		}
 	}
 	
+	override public function destroy() {
+		super.destroy();
+		level = null;
+	}
+	
 }

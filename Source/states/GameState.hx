@@ -80,4 +80,19 @@ class GameState extends FlxState {
 		level.player.coins++;
 		coinCounter.text = "$: " + level.player.coins;
 	}
+	
+	override public function destroy() {
+		super.destroy();
+		
+		level.player.destroy();
+		level.player = null;
+		
+		level.destroy();
+		level = null;
+	
+		coinCounter.destroy();
+		coinCounter = null;
+		ghostCounter.destroy();
+		ghostCounter = null;
+	}
 }

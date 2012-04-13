@@ -49,5 +49,6 @@ class MenuState extends FlxState {
 		super.destroy();
 		
 		text.destroy();
+		text = null;
 	}
 }
