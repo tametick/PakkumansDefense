@@ -1,6 +1,7 @@
 package states;
 
 import data.Library;
+import haxe.Log;
 import org.flixel.FlxG;
 import org.flixel.FlxGroup;
 import org.flixel.FlxPoint;
@@ -19,6 +20,8 @@ class GameState extends FlxState {
 	var coinCounter:FlxText;
 	
 	override public function create():Void {
+		Log.setColor(0xFFFFFF);
+		
 		FlxG.mouse.show();
 		FlxG.bgColor = Colors.BLACK;
 		FlxG.fade(0, 0.5, true, null, true);
@@ -51,7 +54,7 @@ class GameState extends FlxState {
 		FlxG.overlap(level.player, level.coins, pickUpCoin);
 	}
 	
-	function pickUpCoin(p:Player, c:Coin) {
+	function pickUpCoin(p:Player, c:Coin) {		
 		level.coins.remove(c);
 		level.player.coins++;
 		coinCounter.text = "$: " + level.player.coins;
