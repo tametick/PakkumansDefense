@@ -1,5 +1,6 @@
 package states;
 
+import com.eclecticdesignstudio.motion.Actuate;
 import data.Library;
 import haxe.Log;
 import org.flixel.FlxG;
@@ -11,6 +12,7 @@ import org.flixel.FlxText;
 import org.flixel.plugin.photonstorm.FlxGridOverlay;
 import utils.Colors;
 import world.Coin;
+import world.Ghost;
 import world.Level;
 import world.Player;
 
@@ -73,12 +75,22 @@ class GameState extends FlxState {
 		FlxG.collide(level, level.player);
 		FlxG.collide(level, level.ghosts);
 		FlxG.overlap(level.player, level.coins, pickUpCoin);
+		FlxG.overlap(level.player, level.ghosts, gameOver);
 		
 		counter += FlxG.elapsed;
 		if (counter >= spawnRate) {
 			counter = 0;
 			level.spawnGhost();
 		}
+	}
+	
+	function gameOver(p:Player, g:Ghost) {
+		reset();
+	}
+	
+	function reset(){
+		FlxG.fade(0, 1);
+		Actuate.timer(1).onComplete(FlxG.switchState, [new MenuState()]);
 	}
 	
 	function pickUpCoin(p:Player, c:Coin) {		
@@ -93,12 +105,11 @@ class GameState extends FlxState {
 		level.player.destroy();
 		level.player = null;
 		
-		level.destroy();
 		level = null;
 	
 		coinCounter.destroy();
 		coinCounter = null;
-		ghostCounter.destroy();
+		//ghostCounter.destroy();
 		ghostCounter = null;
 	}
 }

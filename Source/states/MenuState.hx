@@ -21,14 +21,14 @@ class MenuState extends FlxState {
 
 		title = new FlxText(0, FlxG.height / 4, FlxG.width, "Pakkuman's Defense");
 		title.setSize(16);
-		title.setColor(Colors.ORANGE);
+		title.setColor(Colors.YELLOW);
 		title.setFont(Library.getFont().fontName);
 		title.setAlignment("center");
 		add(title);
 
 		
 		text = new FlxText(0, FlxG.height / 2, FlxG.width, "Click to Start");
-		text.setColor(Colors.ORANGE);
+		text.setColor(Colors.YELLOW);
 		text.setFont(Library.getFont().fontName);
 		text.setAlignment("center");
 		add(text);
