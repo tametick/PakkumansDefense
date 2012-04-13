@@ -8,7 +8,7 @@ import org.flixel.FlxSprite;
 import utils.Colors;
 
 class Player extends FlxSprite {
-	var coins:Int;
+	public var coins:Int;
 	
 	public function new(start:FlxPoint) {
 		super();

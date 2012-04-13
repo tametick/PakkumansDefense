@@ -6,6 +6,7 @@ import org.flixel.FlxGroup;
 import org.flixel.FlxPoint;
 import org.flixel.FlxSprite;
 import org.flixel.FlxState;
+import org.flixel.FlxText;
 import org.flixel.plugin.photonstorm.FlxGridOverlay;
 import utils.Colors;
 import world.Coin;
@@ -17,6 +18,8 @@ class GameState extends FlxState {
 	var player:Player;
 	var ghosts:FlxGroup;
 	var coins:FlxGroup;
+	
+	var coinCounter:FlxText;
 	
 	override public function create():Void {
 		FlxG.mouse.show();
@@ -58,6 +61,11 @@ class GameState extends FlxState {
 		ghosts = new FlxGroup();
 		
 		FlxG.camera.scroll.y = FlxG.camera.scroll.x = -Library.tileSize / 2;
+		
+		coinCounter = new FlxText(level.width + 8, 8, Std.int(FlxG.width - level.width - 8), "$: 0");
+		coinCounter.scrollFactor.x = 0;
+		coinCounter.scrollFactor.y = 0;
+		add(coinCounter);
 	}
 	
 	override public function update() {
@@ -70,5 +78,7 @@ class GameState extends FlxState {
 	
 	function pickUpCoin(p:Player, c:Coin) {
 		coins.remove(c);
+		player.coins++;
+		coinCounter.text = "$: " + player.coins;
 	}
 }
