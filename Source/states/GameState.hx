@@ -24,7 +24,5 @@ class GameState extends FlxState {
 		var playerStart = level.getFreeTile();
 		player = new Player(playerStart);
 		add(player);
-		
-		
 	}
 }
