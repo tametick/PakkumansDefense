@@ -56,6 +56,8 @@ class GameState extends FlxState {
 		add(player);
 		
 		ghosts = new FlxGroup();
+		
+		FlxG.camera.scroll.y = FlxG.camera.scroll.x = -Library.tileSize / 2;
 	}
 	
 	override public function update() {
