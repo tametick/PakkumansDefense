@@ -65,5 +65,10 @@ class GameState extends FlxState {
 		
 		FlxG.collide(level, player);
 		FlxG.collide(level, ghosts);
+		FlxG.overlap(player, coins, pickUpCoin);
+	}
+	
+	function pickUpCoin(p:Player, c:Coin) {
+		coins.remove(c);
 	}
 }
