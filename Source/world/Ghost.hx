@@ -20,6 +20,6 @@ class Ghost extends FlxSprite {
 enum GhostType {
 	RED;
 	PINK;
-	BLUEGRAY;
+	LBLUE;
 	ORANGE;
 }

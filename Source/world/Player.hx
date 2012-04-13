@@ -15,8 +15,8 @@ class Player extends FlxSprite {
 		
 		makeGraphic(Library.tileSize-3, Library.tileSize-3, Colors.YELLOW);
 		
-		x = start.x * Library.tileSize + width/2;
-		y = start.y * Library.tileSize + height/2;
+		x = start.x * Library.tileSize + (Library.tileSize-width)/2;
+		y = start.y * Library.tileSize + (Library.tileSize-height)/2;
 	}
 	
 	override public function update() {

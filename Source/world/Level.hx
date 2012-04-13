@@ -36,16 +36,4 @@ class Level extends FlxTilemap{
 		
 		return new FlxPoint(x, y);
 	}
-	
-	public function countEmpty():Int {
-		var map = getData();
-		var empty = 0;
-		
-		for (tile in map) {
-			if (tile == 0)
-				empty++;
-		}
-		
-		return empty;
-	}
 }

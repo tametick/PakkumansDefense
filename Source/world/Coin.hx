@@ -1,15 +1,18 @@
 package world;
+import data.Library;
+import org.flixel.FlxPoint;
 import org.flixel.FlxSprite;
+import utils.Colors;
 
 class Coin extends FlxSprite {
 
-	public function new() {
+	public function new(start:FlxPoint) {
 		super();
 		
-		x = start.x * Library.tileSize;
-		y = start.y * Library.tileSize;
+		makeGraphic(2, 2, Colors.BLUEGRAY);
 		
-		makeGraphic(2, 2, Colors.YELLOW);
+		x = start.x * Library.tileSize + (Library.tileSize-width)/2;
+		y = start.y * Library.tileSize + (Library.tileSize-height)/2;
 	}
 	
 }
