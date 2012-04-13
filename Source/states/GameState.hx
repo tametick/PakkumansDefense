@@ -21,8 +21,9 @@ class GameState extends FlxState {
 	var coinCounter:FlxText;
 	var ghostCounter:FlxText;
 	
-	public var killedGhosts:Int;
-	public var spawnRate:Float;
+	var killedGhosts:Int;
+	var spawnRate:Float;
+	var counter:Float;
 	
 	override public function create():Void {
 		Log.setColor(0xFFFFFF);
@@ -46,6 +47,9 @@ class GameState extends FlxState {
 	}
 	
 	function newLevel():Void {
+		levelNumber++;
+		spawnRate = 2 / levelNumber;
+		
 		FlxG.fade(0, 0.5, true, null, true);
 		level = new Level();
 		add(FlxGridOverlay.create(Library.tileSize, Library.tileSize, Std.int(level.width), Std.int(level.height), false, true, Colors.DBLUE, Colors.DGREEN));
@@ -54,9 +58,7 @@ class GameState extends FlxState {
 		add(level.player);
 		add(level.ghosts);
 		
-		for (g in 0...10) {
-			level.spawnGhost();
-		}
+		counter = 0;
 	}
 	
 	override public function update() {
@@ -65,6 +67,12 @@ class GameState extends FlxState {
 		FlxG.collide(level, level.player);
 		FlxG.collide(level, level.ghosts);
 		FlxG.overlap(level.player, level.coins, pickUpCoin);
+		
+		counter += FlxG.elapsed;
+		if (counter >= spawnRate) {
+			counter = 0;
+			level.spawnGhost();
+		}
 	}
 	
 	function pickUpCoin(p:Player, c:Coin) {		
