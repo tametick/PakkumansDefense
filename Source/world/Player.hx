@@ -13,7 +13,7 @@ class Player extends FlxSprite {
 	public function new(start:FlxPoint) {
 		super();
 		
-		makeGraphic(Library.tileSize-3, Library.tileSize-3, Colors.YELLOW);
+		makeGraphic(Library.tileSize-4, Library.tileSize-4, Colors.YELLOW);
 		
 		x = start.x * Library.tileSize + (Library.tileSize-width)/2;
 		y = start.y * Library.tileSize + (Library.tileSize-height)/2;
