@@ -25,4 +25,11 @@ class GameState extends FlxState {
 		player = new Player(playerStart);
 		add(player);
 	}
+	
+	override public function update() {
+		super.update();
+		
+		FlxG.collide(level, player);
+		FlxG.collide(level, ghosts);
+	}
 }

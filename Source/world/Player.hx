@@ -15,29 +15,30 @@ class Player extends FlxSprite {
 		x = start.x * Library.tileSize;
 		y = start.y * Library.tileSize;
 		
-		makeGraphic(Library.tileSize-2, Library.tileSize-2, Colors.YELLOW);
+		makeGraphic(Library.tileSize-3, Library.tileSize-3, Colors.YELLOW);
 	}
 	
 	override public function update() {
 		super.update();
 		
+		velocity.x = 0;
+		velocity.y = 0;
+		
 		// change direction according to keyboard input
-		if (FlxG.keys.A) {
+		if (FlxG.keys.A || FlxG.keys.LEFT) {
 			facing = FlxObject.RIGHT;
-			velocity.x = -Library.speedNormal;
-			velocity.y = 0;
-			
-		} else if (FlxG.keys.D) {
+			velocity.x = -Library.speedNormal;			
+		} 
+		if (FlxG.keys.D || FlxG.keys.RIGHT) {
 			facing = FlxObject.LEFT;
 			velocity.x = Library.speedNormal;
-			velocity.y = 0;
-		} else if (FlxG.keys.S) {
+		} 
+		if (FlxG.keys.S || FlxG.keys.DOWN) {
 			facing = FlxObject.DOWN;
-			velocity.x = 0;
 			velocity.y = Library.speedNormal;
-		} else if (FlxG.keys.W) {
+		} 
+		if (FlxG.keys.W || FlxG.keys.UP) {
 			facing = FlxObject.UP;
-			velocity.x = 0;
 			velocity.y = -Library.speedNormal;
 		}
 	}
