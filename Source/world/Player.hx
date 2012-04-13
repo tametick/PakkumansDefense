@@ -16,7 +16,8 @@ class Player extends WarpSprite {
 		makeGraphic(Library.tileSize-4, Library.tileSize-4, Colors.YELLOW);
 		
 		x = start.x * Library.tileSize + (Library.tileSize-width)/2;
-		y = start.y * Library.tileSize + (Library.tileSize-height)/2;
+		y = start.y * Library.tileSize + (Library.tileSize-height) / 2;
+		start = null;
 	}
 	
 	override public function update() {

@@ -51,7 +51,13 @@ class GameState extends FlxState {
 		spawnRate = 2 / levelNumber;
 		
 		FlxG.fade(0, 0.5, true, null, true);
-		level = new Level();
+		
+		var p:Player = null;
+		if (level != null) {
+			p = level.player;
+		}	
+		
+		level = new Level(p);
 		add(FlxGridOverlay.create(Library.tileSize, Library.tileSize, Std.int(level.width), Std.int(level.height), false, true, Colors.DBLUE, Colors.DGREEN));
 		add(level);
 		add(level.coins);

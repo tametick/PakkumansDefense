@@ -15,7 +15,7 @@ class Level extends FlxTilemap {
 	public var ghosts:FlxGroup;
 	public var coins:FlxGroup;
 	
-	public function new() {
+	public function new(p:Player) {
 		super();
 		
 		var w = Library.levelW;
@@ -33,6 +33,9 @@ class Level extends FlxTilemap {
 				tilesIndex.push(tile);
 			}
 		}
+		
+		mazeGenerator.destroy();
+		mazeGenerator = null;
 		
 		// generate some empty lines
 		var y = Utils.randomIntInRange(2, Std.int(h / 3));
@@ -70,7 +73,17 @@ class Level extends FlxTilemap {
 		coinStart = null;
 		map = null;
 		
-		player = new Player(this, playerStart);
+		if (p == null) {
+			// first level
+			player = new Player(this, playerStart);
+		} else {
+			// recycle the player from previous level
+			player = p;
+			player.x = playerStart.x * Library.tileSize + (Library.tileSize-player.width)/2;
+			player.y = playerStart.y * Library.tileSize + (Library.tileSize-player.height) / 2;
+			player.level.destroy();
+			player.level = this;
+		}
 		
 		ghosts = new FlxGroup();
 	}

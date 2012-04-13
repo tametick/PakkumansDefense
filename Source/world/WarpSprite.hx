@@ -2,13 +2,12 @@ package world;
 import org.flixel.FlxSprite;
 
 class WarpSprite extends FlxSprite{
-	var level:Level;
-	public var enableCollisionsNextFrame:Bool;
+	public var level:Level;
+	var enableCollisionsNextFrame:Bool;
 	
 	public function new(level:Level) {
 		super();
 		this.level = level;
-
 	}
 	
 	override public function update() {

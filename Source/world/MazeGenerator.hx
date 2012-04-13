@@ -89,12 +89,16 @@ class MazeGenerator {
 			}
 
 		}
-
 	}
 
 	function randInt(min : Int, max : Int) : Int {
 		return Std.int((Math.random() * (max - min + 1)) + min);
 	}
 
+	public function destroy() {
+		moves = null;
+		maze = null;
+		start = null;
+	}
 }
 
