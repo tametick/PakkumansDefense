@@ -39,7 +39,7 @@ class Ghost extends WarpSprite {
 		
 		// only calculate AI every 1 second
 		counter += FlxG.elapsed;
-		if (counter >= 1) {
+		if (counter >= 1 && pathSpeed == 0) {
 			counter = 0;
 			
 			p0.x = level.player.x + level.player.width/2;
