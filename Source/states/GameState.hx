@@ -22,6 +22,7 @@ class GameState extends FlxState {
 	
 	var coinCounter:FlxText;
 	var ghostCounter:FlxText;
+	var towerCounter:FlxText;
 	
 	var killedGhosts:Int;
 	var spawnRate:Float;
@@ -36,17 +37,29 @@ class GameState extends FlxState {
 		
 		newLevel();
 		
-		coinCounter = new FlxText(level.width + 8, 8, Std.int(FlxG.width - level.width - 8), "$: 0");
+		var base = 3;
+		
+		coinCounter = new FlxText(level.width + 8, base, Std.int(FlxG.width - level.width - 8), "$: 0");
 		coinCounter.scrollFactor.x = 0;
 		coinCounter.scrollFactor.y = 0;
 		coinCounter.setColor(Colors.LGREEN);
+		coinCounter.setFont(Library.getFont().fontName);
 		add(coinCounter);
 		
-		ghostCounter = new FlxText(level.width + 8, coinCounter.y+coinCounter.height, Std.int(FlxG.width - level.width - 8), "Kills: 0");
+		ghostCounter = new FlxText(level.width + 8, base + Library.tileSize*2, Std.int(FlxG.width - level.width - 8), "Kills: 0 (+$1)");
 		ghostCounter.scrollFactor.x = 0;
 		ghostCounter.scrollFactor.y = 0;
 		ghostCounter.setColor(Colors.BLUEGRAY);
+		ghostCounter.setFont(Library.getFont().fontName);
 		add(ghostCounter);
+		
+		towerCounter = new FlxText(level.width + 8, base + Library.tileSize*4, Std.int(FlxG.width - level.width - 8), "Towers: 0 (-$20)");
+		towerCounter.scrollFactor.x = 0;
+		towerCounter.scrollFactor.y = 0;
+		towerCounter.setColor(Colors.YELLOW);
+		towerCounter.setFont(Library.getFont().fontName);
+		add(towerCounter);
+		
 		
 		FlxG.worldBounds.x -= 50; 
 		FlxG.worldBounds.y -= 50;
@@ -117,5 +130,7 @@ class GameState extends FlxState {
 		coinCounter = null;
 		ghostCounter.destroy();
 		ghostCounter = null;
+		towerCounter.destroy();
+		towerCounter = null;
 	}
 }
