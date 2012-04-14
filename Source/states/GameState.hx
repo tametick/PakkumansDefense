@@ -127,8 +127,15 @@ class GameState extends FlxState {
 		}
 		
 		if (FlxG.mouse.justPressed() && cursor.visible) {
-			// todo - check for money
-			level.buildTower(up);
+			if (level.player.coins >= 20) {
+				// todo - cash register sound
+				level.player.coins -= 20;
+				coinCounter.text = "$: " + level.player.coins;
+				level.buildTower(up);
+				towerCounter.text = "Towers: " + level.towers.length + " (-$20)";
+			} else {
+				// todo - error sound
+			}
 		}
 	}
 	
