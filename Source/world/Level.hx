@@ -4,6 +4,7 @@ import nme.system.System;
 import org.flixel.FlxG;
 import org.flixel.FlxGroup;
 import org.flixel.FlxPoint;
+import org.flixel.FlxSprite;
 import org.flixel.FlxTilemap;
 import org.flixel.FlxU;
 import utils.Utils;
@@ -16,6 +17,7 @@ class Level extends FlxTilemap {
 	public var ghosts:FlxGroup;
 	public var coins:FlxGroup;
 	public var towers:FlxGroup;
+	public var bullets:FlxGroup;
 	
 	public function new(p:Player) {
 		super();
@@ -96,6 +98,7 @@ class Level extends FlxTilemap {
 		
 		ghosts = new FlxGroup();
 		towers = new FlxGroup();
+		bullets = new FlxGroup();
 	}
 	
 	public function spawnGhost():Ghost {
@@ -118,11 +121,11 @@ class Level extends FlxTilemap {
 	}
 	
 	public function buildTower(pos:FlxPoint):Tower {
-		// todo - find out tile from pixel position
 		Utils.convertPixelToTilePosition(pos);
 		
 		var t:Tower = new Tower(this,pos);
 		towers.add(t);
+		bullets.add(t.weapon.group);
 		
 		return t;
 	}
@@ -156,6 +159,28 @@ class Level extends FlxTilemap {
 		return Utils.get(getData(), Library.levelW, x, y) == 0;
 	}
 	
+	var p0:FlxPoint;
+	var p1:FlxPoint;
+	public function getGhostInRange(s:FlxSprite, range:Float):Ghost {
+		if (p0 == null) {
+			p0 = new FlxPoint();
+			p1 = new FlxPoint();
+		}
+		p1.x = s.x;
+		p1.y = s.y;
+		for (g in ghosts.members) {
+			var ghost = cast(g, Ghost);
+			p0.x = ghost.x;
+			p0.y = ghost.y;
+			
+			if (FlxU.getDistance(p0, p1) < range) {
+				return ghost;
+			}
+		}
+		
+		return null;
+	}
+	
 	override public function destroy() {
 		super.destroy();
 		
@@ -164,6 +189,13 @@ class Level extends FlxTilemap {
 		ghosts = null;
 		coins.destroy();
 		coins = null;
+		towers.destroy();
+		towers = null;
+		bullets.destroy();
+		bullets = null;
+		
+		p0 = null;
+		p1 = null;
 		
 		System.gc();
 		System.gc();

@@ -91,10 +91,9 @@ class GameState extends FlxState {
 		add(level.player);
 		add(level.ghosts);
 		add(level.towers);
+		add(level.bullets);
 		
 		counter = 0;
-		
-		
 	}
 	
 	var up:FlxPoint;
@@ -133,6 +132,7 @@ class GameState extends FlxState {
 				coinCounter.text = "$: " + level.player.coins;
 				level.buildTower(up);
 				towerCounter.text = "Towers: " + level.towers.length + " (-$20)";
+				
 			} else {
 				// todo - error sound
 			}
