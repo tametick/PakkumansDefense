@@ -107,13 +107,16 @@ class Level extends FlxTilemap {
 		var g = new Ghost(this, pos, typeName);
 		var posTaken = false;
 		
+		var playerPos = new FlxPoint(player.x, player.y);
+		Utils.convertPixelToTilePosition(playerPos);
+		
 		do {
 			pos = getFreeTile();
 			g.setPosition(pos);
 			
 			posTaken = FlxG.overlap(ghosts, g);
 			
-		} while (FlxU.getDistance(pos, playerStart) < 5 || posTaken );
+		} while (FlxU.getDistance(pos, playerPos) < 5 || posTaken );
 		
 		ghosts.add(g);
 		
