@@ -14,7 +14,10 @@ class Player extends WarpSprite {
 	public function new(level:Level, start:FlxPoint) {
 		super(level);
 		
-		makeGraphic(Library.tileSize-4, Library.tileSize-4, Colors.YELLOW);
+		loadGraphic(Library.getFilename(Image.PAKKU), true, true, 5, 5);
+		addAnimation("walk", [0, 1], 5);
+		play("walk");
+		setColor(Colors.YELLOW);
 		
 		setPosition(start);
 		start = null;

@@ -62,6 +62,7 @@ class Library {
 enum Image {
 	CURSOR;
 	GHOST;
+	PAKKU;
 }
 
 enum Sound {
