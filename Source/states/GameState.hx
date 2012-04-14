@@ -2,6 +2,7 @@ package states;
 
 import com.eclecticdesignstudio.motion.Actuate;
 import data.Library;
+import data.Score;
 import haxe.Log;
 import org.flixel.FlxG;
 import org.flixel.FlxGroup;
@@ -181,9 +182,9 @@ class GameState extends FlxState {
 		
 		
 		// debug
-		/*if (FlxG.keys.justReleased("L")) {
+		if (FlxG.keys.justReleased("L")) {
 			newLevel();
-		}*/
+		}
 	}
 	
 	override public function draw():Void {		
@@ -202,7 +203,14 @@ class GameState extends FlxState {
 	}
 	
 	function gameOver(p:Player, g:Ghost) {
-		reset();
+		if (!active)
+			return;
+		active = false;
+		
+		HighScoreState.mostRecentScore = new Score(levelNumber,level.player.coins,level.player.kills,level.towers.length);
+		
+		FlxG.fade(0, 0.5);
+		Actuate.timer(0.5).onComplete(FlxG.switchState, [new HighScoreState()]);
 	}
 	
 	function reset(){
