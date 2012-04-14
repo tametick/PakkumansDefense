@@ -152,6 +152,10 @@ class Level extends FlxTilemap {
 		return new FlxPoint(x, y);
 	}
 	
+	public function isFree(x:Int, y:Int):Bool {
+		return Utils.get(getData(), Library.levelW, x, y) == 0;
+	}
+	
 	override public function destroy() {
 		super.destroy();
 		

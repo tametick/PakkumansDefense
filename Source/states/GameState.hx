@@ -97,12 +97,11 @@ class GameState extends FlxState {
 		
 	}
 	
-	var p:FlxPoint;
+	var up:FlxPoint;
 	override public function update() {
 		super.update();
 		
 		FlxG.collide(level, level.player);
-		FlxG.collide(level, level.ghosts);
 		FlxG.overlap(level.player, level.coins, pickUpCoin);
 		FlxG.overlap(level.player, level.ghosts, gameOver);
 		
@@ -112,24 +111,28 @@ class GameState extends FlxState {
 			level.spawnGhost();
 		}
 		
-		if (FlxG.mouse.justPressed()) {
+		if (up == null)
+			up = new FlxPoint();
+		
+		FlxG.mouse.getWorldPosition(null, up);
+		var cy = Utils.pixelToTile(up.y);
+		var cx = Utils.pixelToTile(up.x);
+		cursor.x = cx*Library.tileSize;
+		cursor.y = cy*Library.tileSize;
+		
+		if (level.isFree(cx, cy) || cx >= Library.levelW || cy >= Library.levelH) {
+			cursor.visible = false;
+		} else {
+			cursor.visible = true;
+		}
+		
+		if (FlxG.mouse.justPressed() && cursor.visible) {
 			// todo - check for money
-			if (p == null)
-				p = new FlxPoint();
-			
-			level.buildTower(FlxG.mouse.getWorldPosition(null,p));
+			level.buildTower(up);
 		}
 	}
 	
-	var p2:FlxPoint;
-	override public function draw():Void {
-		if (p2 == null)
-			p2 = new FlxPoint();
-		
-		FlxG.mouse.getWorldPosition(null, p2);
-		cursor.x = Utils.getPositionSnappedToGrid(p2.x);
-		cursor.y = Utils.getPositionSnappedToGrid(p2.y);
-		
+	override public function draw():Void {		
 		super.draw();
 	}
 	
@@ -163,8 +166,7 @@ class GameState extends FlxState {
 		towerCounter.destroy();
 		towerCounter = null;
 		
-		p = null;
-		p2 = null;
+		up = null;
 		cursor.destroy();
 		cursor = null;
 	}
