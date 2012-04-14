@@ -1,10 +1,12 @@
 package world;
 
 import org.flixel.FlxPoint;
+import org.flixel.plugin.photonstorm.FlxWeapon;
 import utils.Colors;
 
-class Tower extends WarpSprite{
-
+class Tower extends WarpSprite {
+	var weapon:FlxWeapon;
+	
 	public function new(level:Level, start:FlxPoint) {
 		super(level);
 		
@@ -12,6 +14,21 @@ class Tower extends WarpSprite{
 		
 		setPosition(start);
 		start = null;
+		
+		weapon = new FlxWeapon("towergun", this);
+	}
+	
+	override public function update() {
+		super.update();
+		
+		// shoot at enemies that are in range
+	}
+	
+	override public function destroy() {
+		super.destroy();
+		
+		weapon.destroy();
+		weapon = null;
 	}
 	
 }

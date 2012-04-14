@@ -136,6 +136,29 @@ class FlxWeapon
 	private static inline var FIRE_FROM_ANGLE:Int = 4;
 	private static inline var FIRE_FROM_PARENT_ANGLE:Int = 5;
 	
+	public function destroy() {
+		magazineSwapSound = null;
+		magazineSwapCallback = null;
+		
+		onPreFireSound = null;
+		onFireSound = null;
+		onPostFireSound = null;		
+		onPreFireCallback = null;
+		onFireCallback = null;
+		onPostFireCallback = null;
+		
+		currentBullet = null;
+		
+		rndFactorPosition = null;
+		velocity = null;
+		positionOffset = null;
+		
+		parent = null;
+		bounds = null;
+		group.destroy();
+		group = null;
+	}
+	
 	/**
 	 * Creates the FlxWeapon class which will fire your bullets.<br>
 	 * You should call one of the makeBullet functions to visually create the bullets.<br>
