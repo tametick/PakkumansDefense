@@ -21,14 +21,13 @@ class Preloader extends NMEPreloader {
 
 		Mouse.hide();
 		
-		/* if you want a custom "loading..." background image
-		var bg:Bitmap = new Bitmap(new Bg(120, 80));
+		var bg:Bitmap = new Bitmap(new Bg(240, 160));
 		bg.width = w;
 		bg.height = h;
 		addChild(bg);
-		*/
+		
 		super();
 	}
 }
 
-//@:bitmap("loading.png") class Bg extends BitmapData {}
+@:bitmap("loading.png") class Bg extends BitmapData {}

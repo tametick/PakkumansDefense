@@ -79,7 +79,7 @@ class GameState extends FlxState {
 		towerCounter.setFont(Library.getFont().fontName);
 		add(towerCounter);
 		
-		instructions = new FlxText(level.width + 8, base + Library.tileSize*8, Std.int(FlxG.width - level.width - 8), "Move with WASD or the arrow keys.\n\nClick on walls to place towers when you have enough money.");
+		instructions = new FlxText(level.width + 8, base + Library.tileSize*15, Std.int(FlxG.width - level.width - 8), "Move with WASD or the arrow keys.\n\nClick to place towers.");
 		instructions.scrollFactor.x = 0;
 		instructions.scrollFactor.y = 0;
 		instructions.setColor(Colors.BLUEGRAY);
