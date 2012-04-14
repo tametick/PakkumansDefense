@@ -1,5 +1,6 @@
 package world;
 import data.Library;
+import nme.system.System;
 import org.flixel.FlxG;
 import org.flixel.FlxGroup;
 import org.flixel.FlxPoint;
@@ -72,7 +73,7 @@ class Level extends FlxTilemap {
 			if (map[mi] == 0 && !(x==playerStart.x && y==playerStart.y)) {
 				coinStart.x = x;
 				coinStart.y = y;
-				coins.add(new Coin(coinStart));
+				coins.add(new Coin(this, coinStart));
 			}
 			
 			x++;
@@ -147,5 +148,8 @@ class Level extends FlxTilemap {
 		ghosts = null;
 		coins.destroy();
 		coins = null;
+		
+		System.gc();
+		System.gc();
 	}
 }

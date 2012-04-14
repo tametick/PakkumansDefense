@@ -1,18 +1,17 @@
 package world;
 import data.Library;
 import org.flixel.FlxPoint;
-import org.flixel.FlxSprite;
 import utils.Colors;
 
-class Coin extends FlxSprite {
+class Coin extends WarpSprite {
 
-	public function new(start:FlxPoint) {
-		super();
+	public function new(level:Level, start:FlxPoint) {
+		super(level);
 		
 		makeGraphic(2, 2, Colors.BLUEGRAY);
 		
-		x = start.x * Library.tileSize + (Library.tileSize-width)/2;
-		y = start.y * Library.tileSize + (Library.tileSize-height)/2;
+		setPosition(start);
+		start = null;
 	}
 	
 }
