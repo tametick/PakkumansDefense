@@ -12,7 +12,7 @@ import utils.Colors;
 
 class HighScoreState extends FlxState {
 	public static var mostRecentScore:Score;
-	static var scoresToShow = 10;
+	static var scoresToShow = 15;
 	
 	var scores:FlxSave;
 	var title:FlxText;
@@ -28,9 +28,10 @@ class HighScoreState extends FlxState {
 			scores.data.scores = new Array<Score>();
 		}
 		var sc:Array<Score> = scores.data.scores;
-		
-		sc.push(mostRecentScore);
-		sc.sort(scoreCompare);
+		if(mostRecentScore!=null) {
+			sc.push(mostRecentScore);
+		}
+		//sc.sort(scoreCompare);
 		
 		if (sc.length > scoresToShow) {
 			sc.splice(scoresToShow, sc.length-scoresToShow);
@@ -67,7 +68,16 @@ class HighScoreState extends FlxState {
 	}
 	
 	function scoreToString(s:Dynamic):String {
-		return "Level: " + s.level + "\t$: " + s.money + "\tKills: " + s.kills;
+		var str = "Level: " + s.level;
+		str = StringTools.rpad(str, " ", 30);
+		
+		str += "Money: " + s.money;
+		str = StringTools.rpad(str, " ", 60);
+		
+		str +=  "Kills: " + s.kills;
+		str = StringTools.rpad(str, " ", 90);
+		
+		return str;
 	}
 	
 	// >0 if x<y, <0 if x<y

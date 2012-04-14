@@ -3,6 +3,7 @@ import nme.events.Event;
 import nme.Lib;
 import org.flixel.FlxGame;
 import states.GameState;
+import states.HighScoreState;
 import states.MenuState;
 
 
@@ -13,7 +14,7 @@ class BuskerJam extends FlxGame {
 
 	public function new() {
 		super(240, 160, MenuState, 3);
-		//super(240, 160, GameState, 3);
+		//super(240, 160, HighScoreState, 3);
 		
 		forceDebugger = true;
 	}

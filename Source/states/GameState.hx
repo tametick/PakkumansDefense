@@ -128,10 +128,9 @@ class GameState extends FlxState {
 		add(level.towers);
 		add(level.bullets);
 		
-		level.player.kills = 0;
 		if(towerCounter!=null) {
 			towerCounter.text = "Towers: 0 (-$20)";
-			ghostCounter.text = "Kills: 0 (+$1)";
+			ghostCounter.text = "Kills: "+level.player.kills+" (+$1)";
 			levelCounter.text = "Level " + levelNumber;
 		}
 		
