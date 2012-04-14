@@ -25,6 +25,7 @@ class Tower extends WarpSprite {
 		weapon = new FlxWeapon("towergun", this);
 		weapon.makePixelBullet(10, 2, 2, Colors.YELLOW,Std.int(width/2));
 		weapon.setBulletSpeed(50);
+		weapon.setBulletLifeSpan(750);
 		
 		fireRate = 1;
 		range = 3.5 * Library.tileSize;

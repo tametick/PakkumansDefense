@@ -1,10 +1,13 @@
 package states;
 
 import com.eclecticdesignstudio.motion.Actuate;
+import data.Library;
 import data.Score;
 import org.flixel.FlxG;
 import org.flixel.FlxSave;
 import org.flixel.FlxState;
+import org.flixel.plugin.photonstorm.FlxGridOverlay;
+import utils.Colors;
 
 class HighScoreState extends FlxState {
 	public static var mostRecentScore:Score;
@@ -12,7 +15,9 @@ class HighScoreState extends FlxState {
 	
 	var scores:FlxSave;
 	override public function create() {
-		super.create();
+		FlxG.fade(0, 0.5, true, null, true);
+		
+		add(FlxGridOverlay.create(Library.tileSize, Library.tileSize, -1, -1, false, true, Colors.DBLUE, Colors.DGREEN));
 		
 		scores = new FlxSave();
 		scores.bind("HighScores");
@@ -29,7 +34,11 @@ class HighScoreState extends FlxState {
 			sc.splice(scoresToShow, sc.length-scoresToShow);
 		}
 		
-		trace(sc);
+		print(sc);
+	}
+	
+	function print(scores:Array<Score>) {
+		
 	}
 	
 	// >0 if x<y, <0 if x<y
