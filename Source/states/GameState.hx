@@ -76,7 +76,7 @@ class GameState extends FlxState {
 	
 	function newLevel():Void {
 		levelNumber++;
-		spawnRate = 2 / levelNumber;
+		spawnRate = 3 / levelNumber;
 		
 		FlxG.fade(0, 0.5, true, null, true);
 		
