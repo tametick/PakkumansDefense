@@ -20,6 +20,8 @@ import world.Level;
 import world.Player;
 
 class GameState extends FlxState {
+	var bg: FlxSprite;
+	
 	var level:Level;
 	var levelNumber:Int;
 	
@@ -27,6 +29,7 @@ class GameState extends FlxState {
 	var coinCounter:FlxText;
 	var ghostCounter:FlxText;
 	var towerCounter:FlxText;
+	var instructions:FlxText;
 	
 	var killedGhosts:Int;
 	var spawnRate:Float;
@@ -65,7 +68,7 @@ class GameState extends FlxState {
 		ghostCounter = new FlxText(level.width + 8, base + Library.tileSize*4, Std.int(FlxG.width - level.width - 8), "Kills: 0 (+$1)");
 		ghostCounter.scrollFactor.x = 0;
 		ghostCounter.scrollFactor.y = 0;
-		ghostCounter.setColor(Colors.BLUEGRAY);
+		ghostCounter.setColor(Colors.PINK);
 		ghostCounter.setFont(Library.getFont().fontName);
 		add(ghostCounter);
 		
@@ -76,6 +79,12 @@ class GameState extends FlxState {
 		towerCounter.setFont(Library.getFont().fontName);
 		add(towerCounter);
 		
+		instructions = new FlxText(level.width + 8, base + Library.tileSize*8, Std.int(FlxG.width - level.width - 8), "How to play....bla bla much text is here");
+		instructions.scrollFactor.x = 0;
+		instructions.scrollFactor.y = 0;
+		instructions.setColor(Colors.BLUEGRAY);
+		instructions.setFont(Library.getFont().fontName);
+		add(instructions);
 		
 		FlxG.worldBounds.x -= 50; 
 		FlxG.worldBounds.y -= 50;
@@ -92,6 +101,9 @@ class GameState extends FlxState {
 		
 		var p:Player = null;
 		if (level != null) {
+			remove(bg);
+			bg.destroy();
+			
 			p = level.player;
 			Actuate.stop(p);
 			p.level = null;
@@ -104,7 +116,8 @@ class GameState extends FlxState {
 		}
 		
 		level = new Level(p);
-		add(FlxGridOverlay.create(Library.tileSize, Library.tileSize, Std.int(level.width), Std.int(level.height), false, true, Colors.DBLUE, Colors.DGREEN));
+		bg = FlxGridOverlay.create(Library.tileSize, Library.tileSize, Std.int(level.width), Std.int(level.height), false, true, Colors.DBLUE, Colors.DGREEN);
+		add(bg);
 		add(level);
 		add(level.coins);
 		add(level.player);
@@ -208,11 +221,21 @@ class GameState extends FlxState {
 	override public function destroy() {
 		super.destroy();
 		
+		remove(bg);
+		remove(level);
+		remove(level.coins);
+		remove(level.player);
+		remove(level.ghosts);
+		remove(level.towers);
+		remove(level.bullets);
+		
 		level.player.destroy();
 		level.player = null;
 		
 		level = null;
 		
+		bg.destroy();
+		bg = null;
 		levelCounter.destroy();
 		levelCounter = null;
 		coinCounter.destroy();
@@ -221,6 +244,8 @@ class GameState extends FlxState {
 		ghostCounter = null;
 		towerCounter.destroy();
 		towerCounter = null;
+		instructions.destroy();
+		instructions = null;
 		
 		up = null;
 		cursor.destroy();

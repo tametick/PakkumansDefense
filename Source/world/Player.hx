@@ -34,13 +34,17 @@ class Player extends WarpSprite {
 			var tileY = Utils.pixelToTile(y);
 			
 			// change facing according to keyboard input
-			if ((FlxG.keys.A||FlxG.keys.LEFT||FlxG.keys.justPressed("A")||FlxG.keys.justPressed("LEFT")) && level.isFree(tileX-1,tileY)) {
+			if ((FlxG.keys.A || FlxG.keys.LEFT || FlxG.keys.justPressed("A") || FlxG.keys.justPressed("LEFT") || FlxG.keys.justReleased("A") || FlxG.keys.justReleased("LEFT")) 
+					&& level.isFree(tileX-1,tileY)) {
 				facing = FlxObject.LEFT;
-			} if ((FlxG.keys.D||FlxG.keys.RIGHT||FlxG.keys.justPressed("D")||FlxG.keys.justPressed("RIGHT")) && level.isFree(tileX+1,tileY)) {
+			} if ((FlxG.keys.D || FlxG.keys.RIGHT || FlxG.keys.justPressed("D") || FlxG.keys.justPressed("RIGHT") || FlxG.keys.justReleased("D") || FlxG.keys.justReleased("RIGHT")) 
+					&& level.isFree(tileX+1,tileY)) {
 				facing = FlxObject.RIGHT;
-			} if ((FlxG.keys.S||FlxG.keys.DOWN||FlxG.keys.justPressed("S")||FlxG.keys.justPressed("DOWN")) && level.isFree(tileX,tileY+1)) {
+			} if ((FlxG.keys.S || FlxG.keys.DOWN || FlxG.keys.justPressed("S") || FlxG.keys.justPressed("DOWN") || FlxG.keys.justReleased("S") || FlxG.keys.justReleased("DOWN")) 
+					&& level.isFree(tileX,tileY+1)) {
 				facing = FlxObject.DOWN;
-			} if ((FlxG.keys.W||FlxG.keys.UP||FlxG.keys.justPressed("W")||FlxG.keys.justPressed("UP")) && level.isFree(tileX,tileY-1)) {
+			} if ((FlxG.keys.W || FlxG.keys.UP || FlxG.keys.justPressed("W") || FlxG.keys.justPressed("UP") || FlxG.keys.justReleased("W") || FlxG.keys.justReleased("UP")) 
+					&& level.isFree(tileX,tileY-1)) {
 				facing = FlxObject.UP;
 			}
 			
