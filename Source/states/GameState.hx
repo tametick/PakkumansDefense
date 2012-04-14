@@ -39,8 +39,14 @@ class GameState extends FlxState {
 		coinCounter = new FlxText(level.width + 8, 8, Std.int(FlxG.width - level.width - 8), "$: 0");
 		coinCounter.scrollFactor.x = 0;
 		coinCounter.scrollFactor.y = 0;
-		coinCounter.setColor(Colors.BLUEGRAY);
+		coinCounter.setColor(Colors.LGREEN);
 		add(coinCounter);
+		
+		ghostCounter = new FlxText(level.width + 8, coinCounter.y+coinCounter.height, Std.int(FlxG.width - level.width - 8), "Kills: 0");
+		ghostCounter.scrollFactor.x = 0;
+		ghostCounter.scrollFactor.y = 0;
+		ghostCounter.setColor(Colors.BLUEGRAY);
+		add(ghostCounter);
 		
 		FlxG.worldBounds.x -= 50; 
 		FlxG.worldBounds.y -= 50;
@@ -89,8 +95,8 @@ class GameState extends FlxState {
 	}
 	
 	function reset(){
-		FlxG.fade(0, 1);
-		Actuate.timer(1).onComplete(FlxG.switchState, [new MenuState()]);
+		FlxG.fade(0, 0.5);
+		Actuate.timer(0.5).onComplete(FlxG.switchState, [new MenuState()]);
 	}
 	
 	function pickUpCoin(p:Player, c:Coin) {		
@@ -109,7 +115,7 @@ class GameState extends FlxState {
 	
 		coinCounter.destroy();
 		coinCounter = null;
-		//ghostCounter.destroy();
+		ghostCounter.destroy();
 		ghostCounter = null;
 	}
 }
