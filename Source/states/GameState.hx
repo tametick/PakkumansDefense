@@ -83,7 +83,14 @@ class GameState extends FlxState {
 		var p:Player = null;
 		if (level != null) {
 			p = level.player;
-		}	
+			p.level = null;
+			remove(level);
+			remove(level.coins);
+			remove(level.player);
+			remove(level.ghosts);
+			remove(level.towers);
+			remove(level.bullets);
+		}
 		
 		level = new Level(p);
 		add(FlxGridOverlay.create(Library.tileSize, Library.tileSize, Std.int(level.width), Std.int(level.height), false, true, Colors.DBLUE, Colors.DGREEN));
@@ -95,6 +102,10 @@ class GameState extends FlxState {
 		add(level.bullets);
 		
 		level.player.kills = 0;
+		if(towerCounter!=null) {
+			towerCounter.text = "Towers: 0 (-$20)";
+			ghostCounter.text = "Kills: 0 (+$1)";
+		}
 		
 		counter = 0;
 	}

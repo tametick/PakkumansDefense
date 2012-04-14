@@ -50,12 +50,8 @@ class Ghost extends WarpSprite {
 			// target player 
 			var path = level.findPath(p1, p0);
 			if(path!=null)
-				followPath(path, 20);
+				followPath(path, 20,0,false,true);
 		}
-
-		
-		
-
 	}
 }
 
