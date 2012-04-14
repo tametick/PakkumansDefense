@@ -47,14 +47,10 @@ class Ghost extends WarpSprite {
 			p1.x = x + width/2;
 			p1.y = y + height/2;
 			
-			// if close to player, target them
-			if (FlxU.getDistance(p0, p1) < 7 * Library.tileSize) {
-				var path = level.findPath(p1, p0);
-				if(path!=null)
-					followPath(path, 20);
-			}
-			
-			// otherwise go randomly 
+			// target player 
+			var path = level.findPath(p1, p0);
+			if(path!=null)
+				followPath(path, 20);
 		}
 
 		
