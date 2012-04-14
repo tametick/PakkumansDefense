@@ -63,6 +63,7 @@ enum Image {
 	CURSOR;
 	GHOST;
 	PAKKU;
+	TOWER;
 }
 
 enum Sound {

@@ -15,14 +15,15 @@ class Tower extends WarpSprite {
 	public function new(level:Level, start:FlxPoint) {
 		super(level);
 		
-		makeGraphic(Library.tileSize-2, Library.tileSize-2, Colors.YELLOW);
+		loadGraphic(Library.getFilename(Image.TOWER));
+		setColor(Colors.YELLOW);
 		
 		counter = 0;
 		setPosition(start);
 		start = null;
 		
 		weapon = new FlxWeapon("towergun", this);
-		weapon.makePixelBullet(10, 2, 2, Colors.LBROWN);
+		weapon.makePixelBullet(10, 2, 2, Colors.YELLOW,Std.int(width/2));
 		weapon.setBulletSpeed(50);
 		
 		fireRate = 1;

@@ -12,7 +12,9 @@ class Ghost extends WarpSprite {
 		super(level);
 		this.type = Type.createEnum(GhostType, type);
 		
-		loadGraphic(Library.getFilename(Image.GHOST));
+		loadGraphic(Library.getFilename(Image.GHOST), true, true, 5, 5);
+		addAnimation("walk", [0, 1], 5);
+		play("walk");
 		setColor(Reflect.field(Colors, type));
 		
 		setPosition(start);
