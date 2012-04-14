@@ -1,4 +1,6 @@
 package world;
+import data.Library;
+import org.flixel.FlxPoint;
 import org.flixel.FlxSprite;
 
 class WarpSprite extends FlxSprite{
@@ -43,6 +45,12 @@ class WarpSprite extends FlxSprite{
 	override public function destroy() {
 		super.destroy();
 		level = null;
+	}
+	
+		
+	public function setPosition(start:FlxPoint) {
+		x = start.x * Library.tileSize + (Library.tileSize-width)/2;
+		y = start.y * Library.tileSize + (Library.tileSize-height)/2;		
 	}
 	
 }

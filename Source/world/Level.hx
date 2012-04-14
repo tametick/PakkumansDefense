@@ -90,13 +90,17 @@ class Level extends FlxTilemap {
 	
 	public function spawnGhost():Ghost {
 		var typeName = FlxG.getRandom(Type.getEnumConstructs(GhostType));
-		var pos:FlxPoint = null;
+		var pos = new FlxPoint();
+		var g = new Ghost(this, pos, typeName);
+		var posTaken = false;
 		
 		do {
 			pos = getFreeTile();
-		} while (FlxU.getDistance(pos, playerStart) < 5);
-		
-		var g = new Ghost(this, pos, typeName);
+			g.setPosition(pos);
+			
+			posTaken = FlxG.overlap(ghosts, g);
+			
+		} while (FlxU.getDistance(pos, playerStart) < 5 || posTaken );
 		
 		ghosts.add(g);
 		

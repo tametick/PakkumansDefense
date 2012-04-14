@@ -12,9 +12,8 @@ class Ghost extends WarpSprite {
 		super(level);
 		this.type = Type.createEnum(GhostType, type);
 		makeGraphic(Library.tileSize-4, Library.tileSize-4, Reflect.field(Colors,type));
-		
-		x = start.x * Library.tileSize + (Library.tileSize-width)/2;
-		y = start.y * Library.tileSize + (Library.tileSize-height)/2;
+		setPosition(start);
+		start = null;
 	}
 }
 
