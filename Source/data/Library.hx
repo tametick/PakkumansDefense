@@ -11,8 +11,6 @@ class Library {
 	public static inline var levelW = 19;
 	public static inline var levelH = 19;
 	
-	public static inline var speedNormal = 50;
-	
 	
 	static var assets:Hash<Dynamic> = new Hash<Dynamic>();
 	
@@ -71,5 +69,5 @@ enum Sound {
 }
 
 enum Music {
-	M;
+	THEME;
 }

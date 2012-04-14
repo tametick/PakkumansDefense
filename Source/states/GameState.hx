@@ -38,6 +38,8 @@ class GameState extends FlxState {
 	var cursor:FlxSprite;
 	
 	override public function create():Void {
+		FlxG.playMusic(Library.getMusic(THEME));
+		
 		Log.setColor(0xFFFFFF);
 		FlxG.mouse.show();
 		FlxG.bgColor = Colors.BLACK;
@@ -94,7 +96,7 @@ class GameState extends FlxState {
 	
 	function newLevel():Void {
 		levelNumber++;
-		spawnRate = 3 / levelNumber;
+		spawnRate = 1.5 / levelNumber;
 		
 		
 		FlxG.fade(0, 0.5, true, null, true);
