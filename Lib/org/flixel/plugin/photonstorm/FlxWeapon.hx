@@ -155,7 +155,8 @@ class FlxWeapon
 		
 		parent = null;
 		bounds = null;
-		group.destroy();
+		if(group!=null)
+			group.destroy();
 		group = null;
 	}
 	

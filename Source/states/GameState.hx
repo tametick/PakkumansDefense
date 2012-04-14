@@ -10,7 +10,9 @@ import org.flixel.FlxSprite;
 import org.flixel.FlxState;
 import org.flixel.FlxText;
 import org.flixel.plugin.photonstorm.FlxGridOverlay;
+import ui.Cursor;
 import utils.Colors;
+import utils.Utils;
 import world.Coin;
 import world.Ghost;
 import world.Level;
@@ -28,6 +30,8 @@ class GameState extends FlxState {
 	var spawnRate:Float;
 	var counter:Float;
 	
+	var cursor:FlxSprite;
+	
 	override public function create():Void {
 		Log.setColor(0xFFFFFF);
 		FlxG.mouse.show();
@@ -35,7 +39,9 @@ class GameState extends FlxState {
 
 		FlxG.camera.scroll.y = FlxG.camera.scroll.x = -Library.tileSize / 2;
 		
+		cursor = new Cursor();
 		newLevel();
+		add(cursor);
 		
 		var base = 3;
 		
@@ -84,10 +90,14 @@ class GameState extends FlxState {
 		add(level.coins);
 		add(level.player);
 		add(level.ghosts);
+		add(level.towers);
 		
 		counter = 0;
+		
+		
 	}
 	
+	var p:FlxPoint;
 	override public function update() {
 		super.update();
 		
@@ -101,6 +111,26 @@ class GameState extends FlxState {
 			counter = 0;
 			level.spawnGhost();
 		}
+		
+		if (FlxG.mouse.justPressed()) {
+			// todo - check for money
+			if (p == null)
+				p = new FlxPoint();
+			
+			level.buildTower(FlxG.mouse.getWorldPosition(null,p));
+		}
+	}
+	
+	var p2:FlxPoint;
+	override public function draw():Void {
+		if (p2 == null)
+			p2 = new FlxPoint();
+		
+		FlxG.mouse.getWorldPosition(null, p2);
+		cursor.x = Utils.getPositionSnappedToGrid(p2.x);
+		cursor.y = Utils.getPositionSnappedToGrid(p2.y);
+		
+		super.draw();
 	}
 	
 	function gameOver(p:Player, g:Ghost) {
@@ -132,5 +162,10 @@ class GameState extends FlxState {
 		ghostCounter = null;
 		towerCounter.destroy();
 		towerCounter = null;
+		
+		p = null;
+		p2 = null;
+		cursor.destroy();
+		cursor = null;
 	}
 }

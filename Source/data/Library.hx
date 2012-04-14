@@ -60,7 +60,7 @@ class Library {
 }
 
 enum Image {
-	BG;
+	CURSOR;
 }
 
 enum Sound {

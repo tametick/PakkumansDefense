@@ -1,5 +1,6 @@
 package world;
 
+import data.Library;
 import org.flixel.FlxPoint;
 import org.flixel.plugin.photonstorm.FlxWeapon;
 import utils.Colors;
@@ -21,7 +22,7 @@ class Tower extends WarpSprite {
 	override public function update() {
 		super.update();
 		
-		// shoot at enemies that are in range
+		// todo - shoot at enemies that are in range
 	}
 	
 	override public function destroy() {

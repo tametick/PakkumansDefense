@@ -141,7 +141,12 @@ class Utils {
 	}
 
 	public static inline function pixelToTile(p:Float):Int {
-		return Math.round(p / Library.tileSize);
+		return Std.int(p / Library.tileSize);
+	}
+	
+	public static inline function convertPixelToTilePosition(pos:FlxPoint) {
+		pos.x = pixelToTile(pos.x);
+		pos.y = pixelToTile(pos.y);
 	}
 	
 	public static function range(a:Int, b:Int):Array<Int> {

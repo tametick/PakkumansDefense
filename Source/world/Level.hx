@@ -15,6 +15,7 @@ class Level extends FlxTilemap {
 	public var player:Player;
 	public var ghosts:FlxGroup;
 	public var coins:FlxGroup;
+	public var towers:FlxGroup;
 	
 	public function new(p:Player) {
 		super();
@@ -94,6 +95,7 @@ class Level extends FlxTilemap {
 		}
 		
 		ghosts = new FlxGroup();
+		towers = new FlxGroup();
 	}
 	
 	public function spawnGhost():Ghost {
@@ -113,6 +115,16 @@ class Level extends FlxTilemap {
 		ghosts.add(g);
 		
 		return g;
+	}
+	
+	public function buildTower(pos:FlxPoint):Tower {
+		// todo - find out tile from pixel position
+		Utils.convertPixelToTilePosition(pos);
+		
+		var t:Tower = new Tower(this,pos);
+		towers.add(t);
+		
+		return t;
 	}
 	
 	function clearHorizontalLine(tilesIndex:Array<Int>, y:Int) {
