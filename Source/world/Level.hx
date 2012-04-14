@@ -20,17 +20,24 @@ class Level extends FlxTilemap {
 		
 		var w = Library.levelW;
 		var h = Library.levelH;
+		var halfW = Std.int(w / 2);
+		var halfH = Std.int(h / 2);
 		
-		var mazeGenerator = new MazeGenerator(w, h);
+		var mazeGenerator = new MazeGenerator(halfW, halfH);
 		mazeGenerator.initMaze();
 		mazeGenerator.createMaze();
 		
 		// generate basic maze
 		var tilesIndex = [];
-		for (y in 0...h) {
-			for (x in 0...w) {
+		for (y in 0...halfH) {
+			for (x in 0...halfW) {
 				var tile = mazeGenerator.maze[x][y]?1:0;
-				tilesIndex.push(tile);
+				Utils.set(tilesIndex, w, x, y, tile);
+				Utils.set(tilesIndex, w, w - x - 1, y, tile);
+				
+				Utils.set(tilesIndex, w, x, h-y-1, tile);
+				Utils.set(tilesIndex, w, w - x - 1, h-y-1, tile);
+				
 			}
 		}
 		
