@@ -103,7 +103,6 @@ class GameState extends FlxState {
 	override public function update() {
 		super.update();
 		
-		FlxG.collide(level, level.player);
 		FlxG.overlap(level.player, level.coins, pickUpCoin);
 		FlxG.overlap(level.player, level.ghosts, gameOver);
 		FlxG.overlap(level.bullets, level.ghosts, killGhost);

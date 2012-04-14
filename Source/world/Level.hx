@@ -159,6 +159,17 @@ class Level extends FlxTilemap {
 	}
 	
 	public function isFree(x:Int, y:Int):Bool {
+		if (x < 0) {
+			x = Library.levelW - 1;
+		} else if (x >= Library.levelW ) {
+			x = 0;
+		} 
+		if (y < 0) {
+			y = Library.levelH - 1;
+		} else if (y >= Library.levelH) {
+			y = 0;
+		}
+		
 		return Utils.get(getData(), Library.levelW, x, y) == 0;
 	}
 	
