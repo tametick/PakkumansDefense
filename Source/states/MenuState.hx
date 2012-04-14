@@ -61,6 +61,8 @@ class MenuState extends FlxState {
 	override public function destroy():Void {
 		super.destroy();
 		
+		title.destroy();
+		title = null;
 		text.destroy();
 		text = null;
 	}

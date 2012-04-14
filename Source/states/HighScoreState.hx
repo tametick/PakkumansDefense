@@ -6,6 +6,7 @@ import data.Score;
 import org.flixel.FlxG;
 import org.flixel.FlxSave;
 import org.flixel.FlxState;
+import org.flixel.FlxText;
 import org.flixel.plugin.photonstorm.FlxGridOverlay;
 import utils.Colors;
 
@@ -14,6 +15,7 @@ class HighScoreState extends FlxState {
 	static var scoresToShow = 10;
 	
 	var scores:FlxSave;
+	var title:FlxText;
 	override public function create() {
 		FlxG.fade(0, 0.5, true, null, true);
 		
@@ -34,11 +36,38 @@ class HighScoreState extends FlxState {
 			sc.splice(scoresToShow, sc.length-scoresToShow);
 		}
 		
+		
+		title = new FlxText(0, Library.tileSize, FlxG.width, "High Scores");
+		title.setSize(16);
+		title.setColor(Colors.BLUEGRAY);
+		title.setFont(Library.getFont().fontName);
+		title.setAlignment("center");
+		add(title);
+		
 		print(sc);
 	}
 	
-	function print(scores:Array<Score>) {
+	function print(scores:Array<Dynamic>) {
+		var y = title.y + title.height;
+		var t:FlxText;
+		for (s in scores) {
+			var color = Colors.BLUEGRAY;
+			if (s == mostRecentScore)
+				color = Colors.YELLOW;
+				
+			t = new FlxText(0, y, FlxG.width, scoreToString(s));
+			t.setColor(color);
+			t.setSize(8);
+			t.setFont(Library.getFont().fontName);
+			add(t);
+				
+			y += Library.tileSize;
+		}
 		
+	}
+	
+	function scoreToString(s:Dynamic):String {
+		return "Level: " + s.level + "\t$: " + s.money + "\tKills: " + s.kills;
 	}
 	
 	// >0 if x<y, <0 if x<y
