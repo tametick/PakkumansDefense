@@ -27,8 +27,6 @@ class Tower extends WarpSprite {
 		
 		fireRate = 1;
 		range = 3.5 * Library.tileSize;
-		
-		
 	}
 	
 	override public function update() {

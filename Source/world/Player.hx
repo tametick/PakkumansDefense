@@ -9,6 +9,7 @@ import utils.Colors;
 
 class Player extends WarpSprite {
 	public var coins:Int;
+	public var kills:Int;
 	
 	public function new(level:Level, start:FlxPoint) {
 		super(level);

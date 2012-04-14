@@ -9,6 +9,7 @@ import org.flixel.FlxPoint;
 import org.flixel.FlxSprite;
 import org.flixel.FlxState;
 import org.flixel.FlxText;
+import org.flixel.plugin.photonstorm.baseTypes.Bullet;
 import org.flixel.plugin.photonstorm.FlxGridOverlay;
 import ui.Cursor;
 import utils.Colors;
@@ -93,6 +94,8 @@ class GameState extends FlxState {
 		add(level.towers);
 		add(level.bullets);
 		
+		level.player.kills = 0;
+		
 		counter = 0;
 	}
 	
@@ -103,6 +106,7 @@ class GameState extends FlxState {
 		FlxG.collide(level, level.player);
 		FlxG.overlap(level.player, level.coins, pickUpCoin);
 		FlxG.overlap(level.player, level.ghosts, gameOver);
+		FlxG.overlap(level.bullets, level.ghosts, killGhost);
 		
 		counter += FlxG.elapsed;
 		if (counter >= spawnRate) {
@@ -141,6 +145,17 @@ class GameState extends FlxState {
 	
 	override public function draw():Void {		
 		super.draw();
+	}
+	
+	function killGhost(b:Bullet, g:Ghost) {
+		b.kill();
+		level.ghosts.remove(g,true);
+		g.kill();
+		
+		level.player.kills++;
+		level.player.coins++;
+		ghostCounter.text = "Kills: " + level.player.kills + " (+$1)";
+		coinCounter.text = "$: " + level.player.coins;
 	}
 	
 	function gameOver(p:Player, g:Ghost) {
