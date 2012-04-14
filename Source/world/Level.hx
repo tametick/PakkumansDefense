@@ -92,7 +92,7 @@ class Level extends FlxTilemap {
 			player = p;
 			player.x = playerStart.x * Library.tileSize + (Library.tileSize-player.width)/2;
 			player.y = playerStart.y * Library.tileSize + (Library.tileSize-player.height) / 2;
-			player.level.destroy();
+			//player.level.destroy();
 			player.level = this;
 		}
 		

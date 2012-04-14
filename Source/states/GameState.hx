@@ -23,6 +23,7 @@ class GameState extends FlxState {
 	var level:Level;
 	var levelNumber:Int;
 	
+	var levelCounter:FlxText;
 	var coinCounter:FlxText;
 	var ghostCounter:FlxText;
 	var towerCounter:FlxText;
@@ -46,21 +47,29 @@ class GameState extends FlxState {
 		
 		var base = 3;
 		
-		coinCounter = new FlxText(level.width + 8, base, Std.int(FlxG.width - level.width - 8), "$: 0");
+		
+		levelCounter = new FlxText(level.width + 8, base, Std.int(FlxG.width - level.width - 8), "Level 1");
+		levelCounter.scrollFactor.x = 0;
+		levelCounter.scrollFactor.y = 0;
+		levelCounter.setColor(Colors.LGREEN);
+		levelCounter.setFont(Library.getFont().fontName);
+		add(levelCounter);
+		
+		coinCounter = new FlxText(level.width + 8,  base + Library.tileSize*2, Std.int(FlxG.width - level.width - 8), "$: 0");
 		coinCounter.scrollFactor.x = 0;
 		coinCounter.scrollFactor.y = 0;
-		coinCounter.setColor(Colors.LGREEN);
+		coinCounter.setColor(Colors.LBLUE);
 		coinCounter.setFont(Library.getFont().fontName);
 		add(coinCounter);
 		
-		ghostCounter = new FlxText(level.width + 8, base + Library.tileSize*2, Std.int(FlxG.width - level.width - 8), "Kills: 0 (+$1)");
+		ghostCounter = new FlxText(level.width + 8, base + Library.tileSize*4, Std.int(FlxG.width - level.width - 8), "Kills: 0 (+$1)");
 		ghostCounter.scrollFactor.x = 0;
 		ghostCounter.scrollFactor.y = 0;
 		ghostCounter.setColor(Colors.BLUEGRAY);
 		ghostCounter.setFont(Library.getFont().fontName);
 		add(ghostCounter);
 		
-		towerCounter = new FlxText(level.width + 8, base + Library.tileSize*4, Std.int(FlxG.width - level.width - 8), "Towers: 0 (-$20)");
+		towerCounter = new FlxText(level.width + 8, base + Library.tileSize*6, Std.int(FlxG.width - level.width - 8), "Towers: 0 (-$20)");
 		towerCounter.scrollFactor.x = 0;
 		towerCounter.scrollFactor.y = 0;
 		towerCounter.setColor(Colors.YELLOW);
@@ -78,11 +87,13 @@ class GameState extends FlxState {
 		levelNumber++;
 		spawnRate = 3 / levelNumber;
 		
+		
 		FlxG.fade(0, 0.5, true, null, true);
 		
 		var p:Player = null;
 		if (level != null) {
 			p = level.player;
+			Actuate.stop(p);
 			p.level = null;
 			remove(level);
 			remove(level.coins);
@@ -105,6 +116,7 @@ class GameState extends FlxState {
 		if(towerCounter!=null) {
 			towerCounter.text = "Towers: 0 (-$20)";
 			ghostCounter.text = "Kills: 0 (+$1)";
+			levelCounter.text = "Level " + levelNumber;
 		}
 		
 		counter = 0;
@@ -151,6 +163,12 @@ class GameState extends FlxState {
 				// todo - error sound
 			}
 		}
+		
+		
+		// debug
+		/*if (FlxG.keys.justReleased("L")) {
+			newLevel();
+		}*/
 	}
 	
 	override public function draw():Void {		
@@ -178,9 +196,13 @@ class GameState extends FlxState {
 	}
 	
 	function pickUpCoin(p:Player, c:Coin) {		
-		level.coins.remove(c);
+		level.coins.remove(c, true);
 		level.player.coins++;
 		coinCounter.text = "$: " + level.player.coins;
+		
+		if (level.coins.length < 1) {
+			newLevel();
+		}
 	}
 	
 	override public function destroy() {
@@ -190,7 +212,9 @@ class GameState extends FlxState {
 		level.player = null;
 		
 		level = null;
-	
+		
+		levelCounter.destroy();
+		levelCounter = null;
 		coinCounter.destroy();
 		coinCounter = null;
 		ghostCounter.destroy();
