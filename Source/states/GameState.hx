@@ -39,7 +39,7 @@ class GameState extends BasicState {
 	var cursor:FlxSprite;
 	
 	override public function create():Void {
-		FlxG.playMusic(Library.getMusic(THEME));
+		//FlxG.playMusic(Library.getMusic(THEME));
 		
 		Log.setColor(0xFFFFFF);
 		FlxG.mouse.show();
