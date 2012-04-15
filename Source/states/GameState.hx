@@ -86,7 +86,7 @@ class GameState extends BasicState {
 	
 	function newLevel():Void {
 		levelNumber++;
-		spawnRate = 1 / levelNumber;
+		spawnRate = 1.5 / levelNumber;
 		
 		
 		FlxG.fade(0, 0.5, true, null, true);
@@ -149,7 +149,9 @@ class GameState extends BasicState {
 		cursor.x = cx*Library.tileSize;
 		cursor.y = cy*Library.tileSize;
 		
-		if (level.isFree(cx, cy) || cx >= Library.levelW || cy >= Library.levelH) {
+		var overTower = FlxG.overlap(cursor, level.towers);
+		
+		if (level.isFree(cx, cy) || cx >= Library.levelW || cy >= Library.levelH || overTower) {
 			cursor.visible = false;
 		} else {
 			cursor.visible = true;
