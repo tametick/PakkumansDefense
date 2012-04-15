@@ -12,7 +12,7 @@ import utils.Colors;
 
 class HighScoreState extends BasicState {
 	public static var mostRecentScore:Score;
-	static var scoresToShow = 15;
+	static var scoresToShow = 16;
 	
 	var scores:FlxSave;
 	var title:FlxText;
@@ -31,7 +31,7 @@ class HighScoreState extends BasicState {
 		if(mostRecentScore!=null) {
 			sc.push(mostRecentScore);
 		}
-		//sc.sort(scoreCompare);
+		sc.sort(scoreCompare);
 		
 		if (sc.length > scoresToShow) {
 			sc.splice(scoresToShow, sc.length-scoresToShow);
@@ -46,7 +46,7 @@ class HighScoreState extends BasicState {
 	
 	function print(scores:Array<Dynamic>) {
 		var y = title.y + title.height;
-		var t:FlxText;
+		
 		var pos = 0;
 		for (s in scores) {
 			pos++;
@@ -54,57 +54,24 @@ class HighScoreState extends BasicState {
 			if (s == mostRecentScore)
 				color = Colors.YELLOW;
 				
-			t = new FlxText(0, y, FlxG.width, pos+". "+scoreToString(s));
-			t.setColor(color);
-			t.setSize(8);
-			t.setFont(Library.getFont().fontName);
-			add(t);
+			newText(0, y, FlxG.width, pos+".", color);
+			newText(15, y, FlxG.width, "Level: " + s.level, color);
+			newText(95, y, FlxG.width, "Money: " + s.money, color);
+			newText(185, y, FlxG.width, "Kills: " + s.kills, color);
+			
 				
 			y += Library.tileSize;
 		}
 		
 	}
 	
-	function scoreToString(s:Dynamic):String {
-		var str = "Level: " + s.level;
-		str = StringTools.rpad(str, " ", 30);
-		
-		str += "Money: " + s.money;
-		str = StringTools.rpad(str, " ", 60);
-		
-		str +=  "Kills: " + s.kills;
-		str = StringTools.rpad(str, " ", 90);
-		
-		return str;
-	}
-	
 	// >0 if x<y, <0 if x<y
 	function scoreCompare(x:Dynamic, y:Dynamic) :Int {
-		if (x.level < y.level) {
-			return 1;
-		} else if (x.level > y.level) {
-			return -1;
-		} else {
-			if (x.money < y.money) {
-				return 1;
-			} else if (x.money > y.money) {
-				return -1;
-			} else {
-				if (x.kills < y.kills) {
-					return 1;
-				} else if (x.kills > y.kills) {
-					return -1;
-				} else {
-					if (x.towers < y.towers) {
-						return 1;
-					} else if (x.towers > y.towers) {
-						return -1;
-					} else {
-						return 0;
-					}
-				}
-			}
-		}
+		if (x.level != y.level) return x.level<y.level?1:-1;
+		if (x.money != y.money) return x.money<y.money?1:-1;
+		if (x.kills != y.kills) return x.kills<y.kills?1:-1;
+		if (x.towers != y.towers) return x.towers<y.towers?1:-1;
+		return 0;
 	}
 	
 	override public function update():Void {
