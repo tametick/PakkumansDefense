@@ -11,7 +11,7 @@ class Colors {
 	public static inline var ORANGE = 0xffeb8931;
 	public static inline var YELLOW = 0xfff7e26b;
 	public static inline var DGREEN = 0xff2f484e;
-	public static inline var GREEN = 0xff44891a;
+	public static inline var GREEN = 0xff366C15;
 	public static inline var LGREEN = 0xffa3ce27;
 	public static inline var DBLUE = 0xff1b2632;
 	public static inline var BLUE = 0xff005784;

@@ -108,7 +108,22 @@ class GameState extends BasicState {
 		}
 		
 		level = new Level(p);
-		bg = FlxGridOverlay.create(Library.tileSize, Library.tileSize, Std.int(level.width), Std.int(level.height), false, true, levelNumber%2==1?Colors.DBLUE:Colors.BLACK, levelNumber%2==1?Colors.DGREEN:Colors.BROWN);
+		
+		var c0 = 0;
+		var c1 = 0;
+		switch (levelNumber % 3) {
+			case 0:
+				c0 = Colors.DBLUE;
+				c1 = Colors.GREEN;
+			case 1:
+				c0 = Colors.DGREEN;
+				c1 = Colors.DBLUE;
+			case 2:
+				c0 = Colors.BROWN;
+				c1 = Colors.BLACK;
+		}
+		
+		bg = FlxGridOverlay.create(Library.tileSize, Library.tileSize, Std.int(level.width), Std.int(level.height), false, true, c0, c1);
 		add(bg);
 		add(level);
 		add(level.coins);
