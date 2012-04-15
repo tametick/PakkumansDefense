@@ -51,12 +51,14 @@ class HighScoreState extends FlxState {
 	function print(scores:Array<Dynamic>) {
 		var y = title.y + title.height;
 		var t:FlxText;
+		var pos = 0;
 		for (s in scores) {
+			pos++;
 			var color = Colors.BLUEGRAY;
 			if (s == mostRecentScore)
 				color = Colors.YELLOW;
 				
-			t = new FlxText(0, y, FlxG.width, scoreToString(s));
+			t = new FlxText(0, y, FlxG.width, pos+". "+scoreToString(s));
 			t.setColor(color);
 			t.setSize(8);
 			t.setFont(Library.getFont().fontName);
