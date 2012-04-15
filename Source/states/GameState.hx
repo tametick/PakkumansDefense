@@ -86,7 +86,7 @@ class GameState extends BasicState {
 	
 	function newLevel():Void {
 		levelNumber++;
-		spawnRate = 1.5 / levelNumber;
+		spawnRate = 2 / levelNumber;
 		
 		
 		FlxG.fade(0, 0.5, true, null, true);
@@ -172,10 +172,10 @@ class GameState extends BasicState {
 		}
 		
 		
-		// debug
+		/*// debug
 		if (FlxG.keys.justReleased("L")) {
 			newLevel();
-		}
+		}*/
 	}
 	
 	override public function draw():Void {		
