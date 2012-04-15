@@ -38,12 +38,8 @@ class HighScoreState extends BasicState {
 		}
 		
 		
-		title = new FlxText(0, Library.tileSize, FlxG.width, "High Scores");
+		title = newText(0, Library.tileSize, FlxG.width, "High Scores",Colors.BLUEGRAY,"center");
 		title.setSize(16);
-		title.setColor(Colors.BLUEGRAY);
-		title.setFont(Library.getFont().fontName);
-		title.setAlignment("center");
-		add(title);
 		
 		print(sc);
 	}
