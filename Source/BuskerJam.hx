@@ -15,8 +15,7 @@ class BuskerJam extends FlxGame {
 	public function new() {
 		super(240, 160, MenuState, 3);
 		//super(240, 160, HighScoreState, 3);
-		
-		forceDebugger = true;
+		//forceDebugger = true;
 	}
 	
 	override private function update():Void {

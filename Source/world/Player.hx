@@ -28,6 +28,8 @@ class Player extends WarpSprite {
 		setPosition(start);
 		start = null;
 		bloodSplosion = new Splosion(Colors.YELLOW);
+		
+		coins = 20;
 	}
 	
 	public function explode() {
