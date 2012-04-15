@@ -47,7 +47,7 @@ class Library {
 		if (Type.getEnum(i) == Image) {
 			suffix = ".png";
 		} else if (Type.getEnum(i) == Sound) {
-			suffix = ".wav";
+			suffix = ".mp3";
 		} else if (Type.getEnum(i) == Music) {
 			suffix = ".mp3";
 		}
@@ -65,7 +65,10 @@ enum Image {
 }
 
 enum Sound {
-	S;
+	CASH_REGISTER;
+	GHOST_HIT;
+	MONEY;
+	TOWER_SHOT;
 }
 
 enum Music {

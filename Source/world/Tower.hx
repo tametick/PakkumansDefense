@@ -38,7 +38,8 @@ class Tower extends WarpSprite {
 		if (counter >= fireRate) {
 			counter = 0;
 			var target = level.getGhostInRange(this,range);
-			if(target != null) {
+			if (target != null) {
+				FlxG.play(Library.getSound(Sound.TOWER_SHOT));
 				weapon.fireAtTarget(target);
 			}
 		}

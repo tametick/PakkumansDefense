@@ -168,6 +168,7 @@ class GameState extends FlxState {
 		
 		if (FlxG.mouse.justPressed() && cursor.visible) {
 			if (level.player.coins >= 20) {
+				FlxG.play(Library.getSound(Sound.CASH_REGISTER));
 				// todo - cash register sound
 				level.player.coins -= 20;
 				coinCounter.text = "$: " + level.player.coins;
@@ -191,6 +192,7 @@ class GameState extends FlxState {
 	}
 	
 	function killGhost(b:Bullet, g:Ghost) {
+		FlxG.play(Library.getSound(Sound.GHOST_HIT));
 		b.kill();
 		level.ghosts.remove(g,true);
 		g.kill();
@@ -217,7 +219,8 @@ class GameState extends FlxState {
 		Actuate.timer(0.5).onComplete(FlxG.switchState, [new MenuState()]);
 	}
 	
-	function pickUpCoin(p:Player, c:Coin) {		
+	function pickUpCoin(p:Player, c:Coin) {	
+		FlxG.play(Library.getSound(Sound.MONEY));
 		level.coins.remove(c, true);
 		level.player.coins++;
 		coinCounter.text = "$: " + level.player.coins;
