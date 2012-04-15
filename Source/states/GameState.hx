@@ -58,33 +58,25 @@ class GameState extends BasicState {
 		levelCounter.scrollFactor.x = 0;
 		levelCounter.scrollFactor.y = 0;
 		
-		coinCounter = new FlxText(level.width + 8,  base + Library.tileSize*2, Std.int(FlxG.width - level.width - 8), "$: 0");
+		coinCounter = newText(level.width + 8,  base + Library.tileSize*2, Std.int(FlxG.width - level.width - 8), "$: 0",Colors.LBLUE);
 		coinCounter.scrollFactor.x = 0;
 		coinCounter.scrollFactor.y = 0;
-		coinCounter.setColor(Colors.LBLUE);
-		coinCounter.setFont(Library.getFont().fontName);
-		add(coinCounter);
 		
-		ghostCounter = new FlxText(level.width + 8, base + Library.tileSize*4, Std.int(FlxG.width - level.width - 8), "Kills: 0");
+		ghostCounter = newText(level.width + 8, base + Library.tileSize*4, Std.int(FlxG.width - level.width - 8), "Kills: 0", Colors.PINK);
 		ghostCounter.scrollFactor.x = 0;
 		ghostCounter.scrollFactor.y = 0;
-		ghostCounter.setColor(Colors.PINK);
-		ghostCounter.setFont(Library.getFont().fontName);
-		add(ghostCounter);
 		
-		towerCounter = new FlxText(level.width + 8, base + Library.tileSize*6, Std.int(FlxG.width - level.width - 8), "Towers: 0 (-$20)");
+		towerCounter = newText(level.width + 8, base + Library.tileSize*6, Std.int(FlxG.width - level.width - 8), "Towers: 0 (-$20)",Colors.YELLOW);
 		towerCounter.scrollFactor.x = 0;
 		towerCounter.scrollFactor.y = 0;
-		towerCounter.setColor(Colors.YELLOW);
-		towerCounter.setFont(Library.getFont().fontName);
-		add(towerCounter);
 		
-		instructions = new FlxText(level.width + 8, base + Library.tileSize*15, Std.int(FlxG.width - level.width - 8), "Move with WASD or the arrow keys.\n\nClick to place towers.");
+		instructions = newText(level.width + 8, base + Library.tileSize*15, Std.int(FlxG.width - level.width - 8), "Move with WASD or the arrow keys.", Colors.BLUEGRAY);
 		instructions.scrollFactor.x = 0;
 		instructions.scrollFactor.y = 0;
-		instructions.setColor(Colors.BLUEGRAY);
-		instructions.setFont(Library.getFont().fontName);
-		add(instructions);
+		
+		instructions = newText(level.width + 8, base + Library.tileSize*18, Std.int(FlxG.width - level.width - 8), "Click to place towers.", Colors.BLUEGRAY);
+		instructions.scrollFactor.x = 0;
+		instructions.scrollFactor.y = 0;
 		
 		FlxG.worldBounds.x -= 50; 
 		FlxG.worldBounds.y -= 50;
