@@ -9,6 +9,7 @@ import utils.Colors;
 
 class Ghost extends WarpSprite {
 	var type:GhostType;
+	var bloodSplosion:Splosion;
 	
 	public function new(level:Level, start:FlxPoint, type:String) {
 		super(level);
@@ -23,6 +24,12 @@ class Ghost extends WarpSprite {
 		start = null;
 		
 		counter = 0;
+		bloodSplosion = new Splosion(Reflect.field(Colors, type));
+	}
+	
+	public function explode() {
+		visible = false;
+		bloodSplosion.explode(x,y);
 	}
 	
 	var counter:Float;

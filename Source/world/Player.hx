@@ -6,6 +6,7 @@ import org.flixel.FlxG;
 import org.flixel.FlxObject;
 import org.flixel.FlxPoint;
 import org.flixel.FlxSprite;
+import world.Splosion;
 import utils.Colors;
 import utils.Utils;
 
@@ -14,6 +15,7 @@ class Player extends WarpSprite {
 	public var kills:Int;
 	var isMoving:Bool;
 	var facingNext:Int;
+	var bloodSplosion:Splosion;
 	
 	public function new(level:Level, start:FlxPoint) {
 		super(level);
@@ -25,6 +27,12 @@ class Player extends WarpSprite {
 		
 		setPosition(start);
 		start = null;
+		bloodSplosion = new Splosion(Colors.YELLOW);
+	}
+	
+	public function explode() {
+		visible = false;
+		bloodSplosion.explode(x,y);
 	}
 	
 	override public function update() {

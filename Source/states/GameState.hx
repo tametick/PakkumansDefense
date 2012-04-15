@@ -185,8 +185,8 @@ class GameState extends BasicState {
 	function killGhost(b:Bullet, g:Ghost) {
 		FlxG.play(Library.getSound(Sound.GHOST_HIT));
 		b.kill();
-		level.ghosts.remove(g,true);
-		g.kill();
+		level.ghosts.remove(g, true);
+		g.explode();
 		
 		level.player.kills++;
 		ghostCounter.text = "Kills: " + level.player.kills;
@@ -198,6 +198,7 @@ class GameState extends BasicState {
 			return;
 		active = false;
 		FlxG.play(Library.getSound(Sound.DEATH));
+		level.player.explode();
 		
 		HighScoreState.mostRecentScore = new Score(levelNumber,level.player.coins,level.player.kills,level.towers.length);
 		
