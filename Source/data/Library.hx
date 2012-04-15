@@ -70,6 +70,7 @@ enum Sound {
 	GHOST_HIT;
 	MONEY;
 	TOWER_SHOT;
+	DEATH;
 }
 
 enum Music {

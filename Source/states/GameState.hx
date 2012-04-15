@@ -197,6 +197,7 @@ class GameState extends BasicState {
 		if (!active)
 			return;
 		active = false;
+		FlxG.play(Library.getSound(Sound.DEATH));
 		
 		HighScoreState.mostRecentScore = new Score(levelNumber,level.player.coins,level.player.kills,level.towers.length);
 		
