@@ -86,7 +86,7 @@ class GameState extends BasicState {
 	
 	function newLevel():Void {
 		levelNumber++;
-		spawnRate = 2 / levelNumber;
+		spawnRate = 1.25 / levelNumber;
 		
 		
 		FlxG.fade(0, 0.5, true, null, true);
