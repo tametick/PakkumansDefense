@@ -20,7 +20,7 @@ import world.Ghost;
 import world.Level;
 import world.Player;
 
-class GameState extends FlxState {
+class GameState extends BasicState {
 	var bg: FlxSprite;
 	
 	var level:Level;

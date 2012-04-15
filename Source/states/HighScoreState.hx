@@ -10,7 +10,7 @@ import org.flixel.FlxText;
 import org.flixel.plugin.photonstorm.FlxGridOverlay;
 import utils.Colors;
 
-class HighScoreState extends FlxState {
+class HighScoreState extends BasicState {
 	public static var mostRecentScore:Score;
 	static var scoresToShow = 15;
 	

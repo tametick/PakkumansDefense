@@ -9,7 +9,7 @@ import data.Library;
 import org.flixel.plugin.photonstorm.FlxGridOverlay;
 import utils.Colors;
 
-class MenuState extends FlxState {
+class MenuState extends BasicState {
 	var bg:FlxSprite;
 	var text:FlxText;
 
@@ -21,14 +21,10 @@ class MenuState extends FlxState {
 		bg = new FlxSprite(0, 0, Library.getFilename(Image.BG));
 		add(bg);
 		
-		text = new FlxText(0, FlxG.height / 2 + 20, FlxG.width, "Click to Start");
-		text.setColor(Colors.WHITE);
-		text.setFont(Library.getFont().fontName);
-		text.setAlignment("center");
-		add(text);
+		text = newText(0, FlxG.height / 2 + 20, FlxG.width, "Click to Start",Colors.WHITE,"center");
 		
 		toggleText();
-	}
+	}	
 	
 	function toggleText() {
 		if (members == null)
