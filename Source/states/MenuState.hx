@@ -2,6 +2,7 @@ package states;
 
 import com.eclecticdesignstudio.motion.Actuate;
 import org.flixel.FlxG;
+import org.flixel.FlxSprite;
 import org.flixel.FlxState;
 import org.flixel.FlxText;
 import data.Library;
@@ -9,7 +10,7 @@ import org.flixel.plugin.photonstorm.FlxGridOverlay;
 import utils.Colors;
 
 class MenuState extends FlxState {
-	var title:FlxText;
+	var bg:FlxSprite;
 	var text:FlxText;
 
 	override public function create():Void {
@@ -17,18 +18,11 @@ class MenuState extends FlxState {
 		
 		FlxG.fade(0, 0.5, true, null, true);
 		
-		add(FlxGridOverlay.create(Library.tileSize, Library.tileSize, -1, -1, false, true, Colors.BLACK, Colors.BROWN));
-
-		title = new FlxText(0, FlxG.height / 4, FlxG.width, "Pakkuman's Defense");
-		title.setSize(16);
-		title.setColor(Colors.YELLOW);
-		title.setFont(Library.getFont().fontName);
-		title.setAlignment("center");
-		add(title);
-
+		bg = new FlxSprite(0, 0, Library.getFilename(Image.BG));
+		add(bg);
 		
-		text = new FlxText(0, FlxG.height / 2, FlxG.width, "Click to Start");
-		text.setColor(Colors.YELLOW);
+		text = new FlxText(0, FlxG.height / 2 + 20, FlxG.width, "Click to Start");
+		text.setColor(Colors.WHITE);
 		text.setFont(Library.getFont().fontName);
 		text.setAlignment("center");
 		add(text);
@@ -61,8 +55,8 @@ class MenuState extends FlxState {
 	override public function destroy():Void {
 		super.destroy();
 		
-		title.destroy();
-		title = null;
+		bg.destroy();
+		bg = null;
 		text.destroy();
 		text = null;
 	}
