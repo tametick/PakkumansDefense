@@ -54,12 +54,9 @@ class GameState extends BasicState {
 		var base = 3;
 		
 		
-		levelCounter = new FlxText(level.width + 8, base, Std.int(FlxG.width - level.width - 8), "Level 1");
+		levelCounter = newText(level.width + 8, base, Std.int(FlxG.width - level.width - 8), "Level 1",Colors.LGREEN);
 		levelCounter.scrollFactor.x = 0;
 		levelCounter.scrollFactor.y = 0;
-		levelCounter.setColor(Colors.LGREEN);
-		levelCounter.setFont(Library.getFont().fontName);
-		add(levelCounter);
 		
 		coinCounter = new FlxText(level.width + 8,  base + Library.tileSize*2, Std.int(FlxG.width - level.width - 8), "$: 0");
 		coinCounter.scrollFactor.x = 0;
@@ -68,7 +65,7 @@ class GameState extends BasicState {
 		coinCounter.setFont(Library.getFont().fontName);
 		add(coinCounter);
 		
-		ghostCounter = new FlxText(level.width + 8, base + Library.tileSize*4, Std.int(FlxG.width - level.width - 8), "Kills: 0 (+$1)");
+		ghostCounter = new FlxText(level.width + 8, base + Library.tileSize*4, Std.int(FlxG.width - level.width - 8), "Kills: 0");
 		ghostCounter.scrollFactor.x = 0;
 		ghostCounter.scrollFactor.y = 0;
 		ghostCounter.setColor(Colors.PINK);
@@ -97,7 +94,7 @@ class GameState extends BasicState {
 	
 	function newLevel():Void {
 		levelNumber++;
-		spawnRate = 1.5 / levelNumber;
+		spawnRate = 1 / levelNumber;
 		
 		
 		FlxG.fade(0, 0.5, true, null, true);
@@ -130,7 +127,7 @@ class GameState extends BasicState {
 		
 		if(towerCounter!=null) {
 			towerCounter.text = "Towers: 0 (-$20)";
-			ghostCounter.text = "Kills: "+level.player.kills+" (+$1)";
+			ghostCounter.text = "Kills: "+level.player.kills;
 			levelCounter.text = "Level " + levelNumber;
 		}
 		
@@ -198,8 +195,7 @@ class GameState extends BasicState {
 		g.kill();
 		
 		level.player.kills++;
-		level.player.coins++;
-		ghostCounter.text = "Kills: " + level.player.kills + " (+$1)";
+		ghostCounter.text = "Kills: " + level.player.kills;
 		coinCounter.text = "$: " + level.player.coins;
 	}
 	
