@@ -696,7 +696,7 @@ class FlxGame extends Sprite
 	{			
 		var mark:Int = Lib.getTimer();
 		
-		var e = FlxG.elapsed = FlxG.timeScale * (_step / 1000);
+		FlxG.elapsed = FlxG.timeScale * (_step / 1000);
 		FlxG.updateSounds();
 		FlxG.updatePlugins();
 		_state.update();
