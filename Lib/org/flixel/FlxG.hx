@@ -277,8 +277,7 @@ class FlxG
 	 * Set this hook to get a callback whenever the volume changes.
 	 * Function should take the form <code>myVolumeHandler(Volume:Number)</code>.
 	 */
-	//static public var volumeHandler:Function;
-	static public var volumeHandler:Dynamic;
+	static public var volumeHandler:Float->Void;
 	
 	/**
 	 * Useful helper objects for doing Flash-specific rendering.
@@ -484,7 +483,7 @@ class FlxG
 	 * @param	Timeout		Optional parameter: set a time limit for the replay.  CancelKeys will override this if pressed.
 	 * @param	Callback	Optional parameter: if set, called when the replay finishes.  Running to the end, CancelKeys, and Timeout will all trigger Callback(), but only once, and CancelKeys and Timeout will NOT call FlxG.stopReplay() if Callback is set!
 	 */
-	static public function loadReplay(Data:String, ?State:FlxState = null, ?CancelKeys:Array<String> = null, ?Timeout:Float = 0, ?Callback:Dynamic = null):Void
+	static public function loadReplay(Data:String, ?State:FlxState = null, ?CancelKeys:Array<String> = null, ?Timeout:Float = 0, ?Callback:Void->Void = null):Void
 	{
 		_game._replay.load(Data);
 		if (State == null)
@@ -596,7 +595,7 @@ class FlxG
 	 * @param	Music		The sound file you want to loop in the background.
 	 * @param	Volume		How loud the sound should be, from 0 to 1.
 	 */
-	static public function playMusic(Music:Sound, ?Volume:Float = 1.0):Void
+	static public function playMusic(Music:Dynamic, ?Volume:Float = 1.0):Void
 	{
 		if (music == null)
 		{
@@ -612,7 +611,6 @@ class FlxG
 		music.play();
 	}
 	
-	// TODO: Return from Sound -> Class<Sound>
 	/**
 	 * Creates a new sound object. 
 	 * @param	EmbeddedSound	The embedded sound resource you want to play.  To stream, use the optional URL parameter instead.
@@ -623,7 +621,7 @@ class FlxG
 	 * @param	URL				Load a sound from an external web resource instead.  Only used if EmbeddedSound = null.
 	 * @return	A <code>FlxSound</code> object.
 	 */
-	static public function loadSound(?EmbeddedSound:Sound = null, ?Volume:Float = 1.0, ?Looped:Bool = false, ?AutoDestroy:Bool = false, ?AutoPlay:Bool = false, ?URL:String = null):FlxSound
+	static public function loadSound(?EmbeddedSound:Dynamic = null, ?Volume:Float = 1.0, ?Looped:Bool = false, ?AutoDestroy:Bool = false, ?AutoPlay:Bool = false, ?URL:String = null):FlxSound
 	{
 		if((EmbeddedSound == null) && (URL == null))
 		{
@@ -647,7 +645,6 @@ class FlxG
 		return sound;
 	}
 	
-	// TODO: Return from Sound -> Class<Sound>
 	/**
 	 * Creates a new sound object from an embedded <code>Class</code> object.
 	 * NOTE: Just calls FlxG.loadSound() with AutoPlay == true.
@@ -657,7 +654,7 @@ class FlxG
 	 * @param	AutoDestroy		Whether to destroy this sound when it finishes playing.  Leave this value set to "false" if you want to re-use this <code>FlxSound</code> instance.
 	 * @return	A <code>FlxSound</code> object.
 	 */
-	static public function play(EmbeddedSound:Sound, ?Volume:Float = 1.0, ?Looped:Bool = false, ?AutoDestroy:Bool = true):FlxSound
+	static public function play(EmbeddedSound:Dynamic, ?Volume:Float = 1.0, ?Looped:Bool = false, ?AutoDestroy:Bool = true):FlxSound
 	{
 		return FlxG.loadSound(EmbeddedSound, Volume, Looped, AutoDestroy, true);
 	}
@@ -861,13 +858,21 @@ class FlxG
 	static public function addBitmap(Graphic:Dynamic, ?Reverse:Bool = false, ?Unique:Bool = false, ?Key:String = null):BitmapData
 	{
 		var isClass:Bool = true;
+		var isBitmap:Bool = true;
 		if (Std.is(Graphic, Class))
 		{
 			isClass = true;
+			isBitmap = false;
 		}
 		else if (Std.is(Graphic, String))
 		{
 			isClass = false;
+			isBitmap = false;
+		}
+		else if (Std.is(Graphic, BitmapData) && Key != null)
+		{
+			isClass = false;
+			isBitmap = true;
 		}
 		else
 		{
@@ -888,7 +893,7 @@ class FlxG
 			}
 			key += (Reverse ? "_REVERSE_" : "");
 			
-			if(Unique && checkBitmapCache(key))
+			if (Unique && checkBitmapCache(key))
 			{
 				var inc:Int = 0;
 				var ukey:String;
@@ -908,6 +913,10 @@ class FlxG
 			{
 				bd = Type.createInstance(cast(Graphic, Class<Dynamic>), []).bitmapData;
 			}
+			else if (isBitmap)
+			{
+				bd = cast(Graphic, BitmapData);
+			}
 			else
 			{
 				bd = Assets.getBitmapData(Graphic);
@@ -919,13 +928,17 @@ class FlxG
 				needReverse = true;
 			}
 		}
-		//var pixels:BitmapData = _cache[Key];
+		
 		var pixels:BitmapData = _cache.get(key);
 		
 		var tempBitmap:BitmapData;
 		if (isClass)
 		{
 			tempBitmap = Type.createInstance(Graphic, []).bitmapData;
+		}
+		else if (isBitmap)
+		{
+			tempBitmap = cast(Graphic, BitmapData);
 		}
 		else
 		{
@@ -936,7 +949,7 @@ class FlxG
 		{
 			needReverse = true;
 		}
-		if(needReverse)
+		if (needReverse)
 		{
 			#if !neko
 			var newPixels:BitmapData = new BitmapData(pixels.width << 1, pixels.height, true, 0x00000000);
@@ -968,6 +981,14 @@ class FlxG
 			_cache.set(key, pixels);
 		}
 		return pixels;
+	}
+	
+	public static function removeBitmap(Graphic:String):Void
+	{
+		if (_cache.exists(Graphic))
+		{
+			_cache.remove(Graphic);
+		}
 	}
 		
 	/**
@@ -1119,9 +1140,9 @@ class FlxG
 	 * @param	Force		Force the effect to reset.
 	 */
 	#if flash
-	static public function flash(?Color:UInt = 0xffffffff, ?Duration:Float = 1, ?OnComplete:Dynamic = null, ?Force:Bool = false):Void
+	static public function flash(?Color:UInt = 0xffffffff, ?Duration:Float = 1, ?OnComplete:Void->Void = null, ?Force:Bool = false):Void
 	#else
-	static public function flash(?Color:BitmapInt32, ?Duration:Float = 1, ?OnComplete:Dynamic = null, ?Force:Bool = false):Void
+	static public function flash(?Color:BitmapInt32, ?Duration:Float = 1, ?OnComplete:Void->Void = null, ?Force:Bool = false):Void
 	#end
 	{
 		#if !flash
@@ -1148,9 +1169,9 @@ class FlxG
 	 * @param	Force		Force the effect to reset.
 	 */
 	#if flash
-	static public function fade(?Color:UInt = 0xff000000, ?Duration:Float = 1, ?FadeIn:Bool = false, ?OnComplete:Dynamic = null, ?Force:Bool = false):Void
+	static public function fade(?Color:UInt = 0xff000000, ?Duration:Float = 1, ?FadeIn:Bool = false, ?OnComplete:Void->Void = null, ?Force:Bool = false):Void
 	#else
-	static public function fade(?Color:BitmapInt32, ?Duration:Float = 1, ?FadeIn:Bool = false, ?OnComplete:Dynamic = null, ?Force:Bool = false):Void
+	static public function fade(?Color:BitmapInt32, ?Duration:Float = 1, ?FadeIn:Bool = false, ?OnComplete:Void->Void = null, ?Force:Bool = false):Void
 	#end
 	{
 		#if !flash
@@ -1176,7 +1197,7 @@ class FlxG
 	 * @param	Force		Force the effect to reset (default = true, unlike flash() and fade()!).
 	 * @param	Direction	Whether to shake on both axes, just up and down, or just side to side (use class constants SHAKE_BOTH_AXES, SHAKE_VERTICAL_ONLY, or SHAKE_HORIZONTAL_ONLY).  Default value is SHAKE_BOTH_AXES (0).
 	 */
-	static public function shake(?Intensity:Float = 0.05, ?Duration:Float = 0.5, ?OnComplete:Dynamic = null, ?Force:Bool = true, ?Direction:Int = 0):Void
+	static public function shake(?Intensity:Float = 0.05, ?Duration:Float = 0.5, ?OnComplete:Void->Void = null, ?Force:Bool = true, ?Direction:Int = 0):Void
 	{
 		var i:Int = 0;
 		var l:Int = FlxG.cameras.length;
@@ -1238,7 +1259,7 @@ class FlxG
 	 * @param	ProcessCallback	A function with two <code>FlxObject</code> parameters - e.g. <code>myOverlapFunction(Object1:FlxObject,Object2:FlxObject)</code> - that is called if those two objects overlap.  If a ProcessCallback is provided, then NotifyCallback will only be called if ProcessCallback returns true for those objects!
 	 * @return	Whether any oevrlaps were detected.
 	 */
-	static public function overlap(?ObjectOrGroup1:FlxBasic = null, ?ObjectOrGroup2:FlxBasic = null, ?NotifyCallback:Dynamic = null, ?ProcessCallback:Dynamic = null):Bool
+	static public function overlap(?ObjectOrGroup1:FlxBasic = null, ?ObjectOrGroup2:FlxBasic = null, ?NotifyCallback:FlxObject->FlxObject->Void = null, ?ProcessCallback:FlxObject->FlxObject->Bool = null):Bool
 	{
 		if (ObjectOrGroup1 == null)
 		{
@@ -1249,7 +1270,7 @@ class FlxG
 			ObjectOrGroup2 = null;
 		}
 		FlxQuadTree.divisions = FlxG.worldDivisions;
-		var quadTree:FlxQuadTree = new FlxQuadTree(FlxG.worldBounds.x, FlxG.worldBounds.y, FlxG.worldBounds.width, FlxG.worldBounds.height);
+		var quadTree:FlxQuadTree = FlxQuadTree.recycle(FlxG.worldBounds.x, FlxG.worldBounds.y, FlxG.worldBounds.width, FlxG.worldBounds.height);
 		quadTree.load(ObjectOrGroup1, ObjectOrGroup2, NotifyCallback, ProcessCallback);
 		var result:Bool = quadTree.execute();
 		quadTree.destroy();
@@ -1269,7 +1290,7 @@ class FlxG
 	 * @param	NotifyCallback	A function with two <code>FlxObject</code> parameters - e.g. <code>myOverlapFunction(Object1:FlxObject,Object2:FlxObject)</code> - that is called if those two objects overlap.
 	 * @return	Whether any objects were successfully collided/separated.
 	 */
-	static public function collide(?ObjectOrGroup1:FlxBasic = null, ?ObjectOrGroup2:FlxBasic = null, ?NotifyCallback:Dynamic = null):Bool
+	static public function collide(?ObjectOrGroup1:FlxBasic = null, ?ObjectOrGroup2:FlxBasic = null, ?NotifyCallback:FlxObject->FlxObject->Void = null):Bool
 	{
 		return FlxG.overlap(ObjectOrGroup1, ObjectOrGroup2, NotifyCallback, FlxObject.separate);
 	}

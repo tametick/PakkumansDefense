@@ -1,5 +1,6 @@
-package org.flixel;
+package org.flixel.plugin.pxText;
 
+import nme.Assets;
 import nme.display.Bitmap;
 import nme.display.BitmapData;
 import nme.events.MouseEvent;
@@ -8,10 +9,14 @@ import nme.media.Sound;
 
 import org.flixel.FlxSprite;
 
+#if (cpp || neko)
+import org.flixel.tileSheetManager.TileSheetManager;
+#end
+
 /**
  * A simple button class that calls a function when clicked by the mouse.
  */
-class FlxButton extends FlxSprite
+class PxButton extends FlxSprite
 {
 	
 	public var on(getOn, setOn):Bool;
@@ -31,7 +36,7 @@ class FlxButton extends FlxSprite
 	/**
 	 * The text that appears on the button.
 	 */
-	public var label:FlxText;
+	public var label:FlxBitmapTextField;
 	/**
 	 * Controls the offset (from top left) of the text from the button.
 	 */
@@ -106,9 +111,20 @@ class FlxButton extends FlxSprite
 		super(X, Y);
 		if(Label != null)
 		{
-			label = new FlxText(0, 0, 80, Label);
-		//	label.setFormat(null, 8, 0x333333, "center");
-			labelOffset = new FlxPoint( -1, 3);
+			// TODO: redo this
+			if (PxBitmapFont.fetch("nokiafc22") == null)
+			{
+				PxBitmapFont.store("nokiafc22", new PxBitmapFont(Assets.getBitmapData("assets/data/fontData10pt.png"), " !\"#$%&'()*+,-./" + "0123456789:;<=>?" + "@ABCDEFGHIJKLMNO" + "PQRSTUVWXYZ[]^_" + "abcdefghijklmno" + "pqrstuvwxyz{|}~\\"));
+			}
+			
+			//label = new FlxText(0, 0, 80, Label);
+			label = new FlxBitmapTextField(PxBitmapFont.fetch("nokiafc22"));
+			label.setWidth(80);
+			if (Label != null)
+			{
+				label.text = Label;
+			}
+			labelOffset = new FlxPoint(0, 6);
 		}
 		loadGraphic(FlxAssets.imgDefaultButton, true, false, 80, 20);
 		
@@ -134,7 +150,13 @@ class FlxButton extends FlxSprite
 		//tempSprite.updateTileSheet();
 		if (label != null)
 		{
-			label.setFormat(null, 8, 0x333333, "center");
+			label.fontScale = 0.7;
+			label.textColor = 0x333333;
+			label.alignment = PxTextAlign.CENTER;
+			
+			#if (cpp || neko)
+			TileSheetManager.swapDrawableObjects(this, label);
+			#end
 		}
 		return tempSprite;
 	}
@@ -342,7 +364,7 @@ class FlxButton extends FlxSprite
 		super.resetHelpers();
 		if (label != null)
 		{
-			label.width = width;
+			label.setWidth(Math.floor(width));
 		}
 	}
 	

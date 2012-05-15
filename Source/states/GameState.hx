@@ -1,11 +1,13 @@
 package states;
 
 import com.eclecticdesignstudio.motion.Actuate;
+import com.eclecticdesignstudio.motion.easing.Linear;
 import data.Library;
 import data.Score;
 import haxe.Log;
 import org.flixel.FlxG;
 import org.flixel.FlxGroup;
+import org.flixel.FlxObject;
 import org.flixel.FlxPoint;
 import org.flixel.FlxSprite;
 import org.flixel.FlxState;
@@ -40,6 +42,8 @@ class GameState extends BasicState {
 	
 	override public function create():Void {
 		//FlxG.playMusic(Library.getMusic(THEME));
+		
+		Actuate.defaultEase = Linear.easeNone;
 		
 		Log.setColor(0xFFFFFF);
 		FlxG.mouse.show();
@@ -197,18 +201,18 @@ class GameState extends BasicState {
 		super.draw();
 	}
 	
-	function killGhost(b:Bullet, g:Ghost) {
+	function killGhost(b:FlxObject, g:FlxObject) {
 		FlxG.play(Library.getSound(Sound.GHOST_HIT));
 		b.kill();
 		level.ghosts.remove(g, true);
-		g.explode();
+		cast(g,Ghost).explode();
 		
 		level.player.kills++;
 		ghostCounter.text = "Kills: " + level.player.kills;
 		coinCounter.text = "$: " + level.player.coins;
 	}
 	
-	function gameOver(p:Player, g:Ghost) {
+	function gameOver(p:FlxObject, g:FlxObject) {
 		if (!active)
 			return;
 		active = false;
@@ -226,7 +230,7 @@ class GameState extends BasicState {
 		Actuate.timer(0.5).onComplete(FlxG.switchState, [new MenuState()]);
 	}
 	
-	function pickUpCoin(p:Player, c:Coin) {	
+	function pickUpCoin(p:FlxObject, c:FlxObject) {	
 		FlxG.play(Library.getSound(Sound.MONEY));
 		level.coins.remove(c, true);
 		level.player.coins++;
