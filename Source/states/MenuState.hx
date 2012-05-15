@@ -14,8 +14,7 @@ class MenuState extends BasicState {
 	var text:FlxText;
 
 	override public function create():Void {
-		if(FlxG.music==null)
-			FlxG.playMusic(Library.getMusic(THEME));
+		FlxG.playMusic(Library.getMusic(MENU));
 		
 		
 		FlxG.mouse.show();

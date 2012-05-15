@@ -75,4 +75,5 @@ enum Sound {
 
 enum Music {
 	THEME;
+	MENU;
 }
