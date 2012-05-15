@@ -25,7 +25,7 @@ class Splosion extends FlxEmitter {
 		while (i < quantity) {
 			particle = new FlxParticle();
 			particle.makeGraphic(1, 1, color);
-			//particle.allowCollisions = FlxObject.NONE;
+			particle.allowCollisions = FlxObject.NONE;
 			particle.exists = false;
 			particle.maxVelocity = maxV;
 			add(particle);
