@@ -5,6 +5,7 @@ import data.Library;
 import data.Score;
 import org.flixel.FlxG;
 import org.flixel.FlxSave;
+import org.flixel.FlxSprite;
 import org.flixel.FlxState;
 import org.flixel.FlxText;
 import org.flixel.plugin.photonstorm.FlxGridOverlay;
@@ -19,7 +20,7 @@ class HighScoreState extends BasicState {
 	override public function create() {
 		FlxG.fade(0, 0.5, true, null, true);
 		
-		add(FlxGridOverlay.create(Library.tileSize, Library.tileSize, -1, -1, false, true, Colors.DBLUE, Colors.DGREEN));
+		add(new FlxSprite(0,0,Library.getFilename(Image.HIGHSCORE)));
 		
 		scores = new FlxSave();
 		scores.bind("HighScores");
@@ -38,7 +39,7 @@ class HighScoreState extends BasicState {
 		}
 		
 		
-		title = newText(0, Library.tileSize, FlxG.width, "High Scores",Colors.BLUEGRAY,"center");
+		title = newText(0, Library.tileSize, FlxG.width, "High Scores",Colors.WHITE,"center");
 		title.setSize(16);
 		
 		print(sc);
@@ -50,7 +51,7 @@ class HighScoreState extends BasicState {
 		var pos = 0;
 		for (s in scores) {
 			pos++;
-			var color = Colors.BLUEGRAY;
+			var color = Colors.WHITE;
 			if (s == mostRecentScore)
 				color = Colors.YELLOW;
 				

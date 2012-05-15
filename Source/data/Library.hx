@@ -59,6 +59,7 @@ class Library {
 
 enum Image {
 	BG;
+	HIGHSCORE;
 	CURSOR;
 	GHOST;
 	PAKKU;
