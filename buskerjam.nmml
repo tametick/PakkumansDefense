@@ -24,4 +24,6 @@
 	<ndll name="zlib" />
 	<ndll name="nme" haxelib="nme" />
 	
+	<haxedef name="fdb" if="target_flash" />
+	
 </project>
