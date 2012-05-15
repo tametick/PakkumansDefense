@@ -47,7 +47,7 @@ class MenuState extends BasicState {
 		if (FlxG.mouse.justPressed() && active) {
 			active = false;
 			FlxG.fade(0, 0.5);
-			Actuate.timer(0.5).onComplete(FlxG.switchState, [new GameState()]);
+			Actuate.timer(0.5).onComplete(FlxG.switchState, [new LevelSelectState()]);
 		}
 	}
 	

@@ -9,6 +9,7 @@ import org.flixel.FlxG;
 import org.flixel.FlxGroup;
 import org.flixel.FlxObject;
 import org.flixel.FlxPoint;
+import org.flixel.FlxSave;
 import org.flixel.FlxSprite;
 import org.flixel.FlxState;
 import org.flixel.FlxText;
@@ -26,7 +27,19 @@ class GameState extends BasicState {
 	var bg: FlxSprite;
 	
 	var level:Level;
-	var levelNumber:Int;
+	
+	public static var startingLevel:Int;
+	var levelNumber(default, setLevelNumber):Int;
+	function setLevelNumber(l:Int):Int {
+		levelNumber = l;
+		
+		var levels = new FlxSave();
+		levels.bind("Levels");
+		if (levels.data.highest < levelNumber)
+			levels.data.highest = levelNumber;
+			
+		return levelNumber;
+	}
 	
 	var levelCounter:FlxText;
 	var coinCounter:FlxText;
@@ -58,7 +71,7 @@ class GameState extends BasicState {
 		var base = 3;
 		
 		
-		levelCounter = newText(level.width + 8, base, Std.int(FlxG.width - level.width - 8), "Level 1",Colors.LGREEN);
+		levelCounter = newText(level.width + 8, base, Std.int(FlxG.width - level.width - 8), "Level "+startingLevel,Colors.LGREEN);
 		levelCounter.scrollFactor.x = 0;
 		levelCounter.scrollFactor.y = 0;
 		
@@ -90,6 +103,9 @@ class GameState extends BasicState {
 	
 	function newLevel():Void {
 		levelNumber++;
+		if (startingLevel > levelNumber)
+			levelNumber = startingLevel;
+		
 		spawnRate = 1.25 / levelNumber;
 		
 		
