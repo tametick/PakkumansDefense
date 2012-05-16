@@ -144,7 +144,7 @@ class FlxButtonPlus extends FlxGroup
 	 */
 	public function new(X:Int, Y:Int, Callback:Dynamic, ?Params:Array<Dynamic> = null, ?Label:String = null, ?Width:Int = 100, ?Height:Int = 20)
 	{
-		borderColor = Colors.BLUEGRAY;
+		borderColor = 0xffffffff;
 		offColor = [0xff008000, 0xff00FF00];
 		onColor = [0xff800000, 0xffff0000];
 		
@@ -177,10 +177,10 @@ class FlxButtonPlus extends FlxGroup
 		
 		if (Label != null)
 		{
-			textNormal = new FlxText(X-2, Y + 3, Width, Label);
+			textNormal = new FlxText(X-2, Y + 1, Width, Label);
 			textNormal.setFormat(null, 8, borderColor, "center", 0xff000000);
 			
-			textHighlight = new FlxText(X-2, Y + 3, Width, Label);
+			textHighlight = new FlxText(X-2, Y + 1, Width, Label);
 			textHighlight.setFormat(null, 8, borderColor, "center", 0xff000000);
 			
 			add(textNormal);

@@ -60,10 +60,13 @@ class Library {
 enum Image {
 	BG;
 	HIGHSCORE;
+	LEVEL_SELECT;
 	CURSOR;
 	GHOST;
 	PAKKU;
 	TOWER;
+	BUTTON;
+	BUTTON_ACTIVE;
 }
 
 enum Sound {

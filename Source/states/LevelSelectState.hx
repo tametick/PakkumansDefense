@@ -4,6 +4,7 @@ import com.eclecticdesignstudio.motion.Actuate;
 import org.flixel.FlxG;
 import org.flixel.FlxGroup;
 import org.flixel.FlxSave;
+import org.flixel.FlxSprite;
 import org.flixel.FlxText;
 import org.flixel.plugin.photonstorm.FlxButtonPlus;
 import org.flixel.plugin.photonstorm.FlxGridOverlay;
@@ -21,7 +22,7 @@ class LevelSelectState extends BasicState {
 	override public function create() {
 		FlxG.fade(0, 0.5, true, null, true);
 		
-		add(FlxGridOverlay.create(Library.tileSize, Library.tileSize, -1, -1, false, true, Colors.DBLUE, Colors.DGREEN));
+		add(new FlxSprite(0,0,Library.getFilename(Image.LEVEL_SELECT)));
 		GameState.startingLevel = 1;
 		
 		levels = new FlxSave();
@@ -31,23 +32,20 @@ class LevelSelectState extends BasicState {
 			levels.data.highest  = 1;
 		}
 		
-		title = newText(0, Library.tileSize, FlxG.width, "Select Level",Colors.BLUEGRAY,"center");
+		title = newText(0, Library.tileSize, FlxG.width, "Select Level",Colors.WHITE,"center");
 		title.setSize(16);
 		
 		
 		var shiftX = Std.int((FlxG.width - levelsW*24) / 2);
 		var shiftY = 32;
-
-		var offColor = [0xff008000, Colors.GREEN];
-		var onColor = [0xff800000, Colors.RED];
 		
-		buttons = new FlxGroup(levelsH*levelsW);
+		buttons = new FlxGroup(levelsH * levelsW);
+		var inactive = new FlxSprite(0,0,Library.getFilename(Image.BUTTON));
+		var active = new FlxSprite(0,0,Library.getFilename(Image.BUTTON_ACTIVE));
 		for (y in 0...levelsH) {
 			for (x in 0...levelsW) {
 				var b = new FlxButtonPlus(shiftX + 24 * x, shiftY + 24 * y, click, [x, y], "" + (y * levelsW + x + 1), 16, 16);
-				b.updateInactiveButtonColors(offColor);
-				b.updateActiveButtonColors(onColor);
-
+				b.loadGraphic(inactive, active);
 				buttons.add(b);
 			}
 		}
