@@ -158,7 +158,7 @@ class GameState extends BasicState {
 			levelCounter.text = "Level " + levelNumber;
 		}
 		
-		counter = 0;
+		counter = -3;
 	}
 	
 	var up:FlxPoint;
