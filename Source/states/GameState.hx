@@ -106,7 +106,7 @@ class GameState extends BasicState {
 		if (startingLevel > levelNumber)
 			levelNumber = startingLevel;
 		
-		spawnRate = 1.25 / levelNumber;
+		spawnRate = 3 / levelNumber;
 		
 		
 		FlxG.fade(0, 0.5, true, null, true);
