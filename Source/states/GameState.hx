@@ -205,16 +205,6 @@ class GameState extends BasicState {
 				// todo - error sound
 			}
 		}
-		
-		
-		/*// debug
-		if (FlxG.keys.justReleased("L")) {
-			newLevel();
-		}*/
-	}
-	
-	override public function draw():Void {		
-		super.draw();
 	}
 	
 	function killGhost(b:FlxObject, g:FlxObject) {

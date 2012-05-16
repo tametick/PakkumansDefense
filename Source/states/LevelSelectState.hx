@@ -41,15 +41,21 @@ class LevelSelectState extends BasicState {
 		
 		buttons = new FlxGroup(levelsH * levelsW);
 		var inactive = new FlxSprite(0,0,Library.getFilename(Image.BUTTON));
-		var active = new FlxSprite(0,0,Library.getFilename(Image.BUTTON_ACTIVE));
+		var active = new FlxSprite(0, 0, Library.getFilename(Image.BUTTON_ACTIVE));
+		add(buttons);
+		
 		for (y in 0...levelsH) {
 			for (x in 0...levelsW) {
-				var b = new FlxButtonPlus(shiftX + 24 * x, shiftY + 24 * y, click, [x, y], "" + (y * levelsW + x + 1), 16, 16);
+				var l = y * levelsW + x + 1;
+				if (l > levels.data.highest) {
+					return;
+				}
+				
+				var b = new FlxButtonPlus(shiftX + 24 * x, shiftY + 24 * y, click, [x, y], "" + l, 16, 16);
 				b.loadGraphic(inactive, active);
 				buttons.add(b);
 			}
 		}
-		add(buttons);
 	}
 	
 	function click(x:Int, y:Int) {

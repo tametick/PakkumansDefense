@@ -4,7 +4,7 @@
 	<app title="Busker Jam" file="buskerjam" main="BuskerJam"/>
 	
 	<set name="PRELOADER_NAME" value="Preloader"/>
-	<set name="SWF_VERSION" value="11" />
+	<set name="SWF_VERSION" value="11.2" />
 
 	<window background="0x000000" width="720" height="480" fps="30"/>
 	
