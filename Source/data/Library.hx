@@ -64,6 +64,7 @@ enum Image {
 	CURSOR;
 	GHOST;
 	PAKKU;
+	ARROW;
 	TOWER;
 	BUTTON;
 	BUTTON_ACTIVE;

@@ -148,6 +148,7 @@ class GameState extends BasicState {
 		add(level);
 		add(level.coins);
 		add(level.player);
+		add(level.player.arrow);
 		add(level.ghosts);
 		add(level.towers);
 		add(level.bullets);
