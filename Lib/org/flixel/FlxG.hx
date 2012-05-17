@@ -9,6 +9,7 @@ import nme.display.Sprite;
 import nme.display.Stage;
 import nme.errors.Error;
 import nme.geom.Matrix;
+import nme.geom.Point;
 import nme.geom.Rectangle;
 import nme.media.Sound;
 import org.flixel.system.input.Keyboard;
@@ -855,7 +856,7 @@ class FlxG
 	 * @param	Key			Force the cache to use a specific Key to index the bitmap.
 	 * @return	The <code>BitmapData</code> we just created.
 	 */
-	static public function addBitmap(Graphic:Dynamic, ?Reverse:Bool = false, ?Unique:Bool = false, ?Key:String = null):BitmapData
+	static public function addBitmap(Graphic:Dynamic, ?Reverse:Bool = false, ?Unique:Bool = false, ?Key:String = null, ?FrameWidth:Int = 0, ?FrameHeight:Int = 0):BitmapData
 	{
 		var isClass:Bool = true;
 		var isBitmap:Bool = true;
@@ -864,20 +865,28 @@ class FlxG
 			isClass = true;
 			isBitmap = false;
 		}
-		else if (Std.is(Graphic, String))
-		{
-			isClass = false;
-			isBitmap = false;
-		}
 		else if (Std.is(Graphic, BitmapData) && Key != null)
 		{
 			isClass = false;
 			isBitmap = true;
 		}
+		else if (Std.is(Graphic, String))
+		{
+			isClass = false;
+			isBitmap = false;
+		}
 		else
 		{
 			return null;
 		}
+		
+		var additionalKey:String = "";
+		#if !flash
+		if (FrameWidth != 0 || FrameHeight != 0)
+		{
+			additionalKey = "FrameSize:" + FrameWidth + "_" + FrameHeight;
+		}
+		#end
 		
 		var needReverse:Bool = false;
 		var key:String = Key;
@@ -892,6 +901,7 @@ class FlxG
 				key = Graphic;
 			}
 			key += (Reverse ? "_REVERSE_" : "");
+			key += additionalKey;
 			
 			if (Unique && checkBitmapCache(key))
 			{
@@ -905,8 +915,10 @@ class FlxG
 			}
 		}
 		
-		//If there is no data for this key, generate the requested graphic
-		if(!checkBitmapCache(key))
+		var tempBitmap:BitmapData;
+		
+		// If there is no data for this key, generate the requested graphic
+		if (!checkBitmapCache(key))
 		{
 			var bd:BitmapData = null;
 			if (isClass)
@@ -922,6 +934,42 @@ class FlxG
 				bd = Assets.getBitmapData(Graphic);
 			}
 			
+			#if !flash
+			if (additionalKey != "")
+			{
+				var numHorizontalFrames:Int = (FrameWidth == 0) ? 1 : Math.floor(bd.width / FrameWidth);
+				var numVerticalFrames:Int = (FrameHeight == 0) ? 1 : Math.floor(bd.height / FrameHeight);
+				
+				FrameWidth = Math.floor(bd.width / numHorizontalFrames);
+				FrameHeight = Math.floor(bd.height / numVerticalFrames);
+				
+				#if !neko
+				var tempBitmap:BitmapData = new BitmapData(bd.width + numHorizontalFrames, bd.height + numVerticalFrames, true, 0x00000000);
+				#else
+				var tempBitmap:BitmapData = new BitmapData(bd.width + numHorizontalFrames, bd.height + numVerticalFrames, true, {rgb: 0x000000, a: 0x00});
+				#end
+				
+				var tempRect:Rectangle = new Rectangle(0, 0, FrameWidth, FrameHeight);
+				var tempPoint:Point = new Point();
+				
+				for (i in 0...(numHorizontalFrames))
+				{
+					tempPoint.x = i * (FrameWidth + 1);
+					tempRect.x = i * FrameWidth;
+					
+					for (j in 0...(numVerticalFrames))
+					{
+						tempPoint.y = j * (FrameHeight + 1);
+						tempRect.y = j * FrameHeight;
+						
+						tempBitmap.copyPixels(bd, tempRect, tempPoint);
+					}
+				}
+				
+				bd = tempBitmap;
+			}
+			#end
+			
 			_cache.set(key, bd);
 			if (Reverse)
 			{
@@ -931,7 +979,7 @@ class FlxG
 		
 		var pixels:BitmapData = _cache.get(key);
 		
-		var tempBitmap:BitmapData;
+		#if flash
 		if (isClass)
 		{
 			tempBitmap = Type.createInstance(Graphic, []).bitmapData;
@@ -949,37 +997,21 @@ class FlxG
 		{
 			needReverse = true;
 		}
+		
 		if (needReverse)
 		{
-			#if !neko
-			var newPixels:BitmapData = new BitmapData(pixels.width << 1, pixels.height, true, 0x00000000);
-			#else
-			var newPixels:BitmapData = new BitmapData(pixels.width << 1, pixels.height, true, {rgb: 0x000000, a: 0x00});
-			#end
+			var newPixels:BitmapData = new BitmapData(pixels.width * 2, pixels.height, true, 0x00000000);
 			
-		#if flash
 			newPixels.draw(pixels);
 			var mtx:Matrix = new Matrix();
 			mtx.scale(-1,1);
 			mtx.translate(newPixels.width, 0);
 			newPixels.draw(pixels, mtx);
-		#else
-			var pixelColor:BitmapInt32;
-			for (i in 0...(pixels.width + 1))
-			{
-				for (j in 0...(pixels.height + 1))
-				{
-					pixelColor = pixels.getPixel32(i, j);
-					newPixels.setPixel32(i, j, pixelColor);
-					newPixels.setPixel32(2 * pixels.width - i - 1, j, pixelColor);
-				}
-			}
-		#end
-			
 			pixels = newPixels;
-			//_cache[Key] = pixels;
 			_cache.set(key, pixels);
 		}
+		#end
+		
 		return pixels;
 	}
 	

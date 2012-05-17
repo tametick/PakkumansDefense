@@ -200,9 +200,6 @@ class FlxBitmapFont extends FlxSprite
 		customSpacingY = 0;
 		fixedWidth = 0;
 		
-		//	Take a copy of the font for internal use
-		fontSet = FlxG.addBitmap(font);
-		
 		this.characterWidth = characterWidth;
 		this.characterHeight = characterHeight;
 		characterSpacingX = xSpacing;
@@ -210,6 +207,13 @@ class FlxBitmapFont extends FlxSprite
 		characterPerRow = charsPerRow;
 		offsetX = xOffset;
 		offsetY = yOffset;
+		
+		//	Take a copy of the font for internal use
+		#if flash
+		fontSet = FlxG.addBitmap(font);
+		#else
+		fontSet = FlxG.addBitmap(font, false, false, null, (characterSpacingX == 0) ? characterWidth : (characterWidth * charsPerRow), (characterSpacingY == 0) ? characterHeight : Math.floor((chars.length / charsPerRow) * characterHeight));
+		#end
 		
 		grabData = new Array();
 		
@@ -271,7 +275,8 @@ class FlxBitmapFont extends FlxSprite
 			_tileSheetData = TileSheetManager.addTileSheet(fontSet);
 			_tileSheetData.antialiasing = false;
 			var reverse:Bool = (_flipped > 0);
-			_framesData = _tileSheetData.addSpriteFramesData(characterWidth, characterHeight, false, new Point(0, 0), offsetX, offsetY, fontSet.width, fontSet.height, characterSpacingX, characterSpacingY);
+			
+			_framesData = _tileSheetData.addSpriteFramesData(characterWidth, characterHeight, new Point(0, 0), offsetX, offsetY, fontSet.width, fontSet.height, (characterSpacingX == 0) ? 1 : characterSpacingX, (characterSpacingY == 0) ? 1 : characterSpacingY);
 		}
 	#end
 	}
@@ -351,8 +356,14 @@ class FlxBitmapFont extends FlxSprite
 						
 						_tileSheetData.drawData[camID].push(currTileID);
 						
-						_tileSheetData.drawData[camID].push(1.0); // scale
-						_tileSheetData.drawData[camID].push(0.0); // rotation
+					//	_tileSheetData.drawData[camID].push(1.0); // scale
+					//	_tileSheetData.drawData[camID].push(0.0); // rotation
+						
+						_tileSheetData.drawData[camID].push(1);
+						_tileSheetData.drawData[camID].push(0);
+						_tileSheetData.drawData[camID].push(0);
+						_tileSheetData.drawData[camID].push(1);
+						
 						#if !neko
 						if (camera.color < 0xffffff)
 						#else
@@ -390,16 +401,25 @@ class FlxBitmapFont extends FlxSprite
 						currTileX = points[currPosInArr + 1];
 						currTileY = points[currPosInArr + 2];
 						
-						relativeX = (currTileX * cos - currTileY * sin) * scale.x;
-						relativeY = (currTileX * sin + currTileY * cos) * scale.x;
+					//	relativeX = (currTileX * cos - currTileY * sin) * scale.x;
+					//	relativeY = (currTileX * sin + currTileY * cos) * scale.x;
+						
+						relativeX = (currTileX * cos * scale.x - currTileY * sin * scale.y);
+						relativeY = (currTileX * sin * scale.x + currTileY * cos * scale.y);
 						
 						_tileSheetData.drawData[camID].push(Math.floor(_point.x) + origin.x + relativeX);
 						_tileSheetData.drawData[camID].push(Math.floor(_point.y) + origin.y + relativeY);
 						
 						_tileSheetData.drawData[camID].push(currTileID);
 						
-						_tileSheetData.drawData[camID].push(scale.x); // scale
-						_tileSheetData.drawData[camID].push(-radians); // rotation
+					//	_tileSheetData.drawData[camID].push(scale.x); // scale
+					//	_tileSheetData.drawData[camID].push(-radians); // rotation
+					
+						_tileSheetData.drawData[camID].push(cos * scale.x);
+						_tileSheetData.drawData[camID].push( -sin * scale.y);
+						_tileSheetData.drawData[camID].push(sin * scale.x);
+						_tileSheetData.drawData[camID].push(cos * scale.y);
+						
 						#if !neko
 						if (camera.color < 0xffffff)
 						#else

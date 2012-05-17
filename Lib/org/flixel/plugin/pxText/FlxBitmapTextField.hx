@@ -50,6 +50,7 @@ class FlxBitmapTextField extends FlxSprite
 	private var _preparedOutlineGlyphs:Array<BitmapData>;
 	#else
 	private var _drawData:Array<Float>;
+	private var _bgDrawData:Array<Float>;
 	#end
 	
 	/**
@@ -101,6 +102,7 @@ class FlxBitmapTextField extends FlxSprite
 		#else
 		_tileSheetData = _font.tileSheetData;
 		_drawData = [];
+		_bgDrawData = [];
 		#end
 		
 		_pendingTextChange = true;
@@ -117,6 +119,9 @@ class FlxBitmapTextField extends FlxSprite
 		clearPreparedGlyphs(_preparedTextGlyphs);
 		clearPreparedGlyphs(_preparedShadowGlyphs);
 		clearPreparedGlyphs(_preparedOutlineGlyphs);
+		#else
+		_drawData = null;
+		_bgDrawData = null;
 		#end
 		
 		super.destroy();
@@ -183,7 +188,27 @@ class FlxBitmapTextField extends FlxSprite
 			_point.y = y - Math.floor(camera.scroll.y * scrollFactor.y) - Math.floor(offset.y);
 			
 			if (simpleRender)
-			{	//Simple render
+			{	
+				if (_background)
+				{
+					_tileSheetData.drawData[camID].push(Math.floor(_point.x) + origin.x + _bgDrawData[1]);
+					_tileSheetData.drawData[camID].push(Math.floor(_point.y) + origin.y + _bgDrawData[2]);
+					
+					_tileSheetData.drawData[camID].push(_bgDrawData[0]);
+					
+					_tileSheetData.drawData[camID].push(width);
+					_tileSheetData.drawData[camID].push(0);
+					_tileSheetData.drawData[camID].push(0);
+					_tileSheetData.drawData[camID].push(height);
+					
+					_tileSheetData.drawData[camID].push(_bgDrawData[3] * camera.red); 
+					_tileSheetData.drawData[camID].push(_bgDrawData[4] * camera.green);
+					_tileSheetData.drawData[camID].push(_bgDrawData[5] * camera.blue);
+					
+					_tileSheetData.drawData[camID].push(_alpha);
+				}
+				
+				//Simple render
 				while (j < textLength)
 				{
 					if (_tileSheetData != null)
@@ -201,8 +226,14 @@ class FlxBitmapTextField extends FlxSprite
 						
 						_tileSheetData.drawData[camID].push(currTileID);
 						
-						_tileSheetData.drawData[camID].push(_fontScale); // scale
-						_tileSheetData.drawData[camID].push(0.0); // rotation
+					//	_tileSheetData.drawData[camID].push(_fontScale); // scale
+					//	_tileSheetData.drawData[camID].push(0.0); // rotation
+						
+						_tileSheetData.drawData[camID].push(_fontScale);
+						_tileSheetData.drawData[camID].push(0);
+						_tileSheetData.drawData[camID].push(0);
+						_tileSheetData.drawData[camID].push(_fontScale);
+						
 						#if !neko
 						if (camera.color < 0xffffff)
 						#else
@@ -231,6 +262,31 @@ class FlxBitmapTextField extends FlxSprite
 				cos = Math.cos(radians);
 				sin = Math.sin(radians);
 				
+				if (_background)
+				{
+					currTileX = _bgDrawData[1];
+					currTileY = _bgDrawData[2];
+					
+					relativeX = (currTileX * cos * scale.x - currTileY * sin * scale.y);
+					relativeY = (currTileX * sin * scale.x + currTileY * cos * scale.y);
+					
+					_tileSheetData.drawData[camID].push(Math.floor(_point.x) + origin.x + relativeX);
+					_tileSheetData.drawData[camID].push(Math.floor(_point.y) + origin.y + relativeY);
+					
+					_tileSheetData.drawData[camID].push(_bgDrawData[0]);
+					
+					_tileSheetData.drawData[camID].push(cos * scale.x * width * _fontScale);
+					_tileSheetData.drawData[camID].push( -sin * scale.y * height * _fontScale);
+					_tileSheetData.drawData[camID].push(sin * scale.x * width * _fontScale);
+					_tileSheetData.drawData[camID].push(cos * scale.y * height * _fontScale);
+					
+					_tileSheetData.drawData[camID].push(_bgDrawData[3] * camera.red); 
+					_tileSheetData.drawData[camID].push(_bgDrawData[4] * camera.green);
+					_tileSheetData.drawData[camID].push(_bgDrawData[5] * camera.blue);
+					
+					_tileSheetData.drawData[camID].push(_alpha);
+				}
+				
 				while (j < textLength)
 				{
 					if (_tileSheetData != null)
@@ -243,16 +299,25 @@ class FlxBitmapTextField extends FlxSprite
 						currTileGreen = _drawData[currPosInArr + 4];
 						currTileBlue = _drawData[currPosInArr + 5];
 						
-						relativeX = (currTileX * cos - currTileY * sin) * scale.x;
-						relativeY = (currTileX * sin + currTileY * cos) * scale.x;
+					//	relativeX = (currTileX * cos - currTileY * sin) * scale.x;
+					//	relativeY = (currTileX * sin + currTileY * cos) * scale.x;
+						
+						relativeX = (currTileX * cos * scale.x - currTileY * sin * scale.y);
+						relativeY = (currTileX * sin * scale.x + currTileY * cos * scale.y);
 						
 						_tileSheetData.drawData[camID].push(Math.floor(_point.x) + origin.x + relativeX);
 						_tileSheetData.drawData[camID].push(Math.floor(_point.y) + origin.y + relativeY);
 						
 						_tileSheetData.drawData[camID].push(currTileID);
 						
-						_tileSheetData.drawData[camID].push(_fontScale * scale.x); // scale
-						_tileSheetData.drawData[camID].push(-radians); // rotation
+					//	_tileSheetData.drawData[camID].push(_fontScale * scale.x); // scale
+					//	_tileSheetData.drawData[camID].push(-radians); // rotation
+						
+						_tileSheetData.drawData[camID].push(cos * scale.x * _fontScale);
+						_tileSheetData.drawData[camID].push( -sin * scale.y * _fontScale);
+						_tileSheetData.drawData[camID].push(sin * scale.x * _fontScale);
+						_tileSheetData.drawData[camID].push(cos * scale.y * _fontScale);
+						
 						#if !neko
 						if (camera.color < 0xffffff)
 						#else
@@ -538,6 +603,15 @@ class FlxBitmapTextField extends FlxSprite
 		var finalHeight:Int = Math.floor(_padding * 2 + Math.max(1, (rows.length * fontHeight + (_shadow ? 1 : 0)) + (_outline ? 2 : 0))) + ((rows.length >= 1) ? _lineSpacing * (rows.length - 1) : 0);
 		#else
 		var finalHeight:Int = Math.floor(_padding * 2 + Math.max(1, (rows.length * fontHeight * _fontScale + (_shadow ? 1 : 0)) + (_outline ? 2 : 0))) + ((rows.length >= 1) ? _lineSpacing * (rows.length - 1) : 0);
+		
+		width = frameWidth = finalWidth;
+		height = frameHeight = finalHeight;
+		frames = 1;
+		origin.x = width * 0.5;
+		origin.y = height * 0.5;
+		
+		var halfWidth:Int = Math.floor(origin.x);
+		var halfHeight:Int = Math.floor(origin.y);
 		#end
 		
 		#if (flash || js)
@@ -560,8 +634,38 @@ class FlxBitmapTextField extends FlxSprite
 		}
 		_pixels.lock();
 		#else
-		// TODO: draw background
 		_drawData.splice(0, _drawData.length);
+		_bgDrawData.splice(0, _bgDrawData.length);
+		
+		// TODO: draw background
+		if (_background)
+		{
+			_bgDrawData.push(_font.bgTileID);		// tile_ID
+			_bgDrawData.push( -halfWidth);
+			_bgDrawData.push( -halfHeight);
+			
+			#if (cpp || neko)
+			var colorMultiplier:Float = 0.00392 * 0.00392;
+			
+			var red:Float = (_backgroundColor >> 16) * colorMultiplier;
+			var green:Float = (_backgroundColor >> 8 & 0xff) * colorMultiplier;
+			var blue:Float = (_backgroundColor & 0xff) * colorMultiplier;
+			#end
+			
+			#if cpp
+			red *= (_color >> 16);
+			green *= (_color >> 8 & 0xff);
+			blue *= (_color & 0xff);
+			#elseif neko
+			red *= (_color.rgb >> 16);
+			green *= (_color.rgb >> 8 & 0xff);
+			blue *= (_color.rgb & 0xff);
+			#end
+			
+			_bgDrawData.push(red);
+			_bgDrawData.push(green);
+			_bgDrawData.push(blue);
+		}
 		#end
 		
 		// render text
@@ -602,7 +706,7 @@ class FlxBitmapTextField extends FlxSprite
 						#if (flash || js)
 						_font.render(_pixels, _preparedOutlineGlyphs, t, _outlineColor, px + ox + _padding, py + row * (fontHeight + _lineSpacing) + _padding, _letterSpacing);
 						#else
-						_font.render(_drawData, t, _outlineColor, _color, _alpha, px + ox + _padding, py + row * (Math.floor(fontHeight * _fontScale) + _lineSpacing) + _padding, _letterSpacing, _fontScale);
+						_font.render(_drawData, t, _outlineColor, _color, _alpha, px + ox + _padding - halfWidth, py + row * (Math.floor(fontHeight * _fontScale) + _lineSpacing) + _padding - halfHeight, _letterSpacing, _fontScale);
 						#end
 					}
 				}
@@ -614,25 +718,19 @@ class FlxBitmapTextField extends FlxSprite
 				#if (flash || js)
 				_font.render(_pixels, _preparedShadowGlyphs, t, _shadowColor, 1 + ox + _padding, 1 + oy + row * (fontHeight + _lineSpacing) + _padding, _letterSpacing);
 				#else
-				_font.render(_drawData, t, _shadowColor, _color, _alpha, 1 + ox + _padding, 1 + oy + row * (Math.floor(fontHeight * _fontScale) + _lineSpacing) + _padding, _letterSpacing, _fontScale);
+				_font.render(_drawData, t, _shadowColor, _color, _alpha, 1 + ox + _padding - halfWidth, 1 + oy + row * (Math.floor(fontHeight * _fontScale) + _lineSpacing) + _padding - halfHeight, _letterSpacing, _fontScale);
 				#end
 			}
 			#if (flash || js)
 			_font.render(_pixels, _preparedTextGlyphs, t, _textColor, ox + _padding, oy + row * (fontHeight + _lineSpacing) + _padding, _letterSpacing);
 			#else
-			_font.render(_drawData, t, _textColor, _color, _alpha, ox + _padding, oy + row * (Math.floor(fontHeight * _fontScale) + _lineSpacing) + _padding, _letterSpacing, _fontScale);
+			_font.render(_drawData, t, _textColor, _color, _alpha, ox + _padding - halfWidth, oy + row * (Math.floor(fontHeight * _fontScale) + _lineSpacing) + _padding - halfHeight, _letterSpacing, _fontScale);
 			#end
 			row++;
 		}
 		#if (flash || js)
 		_pixels.unlock();
 		pixels = _pixels;
-		#else
-		width = frameWidth = finalWidth;
-		height = frameHeight = finalHeight;
-		frames = 1;
-		centerOffsets();
-		setOriginToCorner();
 		#end
 		
 		_pendingTextChange = false;

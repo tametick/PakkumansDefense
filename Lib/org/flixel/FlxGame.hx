@@ -1,5 +1,6 @@
 package org.flixel;
 
+import nme.Assets;
 import nme.display.Bitmap;
 import nme.display.BitmapData;
 import nme.display.Graphics;
@@ -243,7 +244,7 @@ class FlxGame extends Sprite
 		{
 			globalVolume = 0;
 		}
-		for (i in 0..._soundTrayBars.length)
+		for (i in 0...(_soundTrayBars.length))
 		{
 			if (i < Std.int(globalVolume)) _soundTrayBars[i].alpha = 1;
 			else _soundTrayBars[i].alpha = 0.5;
@@ -905,8 +906,7 @@ class FlxGame extends Sprite
 		gfx.lineTo(halfWidth - helper, halfHeight - helper);
 		gfx.endFill();
 		
-		//var logo:Bitmap = new ImgLogo(); 
-		var logo:Bitmap = Type.createInstance(FlxAssets.imgLogo, []);
+		var logo:Bitmap = new Bitmap(Assets.getBitmapData(FlxAssets.imgLogo));
 		logo.scaleX = Math.floor(helper/10);
 		if (logo.scaleX < 1)
 		{
