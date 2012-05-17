@@ -1,3 +1,4 @@
 syntax: glob
-Export/*
 buskerjam.build
+Export/flash/bin/*.swf
+Export/flash/haxe/*
