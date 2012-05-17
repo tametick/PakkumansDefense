@@ -52,23 +52,36 @@ class Player extends WarpSprite {
 		}
 		
 		if (!isMoving) {
+			var oldFacing = facing;
 			facing = facingNext;
-			var tileX = Utils.pixelToTile(x);
-			var tileY = Utils.pixelToTile(y);			
 			
-			// move forward
-			if(facing== FlxObject.LEFT && level.isFree(tileX-1,tileY)) {
-				startMoving(-1,0);
-			} else if(facing== FlxObject.RIGHT && level.isFree(tileX+1,tileY)) {
-				startMoving(1,0);
-			} else if(facing== FlxObject.DOWN && level.isFree(tileX,tileY+1)) {
-				startMoving(0,1);
-			} else if(facing== FlxObject.UP && level.isFree(tileX,tileY-1)) {
-				startMoving(0,-1);
+			var hasMoved = move();
+			if (!hasMoved) {
+				facing = oldFacing;
+				move();
 			}
-		}		
-			
+		}
 	}
+
+	private function move():Bool {
+		var tileX = Utils.pixelToTile(x);
+		var tileY = Utils.pixelToTile(y);
+		// move forward
+		if(facing== FlxObject.LEFT && level.isFree(tileX-1,tileY)) {
+			startMoving(-1,0);
+		} else if(facing== FlxObject.RIGHT && level.isFree(tileX+1,tileY)) {
+			startMoving(1,0);
+		} else if(facing== FlxObject.DOWN && level.isFree(tileX,tileY+1)) {
+			startMoving(0,1);
+		} else if(facing== FlxObject.UP && level.isFree(tileX,tileY-1)) {
+			startMoving(0,-1);
+		} else {
+			return false;
+		}
+		
+		return true;
+	}
+	
 	
 	function startMoving(dx:Int, dy:Int) {
 		isMoving = true;
