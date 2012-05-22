@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
 	
-	<app title="Busker Jam" file="buskerjam" main="BuskerJam"/>
+	<app title="Busker Jam" file="pd" main="BuskerJam"/>
 	
 	<set name="PRELOADER_NAME" value="Preloader"/>
 	<set name="SWF_VERSION" value="11.2" />
 
-	<window background="0x000000" width="720" height="480" fps="30"/>
+	<window background="0x000000" width="480" height="320" fps="30"/>
 	
 	<set name="BUILD_DIR" value="Export" />
 	<setenv name="no_console" value="1" />

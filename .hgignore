@@ -2,3 +2,6 @@ syntax: glob
 buskerjam.build
 Export/flash/bin/*.swf
 Export/flash/haxe/*
+MobilePD/bin/*.swf
+MobilePD/src/*.swf
+MobilePD/obj/*
