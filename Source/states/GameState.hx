@@ -63,7 +63,9 @@ class GameState extends BasicState {
 			help1.scrollFactor.x = 0;
 			help1.scrollFactor.y = 0;
 			
-			//help2 = new FlxSprite(0,0,Library.getFilename(Image.HELP2));
+			help2 = new FlxSprite(0, 0, Library.getFilename(Image.HELP2));
+			help2.scrollFactor.x = 0;
+			help2.scrollFactor.y = 0;
 		}
 				
 		Actuate.defaultEase = Linear.easeNone;
@@ -72,7 +74,7 @@ class GameState extends BasicState {
 		FlxG.mouse.show();
 		FlxG.bgColor = Colors.BLACK;
 
-		FlxG.camera.scroll.y = FlxG.camera.scroll.x = -Library.tileSize;
+		FlxG.camera.scroll.y = -Library.tileSize;
 		
 		cursor = new Cursor();
 		newLevel();
@@ -167,15 +169,20 @@ class GameState extends BasicState {
 	
 	var up:FlxPoint;
 	override public function update() {
-		if (FlxG.mouse.justPressed()) {
-			if (help == 1) {
-				help = 2;
-				remove(help1);
+		if (help < 3) {
+			if (FlxG.mouse.justPressed()) {
+				if (help == 1) {
+					help = 2;
+					remove(help1);
+					add(help2);
+				} else {
+					help = 3;
+					remove(help2);
+				}
 			}
-		}
-		
-		if (help < 2)
+			
 			return;
+		}
 		
 		super.update();
 		
