@@ -45,7 +45,6 @@ class GameState extends BasicState {
 	var coinCounter:FlxText;
 	var ghostCounter:FlxText;
 	var towerCounter:FlxText;
-	var instructions:FlxText;
 	
 	var killedGhosts:Int;
 	var spawnRate:Float;
@@ -62,14 +61,13 @@ class GameState extends BasicState {
 		FlxG.mouse.show();
 		FlxG.bgColor = Colors.BLACK;
 
-		FlxG.camera.scroll.y = FlxG.camera.scroll.x = -Library.tileSize / 2;
+		FlxG.camera.scroll.y = FlxG.camera.scroll.x = -Library.tileSize;
 		
 		cursor = new Cursor();
 		newLevel();
 		add(cursor);
 		
-		var base = 3;
-		
+		var base = 0;
 		
 		levelCounter = newText(level.width + 8, base, Std.int(FlxG.width - level.width - 8), "Level "+startingLevel,Colors.LGREEN);
 		levelCounter.scrollFactor.x = 0;
@@ -86,14 +84,6 @@ class GameState extends BasicState {
 		towerCounter = newText(level.width + 8, base + Library.tileSize*6, Std.int(FlxG.width - level.width - 8), "Towers: 0 (-$20)",Colors.YELLOW);
 		towerCounter.scrollFactor.x = 0;
 		towerCounter.scrollFactor.y = 0;
-		
-		instructions = newText(level.width + 8, base + Library.tileSize*15, Std.int(FlxG.width - level.width - 8), "Move with WASD or the arrow keys.", Colors.BLUEGRAY);
-		instructions.scrollFactor.x = 0;
-		instructions.scrollFactor.y = 0;
-		
-		instructions = newText(level.width + 8, base + Library.tileSize*18, Std.int(FlxG.width - level.width - 8), "Click to place towers.", Colors.BLUEGRAY);
-		instructions.scrollFactor.x = 0;
-		instructions.scrollFactor.y = 0;
 		
 		FlxG.worldBounds.x -= 50; 
 		FlxG.worldBounds.y -= 50;
@@ -266,8 +256,6 @@ class GameState extends BasicState {
 		ghostCounter = null;
 		towerCounter.destroy();
 		towerCounter = null;
-		instructions.destroy();
-		instructions = null;
 		
 		up = null;
 		cursor.destroy();

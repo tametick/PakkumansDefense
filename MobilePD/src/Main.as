@@ -1,6 +1,7 @@
 package 
 {
 	import flash.desktop.NativeApplication;
+	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.events.Event;
@@ -15,10 +16,14 @@ package
 	
 	public class Main extends Sprite 
 	{
+		[Embed(source = "loading.png")] var Loading:Class;
 		[Embed(source = "pd.swf", mimeType = "application/octet-stream")] var Game:Class;
 		
+		var loading:Bitmap;
 		public function Main():void 
 		{
+			loading = new Loading();
+			addChild(loading);
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			stage.addEventListener(Event.DEACTIVATE, deactivate);
@@ -38,6 +43,7 @@ package
 		private function onCompleteHandler(loadEvent:Event):void
 		{
 			var cnt:DisplayObject = loadEvent.currentTarget.content;
+			removeChild(loading);
 			addChild(cnt);
 		}
 		
