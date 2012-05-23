@@ -9,7 +9,7 @@ import nme.text.Font;
 class Library {
 	public static inline var tileSize = 8;
 	public static inline var levelW = 19;
-	public static inline var levelH = 19;
+	public static inline var levelH = 13;
 	
 	
 	static var assets:Hash<Dynamic> = new Hash<Dynamic>();

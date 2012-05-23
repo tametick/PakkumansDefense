@@ -80,21 +80,19 @@ class GameState extends BasicState {
 		newLevel();
 		add(cursor);
 		
-		var base = 0;
-		
-		levelCounter = newText(level.width + 8, base, Std.int(FlxG.width - level.width - 8), "Level "+startingLevel,Colors.LGREEN);
+		levelCounter = newText(0, -1, Std.int(FlxG.width - level.width - 8), "Level "+startingLevel,Colors.LGREEN);
 		levelCounter.scrollFactor.x = 0;
 		levelCounter.scrollFactor.y = 0;
 		
-		coinCounter = newText(level.width + 8,  base + Library.tileSize*2, Std.int(FlxG.width - level.width - 8), "$: 20",Colors.LBLUE);
+		coinCounter = newText(level.width/4 , -1, Std.int(FlxG.width - level.width - 8), "$: 20",Colors.LBLUE);
 		coinCounter.scrollFactor.x = 0;
 		coinCounter.scrollFactor.y = 0;
 		
-		ghostCounter = newText(level.width + 8, base + Library.tileSize*4, Std.int(FlxG.width - level.width - 8), "Kills: 0", Colors.PINK);
+		ghostCounter = newText(level.width/2, -1, Std.int(FlxG.width - level.width - 8), "Kills: 0", Colors.PINK);
 		ghostCounter.scrollFactor.x = 0;
 		ghostCounter.scrollFactor.y = 0;
 		
-		towerCounter = newText(level.width + 8, base + Library.tileSize*6, Std.int(FlxG.width - level.width - 8), "Towers: 0 (-$20)",Colors.YELLOW);
+		towerCounter = newText(level.width* 3/4, -1, Std.int(FlxG.width - level.width - 8), "Towers: 0",Colors.YELLOW);
 		towerCounter.scrollFactor.x = 0;
 		towerCounter.scrollFactor.y = 0;
 		
@@ -159,7 +157,7 @@ class GameState extends BasicState {
 		add(level.bullets);
 		
 		if(towerCounter!=null) {
-			towerCounter.text = "Towers: 0 (-$20)";
+			towerCounter.text = "Towers: 0";
 			ghostCounter.text = "Kills: "+level.player.kills;
 			levelCounter.text = "Level " + levelNumber;
 		}
@@ -218,9 +216,9 @@ class GameState extends BasicState {
 				FlxG.play(Library.getSound(Sound.CASH_REGISTER));
 				// todo - cash register sound
 				level.player.coins -= 20;
-				coinCounter.text = "$: " + level.player.coins;
+				coinCounter.text = "Money: " + level.player.coins;
 				level.buildTower(up);
-				towerCounter.text = "Towers: " + level.towers.length + " (-$20)";
+				towerCounter.text = "Towers: " + level.towers.length;
 				
 			} else {
 				// todo - error sound
