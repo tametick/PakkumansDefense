@@ -25,8 +25,11 @@ import world.Player;
 
 class GameState extends BasicState {
 	var bg: FlxSprite;
-	
 	var level:Level;
+	
+	var help:Int;
+	static var help1:FlxSprite;
+	static var help2:FlxSprite;
 	
 	public static var startingLevel:Int;
 	var levelNumber(default, setLevelNumber):Int;
@@ -54,7 +57,15 @@ class GameState extends BasicState {
 	
 	override public function create():Void {
 		FlxG.playMusic(Library.getMusic(THEME));
-		
+		help = 1;
+		if(help1==null) {
+			help1 = new FlxSprite(0, 0, Library.getFilename(Image.HELP1));			
+			help1.scrollFactor.x = 0;
+			help1.scrollFactor.y = 0;
+			
+			//help2 = new FlxSprite(0,0,Library.getFilename(Image.HELP2));
+		}
+				
 		Actuate.defaultEase = Linear.easeNone;
 		
 		Log.setColor(0xFFFFFF);
@@ -89,6 +100,8 @@ class GameState extends BasicState {
 		FlxG.worldBounds.y -= 50;
 		FlxG.worldBounds.width += 100; 
 		FlxG.worldBounds.height += 100;
+		
+		add(help1);
 	}
 	
 	function newLevel():Void {
@@ -154,6 +167,16 @@ class GameState extends BasicState {
 	
 	var up:FlxPoint;
 	override public function update() {
+		if (FlxG.mouse.justPressed()) {
+			if (help == 1) {
+				help = 2;
+				remove(help1);
+			}
+		}
+		
+		if (help < 2)
+			return;
+		
 		super.update();
 		
 		FlxG.overlap(level.player, level.coins, pickUpCoin);

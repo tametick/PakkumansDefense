@@ -59,6 +59,7 @@ class Library {
 
 enum Image {
 	BG;
+	HELP1;
 	HIGHSCORE;
 	LEVEL_SELECT;
 	CURSOR;
