@@ -74,25 +74,26 @@ class GameState extends BasicState {
 		FlxG.mouse.show();
 		FlxG.bgColor = Colors.BLACK;
 
-		FlxG.camera.scroll.y = -Library.tileSize;
+		FlxG.camera.scroll.y = -Library.tileSize * 1.5;
+		FlxG.camera.scroll.x = -Library.tileSize*.5;
 		
 		cursor = new Cursor();
 		newLevel();
 		add(cursor);
 		
-		levelCounter = newText(0, -1, Std.int(FlxG.width - level.width - 8), "Level "+startingLevel,Colors.LGREEN);
+		levelCounter = newText(Library.tileSize*.5, -1, Std.int(FlxG.width - level.width - 8), "Level "+startingLevel,Colors.LGREEN);
 		levelCounter.scrollFactor.x = 0;
 		levelCounter.scrollFactor.y = 0;
 		
-		coinCounter = newText(level.width/4 , -1, Std.int(FlxG.width - level.width - 8), "$: 20",Colors.LBLUE);
+		coinCounter = newText(Library.tileSize*.5+ level.width/4 , -1, Std.int(FlxG.width - level.width - 8), "$: 20",Colors.LBLUE);
 		coinCounter.scrollFactor.x = 0;
 		coinCounter.scrollFactor.y = 0;
 		
-		ghostCounter = newText(level.width/2, -1, Std.int(FlxG.width - level.width - 8), "Kills: 0", Colors.PINK);
+		ghostCounter = newText(Library.tileSize*.5+ level.width/2, -1, Std.int(FlxG.width - level.width - 8), "Kills: 0", Colors.PINK);
 		ghostCounter.scrollFactor.x = 0;
 		ghostCounter.scrollFactor.y = 0;
 		
-		towerCounter = newText(level.width* 3/4, -1, Std.int(FlxG.width - level.width - 8), "Towers: 0",Colors.YELLOW);
+		towerCounter = newText(Library.tileSize*.5+ level.width* 3/4, -1, Std.int(FlxG.width - level.width - 8), "Towers: 0",Colors.YELLOW);
 		towerCounter.scrollFactor.x = 0;
 		towerCounter.scrollFactor.y = 0;
 		
