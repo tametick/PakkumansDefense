@@ -41,7 +41,7 @@
 			</array>
 				
         ]]></InfoAdditions> 
-		<requestedDisplayResolution>high</requestedDisplayResolution>
+		<!--<requestedDisplayResolution>high</requestedDisplayResolution>-->
     </iPhone> 
 	
 	<initialWindow>
@@ -49,9 +49,9 @@
 		<content>MobilePD.swf</content>
 		<visible>true</visible>
 		<fullScreen>true</fullScreen>
-		<!--<autoOrients>false</autoOrients>-->
+		<autoOrients>false</autoOrients>
 		<aspectRatio>landscape</aspectRatio>
-		<renderMode>direct</renderMode>
+		<renderMode>gpu</renderMode>
 	</initialWindow>
 	
 	<icon>

@@ -131,7 +131,7 @@ class FlxPreloader extends NMEPreloader
 	{
 		removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		
-		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
+		//Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
 		Lib.current.stage.align = StageAlign.TOP_LEFT;
 		
 		_font = new PxBitmapFont(createBitmapFromData(FontData, FontWidth, FontHeight), " !\"#$%&'()*+,-./" + "0123456789:;<=>?" + "@ABCDEFGHIJKLMNO" + "PQRSTUVWXYZ[]^_" + "abcdefghijklmno" + "pqrstuvwxyz{|}~\\");

@@ -749,7 +749,7 @@ class FlxGame extends Sprite
 		removeEventListener(Event.ENTER_FRAME, create);
 		_total = Lib.getTimer();
 		//Set up the view window and double buffering
-		stage.scaleMode = StageScaleMode.NO_SCALE;
+		//stage.scaleMode = StageScaleMode.NO_SCALE;
 		stage.align = StageAlign.TOP_LEFT;
 		stage.frameRate = _flashFramerate;
 		

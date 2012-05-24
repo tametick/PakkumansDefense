@@ -7,11 +7,11 @@
     <movie path="bin\MobilePD.swf" />
     <movie fps="30" />
     <movie width="480" />
-    <movie height="762" />
+    <movie height="320" />
     <movie version="3" />
     <movie minorVersion="2" />
     <movie platform="AIR Mobile" />
-    <movie background="#FFFFFF" />
+    <movie background="#000000" />
     <movie preferredSDK="C:\AdobeFlexSDK" />
   </output>
   <!-- Other classes to be compiled into your SWF -->

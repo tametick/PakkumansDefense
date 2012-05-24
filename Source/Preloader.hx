@@ -9,15 +9,15 @@ import nme.ui.Mouse;
 
 class Preloader extends NMEPreloader {
 	public function new() {
-		var w = Lib.current.stage.stageWidth;
-		var h = Lib.current.stage.stageHeight;
+		var w = 480;
+		var h = 320;
 		
 		#if flash
 		Lib.current.stage.fullScreenSourceRect = new Rectangle(0, 0, w, h);
 		Lib.current.stage.color = 0;
 		#end
 		Lib.current.stage.align = StageAlign.TOP;
-		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
+		Lib.current.stage.scaleMode = StageScaleMode.EXACT_FIT;
 
 		Mouse.hide();
 		
