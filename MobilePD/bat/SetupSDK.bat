@@ -2,7 +2,7 @@
 
 :: Path to Flex SDK
 rem set FLEX_SDK=C:\Program Files (x86)\FlashDevelop\Tools\flexsdk
-set FLEX_SDK=C:\AdobeFlexSDK
+set FLEX_SDK=C:\AdobeAirSDK
 
 :: Path to Android SDK
 rem set ANDROID_SDK=C:\Program Files (x86)\FlashDevelop\Tools\android
