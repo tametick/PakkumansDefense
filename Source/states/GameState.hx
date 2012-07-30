@@ -61,7 +61,7 @@ class GameState extends BasicState {
 		
 		FlxG.playMusic(Library.getMusic(THEME));
 		help = 1;
-		if (help1 == null) {	
+		if (help1 == null) {				
 			help1 = new FlxGroup();
 			help2 = new FlxGroup();
 			
@@ -69,15 +69,75 @@ class GameState extends BasicState {
 			help1Bg.makeGraphic(w, h, 0x88000000);
 			help1.add(help1Bg);
 			
-			var help1Text = new FlxText(0, 0, w, "Tap edges to change direction");
+			var help1Text = new FlxText(-2, 0, w, "Tap edges to change direction");
 			help1Text.setFormat(Library.getFont().fontName,null,null,"center");
 			help1Text.scrollFactor.x = help1Text.scrollFactor.y = 0;
 			help1Text.y = h / 2 - help1Text.height + Library.tileSize +1;
 			help1.add(help1Text);
 			
+			var w1 = new FlxSprite(0, 0);
+			var e1 = new FlxSprite(0, 0);
+			var n1 = new FlxSprite(0, 0);
+			var s1 = new FlxSprite(0, 0);
+			w1.loadGraphic(Library.getFilename(Image.BIG_ARROW),true,false,7,7);
+			w1.addAnimation("idle", [0]);
+			w1.play("idle");
+			e1.loadGraphic(Library.getFilename(Image.BIG_ARROW),true,false,7,7);
+			e1.addAnimation("idle", [1]);
+			e1.play("idle");
+			n1.loadGraphic(Library.getFilename(Image.BIG_ARROW),true,false,7,7);
+			n1.addAnimation("idle", [2]);
+			n1.play("idle");
+			s1.loadGraphic(Library.getFilename(Image.BIG_ARROW),true,false,7,7);
+			s1.addAnimation("idle", [3]);
+			s1.play("idle");
+			w1.x = 1;
+			w1.y = (h - w1.height) / 2 - Library.tileSize;
+			help1.add(w1);			
+			e1.x = Library.tileSize*(Library.levelW-1);
+			e1.y = (h - w1.height) / 2 - Library.tileSize;
+			help1.add(e1);
+			n1.x = (Library.tileSize*Library.levelW-n1.width) /2;
+			n1.y = 1;
+			help1.add(n1);
+			s1.x = n1.x;
+			s1.y = Library.tileSize * Library.levelH - s1.height - 1;
+			help1.add(s1);
+			
+			
 			var help2Bg = new FlxSprite(0, 0);
 			help2Bg.makeGraphic(w, h, 0x88000000);
 			help2.add(help2Bg);
+			
+			var w2 = new FlxSprite(0, 0);
+			var e2 = new FlxSprite(0, 0);
+			var n2 = new FlxSprite(0, 0);
+			var s2 = new FlxSprite(0, 0);
+			w2.loadGraphic(Library.getFilename(Image.BIG_ARROW),true,false,7,7);
+			w2.addAnimation("idle", [1]);
+			w2.play("idle");
+			e2.loadGraphic(Library.getFilename(Image.BIG_ARROW),true,false,7,7);
+			e2.addAnimation("idle", [0]);
+			e2.play("idle");
+			n2.loadGraphic(Library.getFilename(Image.BIG_ARROW),true,false,7,7);
+			n2.addAnimation("idle", [3]);
+			n2.play("idle");
+			s2.loadGraphic(Library.getFilename(Image.BIG_ARROW),true,false,7,7);
+			s2.addAnimation("idle", [2]);
+			s2.play("idle");
+			s2.x = s1.x;
+			s2.y = s1.y+1;
+			n2.x = n1.x;
+			n2.y = n1.y-1;
+			w2.x = w1.x-1;
+			w2.y = w1.y;
+			e2.x = e1.x+1;
+			e2.y = e1.y;
+			help2.add(w2);
+			help2.add(e2);
+			help2.add(n2);
+			help2.add(s2);
+			
 			
 			var help2Text = new FlxText(0, 0, w, "Tap center to build towers");
 			help2Text.setFormat(Library.getFont().fontName,null,null,"center");

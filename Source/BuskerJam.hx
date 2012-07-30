@@ -19,8 +19,9 @@ class BuskerJam extends FlxGame {
 	static function nothing(e:Event) {	}
 
 	public function new() {
-		super(240, 160, MenuState, 2);
+		//super(240, 160, MenuState, 2);
 		//super(240, 160, LevelSelectState, 2);
+		super(240, 160, GameState, 2);
 		//forceDebugger = true;
 	}
 	
