@@ -5,6 +5,7 @@ import com.eclecticdesignstudio.motion.easing.Linear;
 import data.Library;
 import data.Score;
 import haxe.Log;
+import nme.display.Bitmap;
 import org.flixel.FlxG;
 import org.flixel.FlxGroup;
 import org.flixel.FlxObject;
@@ -24,6 +25,7 @@ import world.Level;
 import world.Player;
 
 class GameState extends BasicState {
+	static var hud:Bitmap;
 	var bg: FlxSprite;
 	var level:Level;
 	
@@ -55,7 +57,16 @@ class GameState extends BasicState {
 	
 	var cursor:FlxSprite;
 	
-	override public function create():Void {		
+	override public function create():Void {
+		if (hud == null) {
+			hud = new Bitmap(Library.getImage(Image.HUD_OVERLAY));
+			hud.width *= 2;
+			hud.height *= 2;
+		}
+		
+		var mouseIndex = FlxG._game.getChildIndex(FlxG._game._mouse);
+		FlxG._game.addChildAt(hud, mouseIndex);
+		
 		var w = Std.int(FlxG.width * 2 / 3);
 		var h = Std.int(FlxG.height * 2 / 3);
 		
@@ -371,5 +382,7 @@ class GameState extends BasicState {
 		up = null;
 		cursor.destroy();
 		cursor = null;
+		
+		FlxG._game.removeChild(hud);
 	}
 }

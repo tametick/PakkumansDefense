@@ -154,7 +154,7 @@ class FlxG
 	/**
 	 * Internal tracker for game object.
 	 */
-	static private var _game:FlxGame;
+	static public var _game:FlxGame;
 	/**
 	 * Handy shared variable for implementing your own pause behavior.
 	 */

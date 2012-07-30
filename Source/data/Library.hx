@@ -15,7 +15,8 @@ class Library {
 	static var assets:Hash<Dynamic> = new Hash<Dynamic>();
 	
 	public static function getImage(i:Image):BitmapData {
-		return Assets.getBitmapData(Library.getFilename(i));
+		var name = Library.getFilename(i);
+		return Assets.getBitmapData(name);
 	}
 		
 	public static function getFont():Font {
@@ -59,6 +60,7 @@ class Library {
 
 enum Image {
 	BG;
+	HUD_OVERLAY;
 	HIGHSCORE;
 	LEVEL_SELECT;
 	CURSOR;
