@@ -55,7 +55,7 @@ class GameState extends BasicState {
 	
 	var cursor:FlxSprite;
 	
-	override public function create():Void {
+	override public function create():Void {		
 		FlxG.playMusic(Library.getMusic(THEME));
 		help = 1;
 		if(help1==null) {
@@ -73,27 +73,24 @@ class GameState extends BasicState {
 		Log.setColor(0xFFFFFF);
 		FlxG.mouse.show();
 		FlxG.bgColor = Colors.BLACK;
-
-		FlxG.camera.scroll.y = -Library.tileSize * 1.5;
-		FlxG.camera.scroll.x = -Library.tileSize*.5;
 		
 		cursor = new Cursor();
 		newLevel();
 		add(cursor);
 		
-		levelCounter = newText(Library.tileSize*.5, -1, Std.int(FlxG.width - level.width - 8), "Level "+startingLevel,Colors.LGREEN);
+		levelCounter = newText(0, -1, Std.int(FlxG.width - level.width - 8), "Level "+startingLevel,Colors.LGREEN);
 		levelCounter.scrollFactor.x = 0;
 		levelCounter.scrollFactor.y = 0;
 		
-		coinCounter = newText(Library.tileSize*.5+ level.width/4 , -1, Std.int(FlxG.width - level.width - 8), "$: 20",Colors.LBLUE);
+		coinCounter = newText(level.width/4 , -1, Std.int(FlxG.width - level.width - 8), "$: 20",Colors.LBLUE);
 		coinCounter.scrollFactor.x = 0;
 		coinCounter.scrollFactor.y = 0;
 		
-		ghostCounter = newText(Library.tileSize*.5+ level.width/2, -1, Std.int(FlxG.width - level.width - 8), "Kills: 0", Colors.PINK);
+		ghostCounter = newText(level.width/2, -1, Std.int(FlxG.width - level.width - 8), "Kills: 0", Colors.PINK);
 		ghostCounter.scrollFactor.x = 0;
 		ghostCounter.scrollFactor.y = 0;
 		
-		towerCounter = newText(Library.tileSize*.5+ level.width* 3/4, -1, Std.int(FlxG.width - level.width - 8), "Towers: 0",Colors.YELLOW);
+		towerCounter = newText(level.width* 3/4, -1, Std.int(FlxG.width - level.width - 8), "Towers: 0",Colors.YELLOW);
 		towerCounter.scrollFactor.x = 0;
 		towerCounter.scrollFactor.y = 0;
 		
@@ -103,6 +100,11 @@ class GameState extends BasicState {
 		FlxG.worldBounds.height += 100;
 		
 		add(help1);
+		
+		FlxG.camera.scroll.y = -Library.tileSize * 1.5;
+		FlxG.camera.scroll.x = -Library.tileSize * .5;
+		
+		FlxG.camera.setZoom(3);
 	}
 	
 	function newLevel():Void {

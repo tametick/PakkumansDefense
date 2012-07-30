@@ -847,6 +847,13 @@ class FlxCamera extends FlxBasic
 			_zoom = Zoom;
 		}
 		setScale(_zoom, _zoom);
+		
+		_flashOffsetX = width * 0.5 * zoom;
+		_flashOffsetY = height * 0.5 * zoom;
+		
+		_flashSprite.x = x + _flashOffsetX;
+		_flashSprite.y = y + _flashOffsetY;
+		
 		return _zoom;
 	}
 	
