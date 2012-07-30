@@ -28,8 +28,8 @@ class GameState extends BasicState {
 	var level:Level;
 	
 	var help:Int;
-	static var help1:FlxSprite;
-	static var help2:FlxSprite;
+	static var help1:FlxGroup;
+	static var help2:FlxGroup;
 	
 	public static var startingLevel:Int;
 	var levelNumber(default, setLevelNumber):Int;
@@ -56,16 +56,34 @@ class GameState extends BasicState {
 	var cursor:FlxSprite;
 	
 	override public function create():Void {		
+		var w = Std.int(FlxG.width * 2 / 3);
+		var h = Std.int(FlxG.height * 2 / 3);
+		
 		FlxG.playMusic(Library.getMusic(THEME));
 		help = 1;
-		if(help1==null) {
-			help1 = new FlxSprite(0, 0, Library.getFilename(Image.HELP1));			
-			help1.scrollFactor.x = 0;
-			help1.scrollFactor.y = 0;
+		if (help1 == null) {	
+			help1 = new FlxGroup();
+			help2 = new FlxGroup();
 			
-			help2 = new FlxSprite(0, 0, Library.getFilename(Image.HELP2));
-			help2.scrollFactor.x = 0;
-			help2.scrollFactor.y = 0;
+			var help1Bg = new FlxSprite(0, 0);
+			help1Bg.makeGraphic(w, h, 0x88000000);
+			help1.add(help1Bg);
+			
+			var help1Text = new FlxText(0, 0, w, "Tap edges to change direction");
+			help1Text.setFormat(Library.getFont().fontName,null,null,"center");
+			help1Text.scrollFactor.x = help1Text.scrollFactor.y = 0;
+			help1Text.y = h / 2 - help1Text.height + Library.tileSize +1;
+			help1.add(help1Text);
+			
+			var help2Bg = new FlxSprite(0, 0);
+			help2Bg.makeGraphic(w, h, 0x88000000);
+			help2.add(help2Bg);
+			
+			var help2Text = new FlxText(0, 0, w, "Tap center to build towers");
+			help2Text.setFormat(Library.getFont().fontName,null,null,"center");
+			help2Text.scrollFactor.x = help2Text.scrollFactor.y = 0;
+			help2Text.y = h / 2 - help2Text.height + Library.tileSize +1;
+			help2.add(help2Text);
 		}
 				
 		Actuate.defaultEase = Linear.easeNone;
@@ -82,15 +100,15 @@ class GameState extends BasicState {
 		levelCounter.scrollFactor.x = 0;
 		levelCounter.scrollFactor.y = 0;
 		
-		coinCounter = newText(level.width/4 , -1, Std.int(FlxG.width - level.width - 8), "$: 20",Colors.LBLUE);
+		coinCounter = newText(w/4, -1, Std.int(FlxG.width - level.width - 8), "$: 20",Colors.LBLUE);
 		coinCounter.scrollFactor.x = 0;
 		coinCounter.scrollFactor.y = 0;
 		
-		ghostCounter = newText(level.width/2, -1, Std.int(FlxG.width - level.width - 8), "Kills: 0", Colors.PINK);
+		ghostCounter = newText(w/2, -1, Std.int(FlxG.width - level.width - 8), "Kills: 0", Colors.PINK);
 		ghostCounter.scrollFactor.x = 0;
 		ghostCounter.scrollFactor.y = 0;
 		
-		towerCounter = newText(level.width* 3/4, -1, Std.int(FlxG.width - level.width - 8), "Towers: 0",Colors.YELLOW);
+		towerCounter = newText(w*3/4, -1, Std.int(FlxG.width - level.width - 8), "Towers: 0",Colors.YELLOW);
 		towerCounter.scrollFactor.x = 0;
 		towerCounter.scrollFactor.y = 0;
 		
@@ -101,8 +119,10 @@ class GameState extends BasicState {
 		
 		add(help1);
 		
+		var gap = FlxG.width * 2 / 3 - Library.levelW * Library.tileSize;
+		
 		FlxG.camera.scroll.y = -Library.tileSize * 1.5;
-		FlxG.camera.scroll.x = -Library.tileSize * .5;
+		FlxG.camera.scroll.x = -gap/2;
 		
 		FlxG.camera.setZoom(3);
 	}
