@@ -5,3 +5,7 @@ Export/flash/haxe/*
 MobilePD/bin/*.swf
 MobilePD/src/*.swf
 MobilePD/obj/*
+Export/*
+Assets/data/*.hash
+Assets/*.hash
+MobilePD/dist/*

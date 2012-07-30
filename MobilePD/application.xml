@@ -11,6 +11,7 @@
 	<copyright>Ido Yehieli</copyright>
 	
 	<android>
+		<colorDepth>16bit</colorDepth> 
 		<manifestAdditions><![CDATA[
 			
 			<manifest android:installLocation="auto">
