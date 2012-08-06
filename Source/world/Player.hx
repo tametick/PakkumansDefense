@@ -82,9 +82,13 @@ class Player extends WarpSprite {
 				return LEFT;
 			case 0xffffff:
 				return TOWER;
+			default:
+				if ( FlxG.mouse.screenX < 0) return LEFT;
+				if ( FlxG.mouse.screenY < 0) return UP;
+				if ( FlxG.mouse.screenX > 160) return RIGHT;
+				return DOWN;			
 		}
 		
-		return null;
 	}
 	
 	

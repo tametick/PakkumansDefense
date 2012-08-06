@@ -30,8 +30,8 @@ class GameState extends BasicState {
 	var bg: FlxSprite;
 	var level:Level;
 	
-	var screenWidth:Int;
-	var screenHeight:Int;
+	public var screenWidth:Int;
+	public var screenHeight:Int;
 	
 	var mouse:FlxText;
 	
