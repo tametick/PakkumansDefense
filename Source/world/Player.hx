@@ -1,5 +1,6 @@
 package world;
 
+import air.update.events.StatusFileUpdateErrorEvent;
 import com.eclecticdesignstudio.motion.Actuate;
 import data.Library;
 import org.flixel.FlxG;
@@ -19,7 +20,9 @@ class Player extends WarpSprite {
 	public var arrow:FlxSprite;
 	
 	static var clickMap:BitmapData;
-
+	
+	private var thinking:Bool;
+	private var delay:Int;
 	
 	var isMoving:Bool;
 	var facingNext:Int;
@@ -77,14 +80,26 @@ class Player extends WarpSprite {
 				return DOWN;
 			case 0xff0000:
 				return LEFT;
-			default:
+			case 0xffffff:
 				return TOWER;
 		}
+		
+		return null;
 	}
 	
 	
 	override public function update() {
 		super.update();
+		
+		if (thinking) {
+			if (delay >= 3) {
+					spawnTower();
+					delay = 0;
+				}
+			else {
+				  delay ++;
+				 } 
+		}
 		
 		var touch:Command = null;
 		if(FlxG.mouse.justPressed()) {
@@ -120,6 +135,7 @@ class Player extends WarpSprite {
 		}
 	}
 	private function spawnTower() {
+		thinking = false;
 		var tileX = Utils.pixelToTile(x);
 		var tileY = Utils.pixelToTile(y);
 		
@@ -159,12 +175,16 @@ class Player extends WarpSprite {
 							cast(FlxG.state, GameState).coinCounter.text="Money: " + level.player.coins;
 							level.buildTower(fakeMouse);
 							cast(FlxG.state, GameState).towerCounter.text = "Towers: " + level.towers.length;
+							arrow.setColor(Colors.YELLOW);
 							return;
 						}
 					}
 				}
 			}
 		}
+		
+		thinking = true;
+		arrow.setColor(Colors.RED);
 	}
 		
 	private function move():Bool {
