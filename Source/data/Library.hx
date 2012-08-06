@@ -71,6 +71,7 @@ enum Image {
 	TOWER;
 	BUTTON;
 	BUTTON_ACTIVE;
+	CLICK_MAP;
 }
 
 enum Sound {
