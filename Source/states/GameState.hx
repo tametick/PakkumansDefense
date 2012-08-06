@@ -68,8 +68,6 @@ class GameState extends BasicState {
 		screenWidth = Std.int(FlxG.width * 2 / 3);
 		screenHeight = Std.int(FlxG.height * 2 / 3);
 		
-		trace(screenWidth + "," + screenHeight );
-		
 		mouse = new FlxText(0, 0, 40);
 		mouse.scrollFactor.x = mouse.scrollFactor.y = 0;
 		
