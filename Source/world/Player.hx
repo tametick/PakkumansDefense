@@ -6,6 +6,7 @@ import org.flixel.FlxG;
 import org.flixel.FlxObject;
 import org.flixel.FlxPoint;
 import org.flixel.FlxSprite;
+import states.GameState;
 import world.Splosion;
 import utils.Colors;
 import utils.Utils;
@@ -84,6 +85,7 @@ class Player extends WarpSprite {
 	
 	override public function update() {
 		super.update();
+		
 		var touch:Command = null;
 		if(FlxG.mouse.justPressed()) {
 			 touch = getCommand();
@@ -102,6 +104,8 @@ class Player extends WarpSprite {
 		} if (FlxG.keys.W || FlxG.keys.UP || touch==UP) {
 			facingNext = FlxObject.UP;
 			arrow.play("N");
+		} if (touch == TOWER) {
+			spawnTower();
 		}
 		
 		if (!isMoving) {
@@ -115,7 +119,54 @@ class Player extends WarpSprite {
 			}
 		}
 	}
-
+	private function spawnTower() {
+		var tileX = Utils.pixelToTile(x);
+		var tileY = Utils.pixelToTile(y);
+		
+		for ( ii in tileY - 1... tileY + 2) {
+			for ( jj in tileX - 1... tileX + 2) {
+				var i = ii;
+				var j = jj;
+				
+				if (j < 0) {
+					j = Library.levelW - 1;
+				} else if (j >= Library.levelW ) {
+					j = 0;
+				}
+				
+				if (i < 0) {
+					i = Library.levelH - 1;
+				} else if (i >= Library.levelH) {
+					i = 0;
+				}
+				
+				var fakeMouse:FlxPoint = new FlxPoint(j * Library.tileSize, i * Library.tileSize);
+				var towerThere:Bool = false;
+				
+				for (k in level.towers.members) {
+					var t = cast(k, Tower);
+					if (Utils.pixelToTile(t.x) == j && Utils.pixelToTile(t.y) == i) {
+						towerThere = true;
+						break;
+						}
+					}
+				
+				if (!(j == tileX && i== tileY)) {
+					if (!level.isFree(j, i) && !towerThere) {
+						if (level.player.coins >= 20 || Library.debug) {
+							FlxG.play(Library.getSound(Sound.CASH_REGISTER));
+							level.player.coins -= 20;				
+							cast(FlxG.state, GameState).coinCounter.text="Money: " + level.player.coins;
+							level.buildTower(fakeMouse);
+							cast(FlxG.state, GameState).towerCounter.text = "Towers: " + level.towers.length;
+							return;
+						}
+					}
+				}
+			}
+		}
+	}
+		
 	private function move():Bool {
 		var tileX = Utils.pixelToTile(x);
 		var tileY = Utils.pixelToTile(y);

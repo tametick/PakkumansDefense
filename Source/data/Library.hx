@@ -11,6 +11,7 @@ class Library {
 	public static inline var levelW = 15;
 	public static inline var levelH = 11;
 	
+	public static inline var debug = true;
 	
 	static var assets:Hash<Dynamic> = new Hash<Dynamic>();
 	

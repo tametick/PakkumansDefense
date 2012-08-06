@@ -53,9 +53,9 @@ class GameState extends BasicState {
 	}
 	
 	var levelCounter:FlxText;
-	var coinCounter:FlxText;
+	public var coinCounter:FlxText;
 	var ghostCounter:FlxText;
-	var towerCounter:FlxText;
+	public var towerCounter:FlxText;
 	
 	var killedGhosts:Int;
 	var spawnRate:Float;
@@ -303,36 +303,7 @@ class GameState extends BasicState {
 			level.spawnGhost();
 		}
 		
-		if (up == null)
-			up = new FlxPoint();
 		
-		FlxG.mouse.getWorldPosition(null, up);
-		var cy = Utils.pixelToTile(up.y);
-		var cx = Utils.pixelToTile(up.x);
-		cursor.x = cx*Library.tileSize;
-		cursor.y = cy*Library.tileSize;
-		
-		var overTower = FlxG.overlap(cursor, level.towers);
-		
-		if (level.isFree(cx, cy) || cx >= Library.levelW || cy >= Library.levelH || overTower) {
-			cursor.visible = false;
-		} else {
-			cursor.visible = true;
-		}
-		
-		if (FlxG.mouse.justPressed() && cursor.visible) {
-			if (level.player.coins >= 20) {
-				FlxG.play(Library.getSound(Sound.CASH_REGISTER));
-				// todo - cash register sound
-				level.player.coins -= 20;
-				coinCounter.text = "Money: " + level.player.coins;
-				level.buildTower(up);
-				towerCounter.text = "Towers: " + level.towers.length;
-				
-			} else {
-				// todo - error sound
-			}
-		}
 	}
 	
 	function killGhost(b:FlxObject, g:FlxObject) {

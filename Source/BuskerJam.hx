@@ -1,3 +1,4 @@
+import data.Library;
 import nme.display.Bitmap;
 import nme.events.Event;
 import nme.Lib;
@@ -19,10 +20,12 @@ class BuskerJam extends FlxGame {
 	static function nothing(e:Event) {	}
 
 	public function new() {
-		//super(240, 160, MenuState, 2);
-		//super(240, 160, LevelSelectState, 2);
-		super(240, 160, GameState, 2);
-		//forceDebugger = true;
+		if(Library.debug) {
+			super(240, 160, GameState, 2);
+			forceDebugger = true;
+		} else {
+			super(240, 160, MenuState, 2);
+		}
 	}
 	
 	override private function update():Void {
