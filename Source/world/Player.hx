@@ -9,16 +9,22 @@ import org.flixel.FlxSprite;
 import world.Splosion;
 import utils.Colors;
 import utils.Utils;
+import nme.display.BitmapData;
+
 
 class Player extends WarpSprite {
 	public var coins:Int;
 	public var kills:Int;
 	public var arrow:FlxSprite;
 	
+	static var clickMap:BitmapData;
+
+	
 	var isMoving:Bool;
 	var facingNext:Int;
 	var bloodSplosion:Splosion;
 	
+
 	public function new(level:Level, start:FlxPoint) {
 		super(level);
 		
@@ -40,6 +46,9 @@ class Player extends WarpSprite {
 		bloodSplosion = new Splosion(Colors.YELLOW);
 		
 		coins = 20;
+		
+		clickMap = Library.getImage(Image.CLICK_MAP);
+
 	}
 	
 	public function explode() {
@@ -53,20 +62,44 @@ class Player extends WarpSprite {
 		arrow.y = y - 5;
 	}
 	
+
+	
+	function getCommand():Command {
+		var color = clickMap.getPixel(FlxG.mouse.screenX, FlxG.mouse.screenY);
+		
+		switch (color) {
+			case 0xff00ff:
+				return UP;
+			case 0x0000ff:
+				return RIGHT;
+			case 0x00ffff:
+				return DOWN;
+			case 0xff0000:
+				return LEFT;
+			default:
+				return TOWER;
+		}
+	}
+	
+	
 	override public function update() {
 		super.update();
-
+		var touch:Command = null;
+		if(FlxG.mouse.justPressed()) {
+			 touch = getCommand();
+		}
+		
 		// change facing according to keyboard input
-		if (FlxG.keys.A || FlxG.keys.LEFT) {
+		if (FlxG.keys.A || FlxG.keys.LEFT || touch==LEFT) {
 			facingNext = FlxObject.LEFT;
 			arrow.play("W");
-		} if (FlxG.keys.D || FlxG.keys.RIGHT) {
+		} if (FlxG.keys.D || FlxG.keys.RIGHT || touch==RIGHT) {
 			facingNext = FlxObject.RIGHT;
 			arrow.play("E");
-		} if (FlxG.keys.S || FlxG.keys.DOWN) {
+		} if (FlxG.keys.S || FlxG.keys.DOWN || touch==DOWN) {
 			facingNext = FlxObject.DOWN;
 			arrow.play("S");
-		} if (FlxG.keys.W || FlxG.keys.UP) {
+		} if (FlxG.keys.W || FlxG.keys.UP || touch==UP) {
 			facingNext = FlxObject.UP;
 			arrow.play("N");
 		}
@@ -124,4 +157,12 @@ class Player extends WarpSprite {
 		
 		
 	}
+}
+
+enum Command {
+	UP;
+	DOWN;
+	LEFT;
+	RIGHT;
+	TOWER;
 }

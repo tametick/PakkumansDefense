@@ -27,7 +27,6 @@ import world.Player;
 
 class GameState extends BasicState {
 	static var hud:Bitmap;
-	static var clickMap:BitmapData;
 	var bg: FlxSprite;
 	var level:Level;
 	
@@ -65,23 +64,6 @@ class GameState extends BasicState {
 	var cursor:FlxSprite;
 	
 	
-	function getCommand():Command {
-		var color = clickMap.getPixel(FlxG.mouse.screenX, FlxG.mouse.screenY);
-		
-		switch (color) {
-			case 0xff00ff:
-				return UP;
-			case 0x0000ff:
-				return RIGHT;
-			case 0x00ffff:
-				return DOWN;
-			case 0xff0000:
-				return LEFT;
-			default:
-				return TOWER;
-		}
-	}
-	
 	override public function create():Void {
 		screenWidth = Std.int(FlxG.width * 2 / 3);
 		screenHeight = Std.int(FlxG.height * 2 / 3);
@@ -95,8 +77,6 @@ class GameState extends BasicState {
 			hud = new Bitmap(Library.getImage(Image.HUD_OVERLAY));
 			hud.width *= 2;
 			hud.height *= 2;
-			
-			clickMap = Library.getImage(Image.CLICK_MAP);
 		}
 		
 		var mouseIndex = FlxG._game.getChildIndex(FlxG._game._mouse);
@@ -295,12 +275,7 @@ class GameState extends BasicState {
 	
 	var up:FlxPoint;
 	override public function update() {
-		mouse.setText(FlxG.mouse.screenX + "," + FlxG.mouse.screenY);
-		if (FlxG.mouse.justPressed()) {
-			trace(getCommand());
-		}
-		
-		
+			
 		if (help < 3) {
 			if (FlxG.mouse.justPressed()) {
 				if (help == 1) {
@@ -427,10 +402,3 @@ class GameState extends BasicState {
 	}
 }
 
-enum Command {
-	UP;
-	DOWN;
-	LEFT;
-	RIGHT;
-	TOWER;
-}
