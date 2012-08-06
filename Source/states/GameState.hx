@@ -29,6 +29,11 @@ class GameState extends BasicState {
 	var bg: FlxSprite;
 	var level:Level;
 	
+	var screenWidth:Int;
+	var screenHeight:Int;
+	
+	var mouse:FlxText;
+	
 	var help:Int;
 	static var help1:FlxGroup;
 	static var help2:FlxGroup;
@@ -58,6 +63,12 @@ class GameState extends BasicState {
 	var cursor:FlxSprite;
 	
 	override public function create():Void {
+		screenWidth = Std.int(FlxG.width * 2 / 3);
+		screenHeight = Std.int(FlxG.height * 2 / 3);
+		
+		mouse = new FlxText(0, 0, 40);
+		mouse.scrollFactor.x = mouse.scrollFactor.y = 0;
+		
 		if (hud == null) {
 			hud = new Bitmap(Library.getImage(Image.HUD_OVERLAY));
 			hud.width *= 2;
@@ -67,9 +78,6 @@ class GameState extends BasicState {
 		var mouseIndex = FlxG._game.getChildIndex(FlxG._game._mouse);
 		FlxG._game.addChildAt(hud, mouseIndex);
 		
-		var w = Std.int(FlxG.width * 2 / 3);
-		var h = Std.int(FlxG.height * 2 / 3);
-		
 		FlxG.playMusic(Library.getMusic(THEME));
 		help = 1;
 		if (help1 == null) {				
@@ -77,13 +85,13 @@ class GameState extends BasicState {
 			help2 = new FlxGroup();
 			
 			var help1Bg = new FlxSprite(0, 0);
-			help1Bg.makeGraphic(w, h, 0x88000000);
+			help1Bg.makeGraphic(screenWidth, screenHeight, 0x88000000);
 			help1.add(help1Bg);
 			
-			var help1Text = new FlxText(-2, 0, w, "Tap edges to change direction");
+			var help1Text = new FlxText(-2, 0, screenWidth, "Tap edges to change direction");
 			help1Text.setFormat(Library.getFont().fontName,null,null,"center");
 			help1Text.scrollFactor.x = help1Text.scrollFactor.y = 0;
-			help1Text.y = h / 2 - help1Text.height + Library.tileSize +1;
+			help1Text.y = screenHeight / 2 - help1Text.height + Library.tileSize +1;
 			help1.add(help1Text);
 			
 			var w1 = new FlxSprite(0, 0);
@@ -103,10 +111,10 @@ class GameState extends BasicState {
 			s1.addAnimation("idle", [3]);
 			s1.play("idle");
 			w1.x = 1;
-			w1.y = (h - w1.height) / 2 - Library.tileSize;
+			w1.y = (screenHeight - w1.height) / 2 - Library.tileSize;
 			help1.add(w1);			
 			e1.x = Library.tileSize*(Library.levelW-1);
-			e1.y = (h - w1.height) / 2 - Library.tileSize;
+			e1.y = (screenHeight - w1.height) / 2 - Library.tileSize;
 			help1.add(e1);
 			n1.x = (Library.tileSize*Library.levelW-n1.width) /2;
 			n1.y = 1;
@@ -117,7 +125,7 @@ class GameState extends BasicState {
 			
 			
 			var help2Bg = new FlxSprite(0, 0);
-			help2Bg.makeGraphic(w, h, 0x88000000);
+			help2Bg.makeGraphic(screenWidth, screenHeight, 0x88000000);
 			help2.add(help2Bg);
 			
 			var w2 = new FlxSprite(0, 0);
@@ -150,10 +158,10 @@ class GameState extends BasicState {
 			help2.add(s2);
 			
 			
-			var help2Text = new FlxText(0, 0, w, "Tap center to build towers");
+			var help2Text = new FlxText(0, 0, screenWidth, "Tap center to build towers");
 			help2Text.setFormat(Library.getFont().fontName,null,null,"center");
 			help2Text.scrollFactor.x = help2Text.scrollFactor.y = 0;
-			help2Text.y = h / 2 - help2Text.height + Library.tileSize +1;
+			help2Text.y = screenHeight / 2 - help2Text.height + Library.tileSize +1;
 			help2.add(help2Text);
 		}
 				
@@ -171,15 +179,15 @@ class GameState extends BasicState {
 		levelCounter.scrollFactor.x = 0;
 		levelCounter.scrollFactor.y = 0;
 		
-		coinCounter = newText(w/4, -1, Std.int(FlxG.width - level.width - 8), "$: 20",Colors.LBLUE);
+		coinCounter = newText(screenWidth/4, -1, Std.int(FlxG.width - level.width - 8), "$: 20",Colors.LBLUE);
 		coinCounter.scrollFactor.x = 0;
 		coinCounter.scrollFactor.y = 0;
 		
-		ghostCounter = newText(w/2, -1, Std.int(FlxG.width - level.width - 8), "Kills: 0", Colors.PINK);
+		ghostCounter = newText(screenWidth/2, -1, Std.int(FlxG.width - level.width - 8), "Kills: 0", Colors.PINK);
 		ghostCounter.scrollFactor.x = 0;
 		ghostCounter.scrollFactor.y = 0;
 		
-		towerCounter = newText(w*3/4, -1, Std.int(FlxG.width - level.width - 8), "Towers: 0",Colors.YELLOW);
+		towerCounter = newText(screenWidth*3/4, -1, Std.int(FlxG.width - level.width - 8), "Towers: 0",Colors.YELLOW);
 		towerCounter.scrollFactor.x = 0;
 		towerCounter.scrollFactor.y = 0;
 		
@@ -190,10 +198,12 @@ class GameState extends BasicState {
 		
 		add(help1);
 		
-		var gap = FlxG.width * 2 / 3 - Library.levelW * Library.tileSize;
+		var gap = screenWidth - Library.levelW * Library.tileSize;
 		
 		FlxG.camera.scroll.y = -Library.tileSize * 1.5;
 		FlxG.camera.scroll.x = -gap/2;
+		
+		add(mouse);
 		
 		FlxG.camera.setZoom(3);
 	}
@@ -261,6 +271,11 @@ class GameState extends BasicState {
 	
 	var up:FlxPoint;
 	override public function update() {
+		if (mouse != null) {
+			mouse.setText(FlxG.mouse.screenX + "," + FlxG.mouse.screenY);
+		}
+		
+		
 		if (help < 3) {
 			if (FlxG.mouse.justPressed()) {
 				if (help == 1) {
