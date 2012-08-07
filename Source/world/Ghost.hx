@@ -1,5 +1,6 @@
 package world;
 
+import com.eclecticdesignstudio.motion.Actuate;
 import org.flixel.FlxG;
 import org.flixel.FlxPoint;
 import org.flixel.FlxSprite;
@@ -29,7 +30,16 @@ class Ghost extends WarpSprite {
 	
 	public function explode() {
 		visible = false;
-		bloodSplosion.explode(x,y);
+		bloodSplosion.explode(x, y);
+		visible = false;
+		bloodSplosion.explode(x, y);
+		
+		Actuate.timer(0.5).onComplete(remove);
+	}
+	
+	function remove() {
+		bloodSplosion.kill();
+		kill();
 	}
 	
 	var counter:Float;
