@@ -7,6 +7,7 @@ import org.flixel.FlxG;
 import org.flixel.FlxPoint;
 import org.flixel.plugin.photonstorm.FlxWeapon;
 import utils.Colors;
+import world.Level;
 
 class Tower extends WarpSprite {
 	public var weapon:FlxWeapon;
@@ -42,13 +43,21 @@ class Tower extends WarpSprite {
 			var target = level.getGhostInRange(this,range);
 			if (target != null) {
 				FlxG.play(Library.getSound(Sound.TOWER_SHOT));
-				weapon.fireAtTarget(target);
+				var angle = Std.int(180 / Math.PI * Math.atan2(target.y - y, target.x - x));
+				weapon.fireFromAngle(angle);
+				
+				if (level.activePowerups.exists(Type.enumConstructor(PowerupType.SHOTGUN))) {
+					weapon.fireFromAngle(angle-20);
+					weapon.fireFromAngle(angle+20);
+				}
+				
 			}
 		}
 		
-		var puName = Type.enumConstructor(PowerupType.CASHFORKILLS);
-		if (level.activePowerups.exists(puName)) {
+		if (level.activePowerups.exists(Type.enumConstructor(PowerupType.CASHFORKILLS))) {
 			setColor(Colors.GREEN);
+		} else if(level.activePowerups.exists(Type.enumConstructor(PowerupType.SHOTGUN))){
+			setColor(Colors.RED);
 		} else {
 			setColor(Colors.YELLOW);
 		}

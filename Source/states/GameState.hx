@@ -340,7 +340,7 @@ class GameState extends BasicState {
 	}
 	
 	function killGhost(b:FlxObject, g:FlxObject) {
-		if (level.activePowerups.exists("CASHFORKILLS")) {
+		if (level.activePowerups.exists(Type.enumConstructor(PowerupType.CASHFORKILLS))) {
 			level.player.coins++;
 		}
 		FlxG.play(Library.getSound(Sound.GHOST_HIT));
@@ -392,7 +392,7 @@ class GameState extends BasicState {
 	}
 	
 	function addPowerup() {
-		var pu = level.spawnPowerup(level.freePos[Utils.randomIntInRange(0, level.freePos.length)]);
+		var pu = level.spawnPowerup(level.freePos[Utils.randomIntInRange(0, level.freePos.length)-1]);
 		FlxG.play(Library.getSound(Sound.POWERUP));
 		add(level.powerupEffect);
 		level.powerupEffect.explode(pu.x, pu.y);
