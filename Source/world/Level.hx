@@ -22,9 +22,12 @@ class Level extends FlxTilemap {
 	public var powerups:FlxGroup;
 	public var powerupEffect:Splosion;
 	public var activePowerups:Hash<Float>;
+	public var freePos:Array<FlxPoint>;
 	
 	public function new(p:Player) {
 		super();
+		
+		freePos = [];
 		
 		var w = Library.levelW;
 		var h = Library.levelH;
@@ -138,7 +141,7 @@ class Level extends FlxTilemap {
 		var p = new Powerup(this, pos);
 		powerups.add(p);
 		if (Library.debug) {
-			//trace("powerup added "+pos.x);
+			//trace("powerup added "+pos.x+" "+pos.y);
 		}
 		return p;
 	}
@@ -232,6 +235,8 @@ class Level extends FlxTilemap {
 		activePowerups = null;
 		powerupEffect.destroy();
 		powerupEffect = null;
+		
+		freePos = null;
 		
 		p0 = null;
 		p1 = null;

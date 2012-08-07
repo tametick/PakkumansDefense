@@ -374,8 +374,12 @@ class GameState extends BasicState {
 	
 	function pickUpCoin(p:FlxObject, c:FlxObject) {	
 		FlxG.play(Library.getSound(Sound.MONEY));
+		
+		level.freePos.insert(0,new FlxPoint(Std.int(c.x/Library.tileSize),Std.int(c.y/Library.tileSize)));
+		
 		level.coins.remove(c, true);
 		level.player.coins++;
+				
 		coinCounter.text = "$: " + level.player.coins;
 		if (level.coins.length % 15 == 0) {
 			addPowerup();
@@ -386,7 +390,7 @@ class GameState extends BasicState {
 	}
 	
 	function addPowerup() {
-		var pu = level.spawnPowerup(level.getFreeTile());
+		var pu = level.spawnPowerup(level.freePos[Utils.randomIntInRange(0, level.freePos.length)]);
 		FlxG.play(Library.getSound(Sound.POWERUP));
 		add(level.powerupEffect);
 		level.powerupEffect.explode(pu.x, pu.y);
