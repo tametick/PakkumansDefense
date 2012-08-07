@@ -73,6 +73,8 @@ enum Image {
 	BUTTON;
 	BUTTON_ACTIVE;
 	CLICK_MAP;
+	CASH;
+	FREEZE;
 }
 
 enum Sound {

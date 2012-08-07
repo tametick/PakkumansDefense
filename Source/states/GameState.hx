@@ -42,6 +42,7 @@ class GameState extends BasicState {
 	var help:Int;
 	static var help1:FlxGroup;
 	static var help2:FlxGroup;
+	 
 	
 	public static var startingLevel:Int;
 	var levelNumber(default, setLevelNumber):Int;
@@ -169,7 +170,8 @@ class GameState extends BasicState {
 			help2Text.scrollFactor.x = help2Text.scrollFactor.y = 0;
 			help2Text.y = screenHeight / 2 - help2Text.height + Library.tileSize +1;
 			help2.add(help2Text);
-		}
+			
+			}
 				
 		Actuate.defaultEase = Linear.easeNone;
 		
@@ -275,6 +277,7 @@ class GameState extends BasicState {
 		add(level.bullets);
 		add(level.powerups);
 		
+			
 		if(towerCounter!=null) {
 			towerCounter.text = "Towers: 0";
 			ghostCounter.text = "Kills: "+level.player.kills;
@@ -309,17 +312,34 @@ class GameState extends BasicState {
 		FlxG.overlap(level.player, level.ghosts, gameOver);
 		FlxG.overlap(level.bullets, level.ghosts, killGhost);
 		
+		//check if powerups need to be removed from field
+		for (p in level.powerups.members) {
+			var pu = cast(p, Powerup);
+			if (pu.life <= 0) pu.remove();
+			}
+			
+		//check if active powerups need to stop being active
+		for (p in level.activePowerups.keys()) {
+			
+			var t = level.activePowerups.get(p);
+			t-= FlxG.elapsed;
+			if (t <= 0) level.activePowerups.remove(p);
+			else level.activePowerups.set(p,t);
+			}
+		
 		counter += FlxG.elapsed;
 		if (counter >= spawnRate) {
 			counter = 0;
 			level.spawnGhost();
-			level.spawnPowerup(new FlxPoint(7,5/*Library.tileSize*Library.levelW/2, Library.tileSize*Library.levelH/2*/));
 		}
 		
 		
 	}
 	
 	function killGhost(b:FlxObject, g:FlxObject) {
+		if (level.activePowerups.exists("CASHFORKILLS")) {
+			level.player.coins++;
+		}
 		FlxG.play(Library.getSound(Sound.GHOST_HIT));
 		b.kill();
 		level.ghosts.remove(g, true);
@@ -356,16 +376,24 @@ class GameState extends BasicState {
 		level.coins.remove(c, true);
 		level.player.coins++;
 		coinCounter.text = "$: " + level.player.coins;
-		
+		if (level.coins.length % 10 == 0) {
+			addPowerup();
+		}
 		if (level.coins.length < 1) {
 			newLevel();
 		}
 	}
 	
+	function addPowerup() {
+		level.spawnPowerup(level.getFreeTile());
+		}
+	
 	function pickUpPowerup(p:FlxObject, c:FlxObject) {	
 		FlxG.play(Library.getSound(Sound.MONEY));
-		level.powerups.remove(c, true);
-		//TODO assign powerup to player
+		var cc:Powerup = cast(c, Powerup);
+		level.activePowerups.set(Type.enumConstructor(cc.type), cc.duration);
+		level.powerups.remove(cc, true);
+		cc.remove();
 	}
 	
 	override public function destroy() {
@@ -395,6 +423,7 @@ class GameState extends BasicState {
 		cursor = null;
 		
 		FlxG._game.removeChild(hud);
+		
 	}
 }
 

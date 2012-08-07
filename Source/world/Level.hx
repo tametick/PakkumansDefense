@@ -19,6 +19,7 @@ class Level extends FlxTilemap {
 	public var towers:FlxGroup;
 	public var bullets:FlxGroup;
 	public var powerups:FlxGroup;
+	public var activePowerups:Hash<Float>;
 	
 	public function new(p:Player) {
 		super();
@@ -31,6 +32,8 @@ class Level extends FlxTilemap {
 		var mazeGenerator = new MazeGenerator(halfW, halfH);
 		mazeGenerator.initMaze();
 		mazeGenerator.createMaze();
+		
+		activePowerups = new Hash();
 		
 		// generate basic maze
 		var tilesIndex = [];
@@ -222,6 +225,7 @@ class Level extends FlxTilemap {
 		bullets = null;
 		powerups.destroy();
 		powerups = null;
+		activePowerups = null;
 		
 		p0 = null;
 		p1 = null;
