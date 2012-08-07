@@ -387,12 +387,13 @@ class GameState extends BasicState {
 	
 	function addPowerup() {
 		var pu = level.spawnPowerup(level.getFreeTile());
+		FlxG.play(Library.getSound(Sound.POWERUP));
 		add(level.powerupEffect);
 		level.powerupEffect.explode(pu.x, pu.y);
 	}
 	
 	function pickUpPowerup(p:FlxObject, c:FlxObject) {	
-		FlxG.play(Library.getSound(Sound.MONEY));
+		FlxG.play(Library.getSound(Sound.CASH_REGISTER));
 		var cc:Powerup = cast(c, Powerup);
 		level.activePowerups.set(Type.enumConstructor(cc.type), cc.duration);
 		level.powerups.remove(cc, true);

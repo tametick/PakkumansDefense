@@ -83,6 +83,7 @@ enum Sound {
 	MONEY;
 	TOWER_SHOT;
 	DEATH;
+	POWERUP;
 }
 
 enum Music {
