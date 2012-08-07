@@ -28,6 +28,16 @@ class Player extends WarpSprite {
 	var facingNext:Int;
 	var bloodSplosion:Splosion;
 	
+	override public function destroy() {
+		super.destroy();
+		if(arrow!=null)
+			arrow.destroy();
+		arrow = null;
+		
+		if(bloodSplosion!=null)
+			bloodSplosion.destroy();
+		bloodSplosion = null;
+	}
 
 	public function new(level:Level, start:FlxPoint) {
 		super(level);
@@ -51,8 +61,9 @@ class Player extends WarpSprite {
 		
 		coins = 20;
 		
-		clickMap = Library.getImage(Image.CLICK_MAP);
-
+		if(clickMap==null) {
+			clickMap = Library.getImage(Image.CLICK_MAP);
+		}
 	}
 	
 	public function explode() {

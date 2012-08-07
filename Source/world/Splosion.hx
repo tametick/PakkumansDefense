@@ -43,4 +43,9 @@ class Splosion extends FlxEmitter {
 			emitParticle();
 		}
 	}
+	
+	override public function destroy() {
+		FlxG.state.remove(this);
+		super.destroy();
+	}
 }

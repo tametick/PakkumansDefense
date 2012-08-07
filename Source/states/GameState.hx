@@ -31,6 +31,9 @@ class GameState extends BasicState {
 	var bg: FlxSprite;
 	var level:Level;
 	
+	// clear these on next level or game over
+	var deadGhosts:FlxGroup;
+	
 	public var screenWidth:Int;
 	public var screenHeight:Int;
 	
@@ -238,10 +241,14 @@ class GameState extends BasicState {
 			remove(level.towers);
 			remove(level.bullets);
 			remove(level.powerups);
-
+			
+			level.destroy();
+			deadGhosts.destroy();
+			deadGhosts = null;
 		}
 		
 		level = new Level(p);
+		deadGhosts = new FlxGroup();
 		
 		var c0 = 0;
 		var c1 = 0;
@@ -316,7 +323,10 @@ class GameState extends BasicState {
 		FlxG.play(Library.getSound(Sound.GHOST_HIT));
 		b.kill();
 		level.ghosts.remove(g, true);
-		cast(g,Ghost).explode();
+		cast(g, Ghost).explode();
+		
+		// remove dead ghosts later
+		deadGhosts.add(g);
 		
 		level.player.kills++;
 		ghostCounter.text = "Kills: " + level.player.kills;
@@ -359,6 +369,9 @@ class GameState extends BasicState {
 	}
 	
 	override public function destroy() {
+		deadGhosts.destroy();
+		deadGhosts = null;
+		
 		super.destroy();
 				
 		level.player.destroy();

@@ -31,15 +31,17 @@ class Ghost extends WarpSprite {
 	public function explode() {
 		visible = false;
 		bloodSplosion.explode(x, y);
-		visible = false;
-		bloodSplosion.explode(x, y);
-		
-		Actuate.timer(0.5).onComplete(remove);
 	}
 	
-	function remove() {
+	override public function destroy() {
+		bloodSplosion.destroy();
+		bloodSplosion = null;
+		super.destroy();
+	}
+	
+	override public function kill() {
 		bloodSplosion.kill();
-		kill();
+		super.kill();
 	}
 	
 	var counter:Float;
