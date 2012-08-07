@@ -21,6 +21,7 @@ import ui.Cursor;
 import utils.Colors;
 import utils.Utils;
 import world.Coin;
+import world.Powerup;
 import world.Ghost;
 import world.Level;
 import world.Player;
@@ -205,7 +206,9 @@ class GameState extends BasicState {
 		FlxG.camera.scroll.y = -Library.tileSize * 1.5;
 		FlxG.camera.scroll.x = -gap/2;
 		
-		add(mouse);
+		if (Library.debug) {
+			add(mouse);
+		}
 		
 		FlxG.camera.setZoom(3);
 	}
@@ -234,6 +237,8 @@ class GameState extends BasicState {
 			remove(level.ghosts);
 			remove(level.towers);
 			remove(level.bullets);
+			remove(level.powerups);
+
 		}
 		
 		level = new Level(p);
@@ -261,6 +266,7 @@ class GameState extends BasicState {
 		add(level.ghosts);
 		add(level.towers);
 		add(level.bullets);
+		add(level.powerups);
 		
 		if(towerCounter!=null) {
 			towerCounter.text = "Towers: 0";
@@ -292,6 +298,7 @@ class GameState extends BasicState {
 		super.update();
 		
 		FlxG.overlap(level.player, level.coins, pickUpCoin);
+		FlxG.overlap(level.player, level.powerups, pickUpPowerup);
 		FlxG.overlap(level.player, level.ghosts, gameOver);
 		FlxG.overlap(level.bullets, level.ghosts, killGhost);
 		
@@ -299,6 +306,7 @@ class GameState extends BasicState {
 		if (counter >= spawnRate) {
 			counter = 0;
 			level.spawnGhost();
+			level.spawnPowerup(new FlxPoint(7,5/*Library.tileSize*Library.levelW/2, Library.tileSize*Library.levelH/2*/));
 		}
 		
 		
@@ -342,6 +350,12 @@ class GameState extends BasicState {
 		if (level.coins.length < 1) {
 			newLevel();
 		}
+	}
+	
+	function pickUpPowerup(p:FlxObject, c:FlxObject) {	
+		FlxG.play(Library.getSound(Sound.MONEY));
+		level.powerups.remove(c, true);
+		//TODO assign powerup to player
 	}
 	
 	override public function destroy() {

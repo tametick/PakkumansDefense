@@ -18,6 +18,7 @@ class Level extends FlxTilemap {
 	public var coins:FlxGroup;
 	public var towers:FlxGroup;
 	public var bullets:FlxGroup;
+	public var powerups:FlxGroup;
 	
 	public function new(p:Player) {
 		super();
@@ -99,6 +100,7 @@ class Level extends FlxTilemap {
 		ghosts = new FlxGroup();
 		towers = new FlxGroup();
 		bullets = new FlxGroup();
+		powerups = new FlxGroup();
 	}
 	
 	public function spawnGhost():Ghost {
@@ -123,6 +125,15 @@ class Level extends FlxTilemap {
 			ghosts.add(g);
 		
 		return g;
+	}
+	
+	public function spawnPowerup(pos:FlxPoint):Powerup {
+		var p = new Powerup(this, pos);
+		powerups.add(p);
+		if (Library.debug) {
+			trace("powerup added "+pos.x);
+		}
+		return p;
 	}
 	
 	public function buildTower(pos:FlxPoint):Tower {
@@ -209,6 +220,8 @@ class Level extends FlxTilemap {
 		towers = null;
 		bullets.destroy();
 		bullets = null;
+		powerups.destroy();
+		powerups = null;
 		
 		p0 = null;
 		p1 = null;
