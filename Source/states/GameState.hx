@@ -243,6 +243,7 @@ class GameState extends BasicState {
 			remove(level.towers);
 			remove(level.bullets);
 			remove(level.powerups);
+			remove(level.powerupEffect);
 			
 			level.destroy();
 			deadGhosts.destroy();
@@ -276,7 +277,7 @@ class GameState extends BasicState {
 		add(level.towers);
 		add(level.bullets);
 		add(level.powerups);
-		
+		add(level.powerupEffect);
 			
 		if(towerCounter!=null) {
 			towerCounter.text = "Towers: 0";
@@ -385,8 +386,10 @@ class GameState extends BasicState {
 	}
 	
 	function addPowerup() {
-		level.spawnPowerup(level.getFreeTile());
-		}
+		var pu = level.spawnPowerup(level.getFreeTile());
+		add(level.powerupEffect);
+		level.powerupEffect.explode(pu.x, pu.y);
+	}
 	
 	function pickUpPowerup(p:FlxObject, c:FlxObject) {	
 		FlxG.play(Library.getSound(Sound.MONEY));

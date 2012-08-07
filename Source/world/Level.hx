@@ -7,6 +7,7 @@ import org.flixel.FlxPoint;
 import org.flixel.FlxSprite;
 import org.flixel.FlxTilemap;
 import org.flixel.FlxU;
+import utils.Colors;
 import utils.Utils;
 import world.Ghost;
 
@@ -19,6 +20,7 @@ class Level extends FlxTilemap {
 	public var towers:FlxGroup;
 	public var bullets:FlxGroup;
 	public var powerups:FlxGroup;
+	public var powerupEffect:Splosion;
 	public var activePowerups:Hash<Float>;
 	
 	public function new(p:Player) {
@@ -104,6 +106,8 @@ class Level extends FlxTilemap {
 		towers = new FlxGroup();
 		bullets = new FlxGroup();
 		powerups = new FlxGroup();
+		
+		powerupEffect = new Splosion(Colors.WHITE);
 	}
 	
 	public function spawnGhost():Ghost {
@@ -226,6 +230,8 @@ class Level extends FlxTilemap {
 		powerups.destroy();
 		powerups = null;
 		activePowerups = null;
+		powerupEffect.destroy();
+		powerupEffect = null;
 		
 		p0 = null;
 		p1 = null;
