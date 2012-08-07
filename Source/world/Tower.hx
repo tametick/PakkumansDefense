@@ -1,6 +1,8 @@
 package world;
 
 import data.Library;
+import world.Powerup;
+
 import org.flixel.FlxG;
 import org.flixel.FlxPoint;
 import org.flixel.plugin.photonstorm.FlxWeapon;
@@ -42,6 +44,13 @@ class Tower extends WarpSprite {
 				FlxG.play(Library.getSound(Sound.TOWER_SHOT));
 				weapon.fireAtTarget(target);
 			}
+		}
+		
+		var puName = Type.enumConstructor(PowerupType.CASHFORKILLS);
+		if (level.activePowerups.exists(puName)) {
+			setColor(Colors.GREEN);
+		} else {
+			setColor(Colors.YELLOW);
 		}
 	}
 	

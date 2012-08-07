@@ -8,6 +8,7 @@ import data.Library;
 import org.flixel.FlxU;
 import utils.Colors;
 import states.GameState;
+import world.Powerup;
 
 class Ghost extends WarpSprite {
 	var shade:UInt;
@@ -58,7 +59,8 @@ class Ghost extends WarpSprite {
 			p1 = new FlxPoint();
 		}
 		
-		if(!level.activePowerups.exists("FREEZE")){
+		var puName = Type.enumConstructor(PowerupType.FREEZE);
+		if(!level.activePowerups.exists(puName)){
 			// only calculate AI every 1 second
 			counter += FlxG.elapsed;
 			if (counter >= 1 && pathSpeed == 0) {
