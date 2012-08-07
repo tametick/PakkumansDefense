@@ -16,8 +16,9 @@ class MenuState extends BasicState {
 	override public function create():Void {
 		FlxG.playMusic(Library.getMusic(MENU));
 		
-		
-		FlxG.mouse.show();
+		if(!Library.mobile) {
+			FlxG.mouse.show();
+		}
 		
 		FlxG.fade(0, 0.5, true, null, true);
 		

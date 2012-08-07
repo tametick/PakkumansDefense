@@ -176,12 +176,14 @@ class GameState extends BasicState {
 		Actuate.defaultEase = Linear.easeNone;
 		
 		Log.setColor(0xFFFFFF);
-		FlxG.mouse.show();
+		if(!Library.mobile) {
+			FlxG.mouse.show();
+		}
 		FlxG.bgColor = Colors.BLACK;
 		
-		cursor = new Cursor();
+		//cursor = new Cursor();
 		newLevel();
-		add(cursor);
+		//add(cursor);
 		
 		levelCounter = newText(0, -1, Std.int(FlxG.width - level.width - 8), "Level "+startingLevel,Colors.LGREEN);
 		levelCounter.scrollFactor.x = 0;
@@ -223,7 +225,7 @@ class GameState extends BasicState {
 		if (startingLevel > levelNumber)
 			levelNumber = startingLevel;
 		
-		spawnRate = 3 / levelNumber;
+		spawnRate = 5 / levelNumber;
 		
 		
 		FlxG.fade(0, 0.5, true, null, true);
@@ -427,7 +429,7 @@ class GameState extends BasicState {
 		towerCounter = null;
 		
 		up = null;
-		cursor.destroy();
+		//cursor.destroy();
 		cursor = null;
 		
 		FlxG._game.removeChild(hud);
