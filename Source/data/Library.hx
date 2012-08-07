@@ -76,6 +76,7 @@ enum Image {
 	CLICK_MAP;
 	CASH;
 	FREEZE;
+	SHOTGUN;
 }
 
 enum Sound {
