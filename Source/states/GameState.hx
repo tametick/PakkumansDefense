@@ -376,7 +376,7 @@ class GameState extends BasicState {
 		level.coins.remove(c, true);
 		level.player.coins++;
 		coinCounter.text = "$: " + level.player.coins;
-		if (level.coins.length % 10 == 0) {
+		if (level.coins.length % 15 == 0) {
 			addPowerup();
 		}
 		if (level.coins.length < 1) {
