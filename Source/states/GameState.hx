@@ -189,19 +189,19 @@ class GameState extends BasicState {
 		newLevel();
 		//add(cursor);
 		
-		levelCounter = newText(0, -1, Std.int(FlxG.width - level.width - 8), "Level "+startingLevel,Colors.LGREEN);
+		levelCounter = newText(0, -1, Std.int(FlxG.width - level.width - 8), "Level (0:0)",Colors.LGREEN);
 		levelCounter.scrollFactor.x = 0;
 		levelCounter.scrollFactor.y = 0;
 		
-		coinCounter = newText(screenWidth/4, -1, Std.int(FlxG.width - level.width - 8), "$: 20",Colors.LBLUE);
+		coinCounter = newText(screenWidth/6*2, -1, Std.int(FlxG.width - level.width - 8), "$: 20",Colors.LBLUE);
 		coinCounter.scrollFactor.x = 0;
 		coinCounter.scrollFactor.y = 0;
 		
-		ghostCounter = newText(screenWidth/2, -1, Std.int(FlxG.width - level.width - 8), "Kills: 0", Colors.PINK);
+		ghostCounter = newText(screenWidth/6*3, -1, Std.int(FlxG.width - level.width - 8), "Kills: 0", Colors.PINK);
 		ghostCounter.scrollFactor.x = 0;
 		ghostCounter.scrollFactor.y = 0;
 		
-		towerCounter = newText(screenWidth*3/4, -1, Std.int(FlxG.width - level.width - 8), "Towers: 0",Colors.YELLOW);
+		towerCounter = newText(screenWidth*4/6, -1, Std.int(FlxG.width - level.width - 8), "Towers: 0",Colors.YELLOW);
 		towerCounter.scrollFactor.x = 0;
 		towerCounter.scrollFactor.y = 0;
 		
@@ -296,7 +296,7 @@ class GameState extends BasicState {
 	
 	var up:FlxPoint;
 	override public function update() {
-			
+			levelCounter.text = "Level " + levelNumber + "(" + Std.int((Std.int(level.player.time) / 60)) + ":" + (Std.int(level.player.time) % 60) + ")";
 		if (help < 3) {
 			if (FlxG.mouse.justPressed()) {
 				if (help == 1) {
@@ -339,7 +339,6 @@ class GameState extends BasicState {
 			counter = 0;
 			level.spawnGhost();
 		}
-		
 		
 	}
 	

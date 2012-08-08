@@ -24,6 +24,7 @@ class Level extends FlxTilemap {
 	public var activePowerups:Hash<Float>;
 	public var freePos:Array<FlxPoint>;
 	
+	
 	public function new(p:Player) {
 		super();
 		
@@ -111,6 +112,7 @@ class Level extends FlxTilemap {
 		powerups = new FlxGroup();
 		
 		powerupEffect = new Splosion(Colors.WHITE);
+		
 	}
 	
 	public function spawnGhost():Ghost {

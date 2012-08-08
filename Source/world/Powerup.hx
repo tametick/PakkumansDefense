@@ -12,8 +12,6 @@ class Powerup extends WarpSprite {
 		super(level);
 		life = 4; 
         type = Type.createEnum(PowerupType, FlxG.getRandom(Type.getEnumConstructs(PowerupType)));
-
-		//TODO diferent graphics and powerup names
 		
 		var clr:Int, img:Image;
 		switch(type) {

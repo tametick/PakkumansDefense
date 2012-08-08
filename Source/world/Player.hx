@@ -18,6 +18,7 @@ class Player extends WarpSprite {
 	public var coins:Int;
 	public var kills:Int;
 	public var arrow:FlxSprite;
+	public var time:Float;
 	
 	static var clickMap:BitmapData;
 	
@@ -41,6 +42,8 @@ class Player extends WarpSprite {
 
 	public function new(level:Level, start:FlxPoint) {
 		super(level);
+		
+		time = 0;
 		
 		loadGraphic(Library.getFilename(Image.PAKKU), true, true, 5, 5);
 		addAnimation("walk", [0, 1], 5);
@@ -105,7 +108,7 @@ class Player extends WarpSprite {
 	
 	override public function update() {
 		super.update();
-		
+		time += FlxG.elapsed;
 		if (thinking) {
 			if (delay >= 3) {
 					spawnTower();
