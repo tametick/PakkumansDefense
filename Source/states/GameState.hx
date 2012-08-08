@@ -7,6 +7,7 @@ import data.Score;
 import haxe.Log;
 import nme.display.Bitmap;
 import nme.display.BitmapData;
+import nme.display.PixelSnapping;
 import org.flixel.FlxG;
 import org.flixel.FlxGroup;
 import org.flixel.FlxObject;
@@ -28,6 +29,7 @@ import world.Player;
 
 class GameState extends BasicState {
 	static var hud:Bitmap;
+	static var buttons:Bitmap;
 	var bg: FlxSprite;
 	var level:Level;
 	
@@ -78,11 +80,13 @@ class GameState extends BasicState {
 		
 		if (hud == null) {
 			hud = new Bitmap(Library.getImage(Image.HUD_OVERLAY));
-			hud.width *= 2;
-			hud.height *= 2;
+			buttons = new Bitmap(Library.getImage(Image.BUTTONS_OVERLAY),PixelSnapping.AUTO,true);
+			buttons.width = hud.width *= 2;
+			buttons.height = hud.height *= 2;
 		}
 		
 		var mouseIndex = FlxG._game.getChildIndex(FlxG._game._mouse);
+		FlxG._game.addChildAt(buttons, mouseIndex);
 		FlxG._game.addChildAt(hud, mouseIndex);
 		
 		FlxG.playMusic(Library.getMusic(THEME));
@@ -433,6 +437,7 @@ class GameState extends BasicState {
 		cursor = null;
 		
 		FlxG._game.removeChild(hud);
+		FlxG._game.removeChild(buttons);
 		
 	}
 }

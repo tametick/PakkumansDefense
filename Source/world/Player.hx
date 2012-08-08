@@ -187,7 +187,7 @@ class Player extends WarpSprite {
 						if (level.player.coins >= 20 || Library.debug) {
 							FlxG.play(Library.getSound(Sound.CASH_REGISTER));
 							level.player.coins -= 20;				
-							cast(FlxG.state, GameState).coinCounter.text="Money: " + level.player.coins;
+							cast(FlxG.state, GameState).coinCounter.text="$: " + level.player.coins;
 							level.buildTower(fakeMouse);
 							cast(FlxG.state, GameState).towerCounter.text = "Towers: " + level.towers.length;
 							arrow.setColor(Colors.YELLOW);

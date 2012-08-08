@@ -63,6 +63,7 @@ class Library {
 enum Image {
 	BG;
 	HUD_OVERLAY;
+	BUTTONS_OVERLAY;
 	HIGHSCORE;
 	LEVEL_SELECT;
 	CURSOR;
