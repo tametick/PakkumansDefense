@@ -320,8 +320,11 @@ class GameState extends BasicState {
 		if (startingLevel > levelNumber)
 			levelNumber = startingLevel;
 		
+		#if keyboard
+		spawnRate = 4 / levelNumber;
+		#else
 		spawnRate = 5 / levelNumber;
-		
+		#end
 		
 		FlxG.fade(0, 0.5, true, null, true);
 		
@@ -538,11 +541,13 @@ class GameState extends BasicState {
 		cursor = null;
 		
 		FlxG._game.removeChild(hud);
+		#if !keyboard
 		FlxG._game.removeChild(buttonS);
 		FlxG._game.removeChild(buttonN);
 		FlxG._game.removeChild(buttonW);
 		FlxG._game.removeChild(buttonE);
 		FlxG._game.removeChild(buttonT);
+		#end
 	}
 }
 
