@@ -125,8 +125,7 @@ class Player extends WarpSprite {
 			 touch = getCommand();
 			 s.setHighlighted(touch);
 		} else if (FlxG.mouse.justReleased()) {
-			touch = getCommand();
-			s.setUnhighlighted(touch);
+			s.setUnhighlighted(getCommand());
 		}
 		
 		// change facing according to keyboard input
