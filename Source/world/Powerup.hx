@@ -10,7 +10,7 @@ class Powerup extends WarpSprite {
 	public var duration:Float;
 	public function new(level:Level, start:FlxPoint) {
 		super(level);
-		life = 4; 
+		life = 6; 
         type = Type.createEnum(PowerupType, FlxG.getRandom(Type.getEnumConstructs(PowerupType)));
 		
 		var clr:Int, img:Image;
@@ -18,15 +18,15 @@ class Powerup extends WarpSprite {
 			case FREEZE: 
 				clr = Colors.LBLUE; 
 				img = Image.FREEZE; 
-				duration = 4; 
+				duration = 6; 
 			case CASHFORKILLS: 
 				clr = Colors.GREEN; 
 				img = Image.CASH; 
-				duration = 4; 
+				duration = 6; 
 			case SHOTGUN:
 				clr = Colors.RED; 
 				img = Image.SHOTGUN; 
-				duration = 4; 
+				duration = 6; 
 			}
 		
 		loadGraphic(Library.getFilename(img));
@@ -52,4 +52,4 @@ enum PowerupType {
 	FREEZE;
 	CASHFORKILLS;
 	SHOTGUN;
-	}
+}

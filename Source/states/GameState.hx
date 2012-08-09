@@ -67,17 +67,22 @@ class GameState extends BasicState {
 		switch (direction) {
 			case LEFT:
 				buttonW.bitmapData = buttonW2Data;
+				FlxG.play(Library.getSound(CLICK));
 			case RIGHT:
 				buttonE.bitmapData = buttonE2Data;
+				FlxG.play(Library.getSound(CLICK));
 			case UP:
 				buttonN.bitmapData = buttonN2Data;
+				FlxG.play(Library.getSound(CLICK));
 			case DOWN:
 				buttonS.bitmapData = buttonS2Data;
+				FlxG.play(Library.getSound(CLICK));
 			case TOWER:
 				if (level.player.coins < Library.towerCost) {
 					buttonT.bitmapData = buttonT2DataR;
 				} else {
 					buttonT.bitmapData = buttonT2Data;
+					FlxG.play(Library.getSound(CLICK));
 				}
 		}
 	}
@@ -257,7 +262,7 @@ class GameState extends BasicState {
 			help2Text.y = screenHeight / 2 - help2Text.height + Library.tileSize +1;
 			help2.add(help2Text);
 			
-			}
+		}
 				
 		Actuate.defaultEase = Linear.easeNone;
 		

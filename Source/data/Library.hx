@@ -92,6 +92,7 @@ enum Image {
 }
 
 enum Sound {
+	CLICK;
 	CASH_REGISTER;
 	GHOST_HIT;
 	MONEY;
