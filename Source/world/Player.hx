@@ -111,12 +111,11 @@ class Player extends WarpSprite {
 		time += FlxG.elapsed;
 		if (thinking) {
 			if (delay >= 3) {
-					spawnTower();
-					delay = 0;
-				}
-			else {
-				  delay ++;
-				 } 
+				spawnTower();
+				delay = 0;
+			} else {
+				delay ++;
+			}
 		}
 		
 		var touch:Command = null;
@@ -142,7 +141,11 @@ class Player extends WarpSprite {
 			facingNext = FlxObject.UP;
 			arrow.play("N");
 		} if (touch == TOWER) {
-			spawnTower();
+			if (level.player.coins >= Library.towerCost || Library.debug) {
+				spawnTower();
+			} else {
+				FlxG.play(Library.getSound(Sound.ERROR));
+			}
 		}
 		
 		if (!isMoving) {
@@ -191,15 +194,13 @@ class Player extends WarpSprite {
 				
 				if (!(j == tileX && i== tileY)) {
 					if (!level.isFree(j, i) && !towerThere) {
-						if (level.player.coins >= 20 || Library.debug) {
-							FlxG.play(Library.getSound(Sound.CASH_REGISTER));
-							level.player.coins -= 20;				
-							cast(FlxG.state, GameState).coinCounter.text="$: " + level.player.coins;
-							level.buildTower(fakeMouse);
-							cast(FlxG.state, GameState).towerCounter.text = "Towers: " + level.towers.length;
-							arrow.setColor(Colors.YELLOW);
-							return;
-						}
+						FlxG.play(Library.getSound(Sound.CASH_REGISTER));
+						level.player.coins -= Library.towerCost;				
+						cast(FlxG.state, GameState).coinCounter.text="$: " + level.player.coins;
+						level.buildTower(fakeMouse);
+						cast(FlxG.state, GameState).towerCounter.text = "Towers: " + level.towers.length;
+						arrow.setColor(Colors.YELLOW);
+						return;
 					}
 				}
 			}

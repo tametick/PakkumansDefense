@@ -11,7 +11,9 @@ class Library {
 	public static inline var levelW = 15;
 	public static inline var levelH = 11;
 	
-	public static inline var debug = true;
+	public static inline var towerCost = 20;
+	
+	public static inline var debug = false;
 	public static inline var mobile = true;
 	
 	static var assets:Hash<Dynamic> = new Hash<Dynamic>();
@@ -67,10 +69,12 @@ enum Image {
 	BUTTONS_OVERLAY_N;
 	BUTTONS_OVERLAY_W;
 	BUTTONS_OVERLAY_E;
+	BUTTONS_OVERLAY_T;
 	BUTTONS_OVERLAY_S2;
 	BUTTONS_OVERLAY_N2;
 	BUTTONS_OVERLAY_W2;
 	BUTTONS_OVERLAY_E2;
+	BUTTONS_OVERLAY_T2;
 	HIGHSCORE;
 	LEVEL_SELECT;
 	CURSOR;
@@ -94,6 +98,7 @@ enum Sound {
 	TOWER_SHOT;
 	DEATH;
 	POWERUP;
+	ERROR;
 }
 
 enum Music {

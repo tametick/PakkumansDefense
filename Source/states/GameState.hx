@@ -33,15 +33,18 @@ class GameState extends BasicState {
 	static var buttonN:Bitmap;
 	static var buttonE:Bitmap;
 	static var buttonW:Bitmap;
+	static var buttonT:Bitmap;
 	
 	static var buttonSData:BitmapData;
 	static var buttonNData:BitmapData;
 	static var buttonEData:BitmapData;
 	static var buttonWData:BitmapData;
+	static var buttonTData:BitmapData;
 	static var buttonS2Data:BitmapData;
 	static var buttonN2Data:BitmapData;
 	static var buttonE2Data:BitmapData;
 	static var buttonW2Data:BitmapData;
+	static var buttonT2Data:BitmapData;
 	
 	var bg: FlxSprite;
 	var level:Level;
@@ -69,6 +72,7 @@ class GameState extends BasicState {
 			case DOWN:
 				buttonS.bitmapData = buttonS2Data;
 			case TOWER:
+				buttonT.bitmapData = buttonT2Data;
 		}
 	}
 	public function setUnhighlighted(direction:Command) {
@@ -82,6 +86,7 @@ class GameState extends BasicState {
 			case DOWN:
 				buttonS.bitmapData = buttonSData;
 			case TOWER:
+				buttonT.bitmapData = buttonTData;
 		}
 	}
 	
@@ -125,14 +130,18 @@ class GameState extends BasicState {
 			buttonN = new Bitmap(buttonNData = Library.getImage(Image.BUTTONS_OVERLAY_N), PixelSnapping.AUTO, true);
 			buttonW = new Bitmap(buttonWData = Library.getImage(Image.BUTTONS_OVERLAY_W), PixelSnapping.AUTO, true);
 			buttonE = new Bitmap(buttonEData = Library.getImage(Image.BUTTONS_OVERLAY_E), PixelSnapping.AUTO, true);
+			buttonT = new Bitmap(buttonTData = Library.getImage(Image.BUTTONS_OVERLAY_T), PixelSnapping.AUTO, true);
 			buttonS2Data = Library.getImage(Image.BUTTONS_OVERLAY_S2);
 			buttonN2Data = Library.getImage(Image.BUTTONS_OVERLAY_N2);
 			buttonW2Data = Library.getImage(Image.BUTTONS_OVERLAY_W2);
 			buttonE2Data = Library.getImage(Image.BUTTONS_OVERLAY_E2);
+			buttonT2Data = Library.getImage(Image.BUTTONS_OVERLAY_T2);
 			buttonW.y = buttonE.y = 84;
 			buttonE.x = 359;
 			buttonS.x = buttonN.x = 126;
 			buttonS.y = 240;
+			buttonT.x = 180;
+			buttonT.y = 100;
 		}
 		
 		var mouseIndex = FlxG._game.getChildIndex(FlxG._game._mouse);
@@ -142,6 +151,7 @@ class GameState extends BasicState {
 		FlxG._game.addChild(buttonN);
 		FlxG._game.addChild(buttonW);
 		FlxG._game.addChild(buttonE);
+		FlxG._game.addChild(buttonT);
 		
 		FlxG.playMusic(Library.getMusic(THEME));
 		help = 1;
@@ -247,7 +257,7 @@ class GameState extends BasicState {
 		levelCounter.scrollFactor.x = 0;
 		levelCounter.scrollFactor.y = 0;
 		
-		coinCounter = newText(screenWidth/6*2, -1, Std.int(FlxG.width - level.width - 8), "$: 20",Colors.LBLUE);
+		coinCounter = newText(screenWidth/6*2, -1, Std.int(FlxG.width - level.width - 8), "$: "+Library.towerCost,Colors.LBLUE);
 		coinCounter.scrollFactor.x = 0;
 		coinCounter.scrollFactor.y = 0;
 		
@@ -494,6 +504,7 @@ class GameState extends BasicState {
 		FlxG._game.removeChild(buttonN);
 		FlxG._game.removeChild(buttonW);
 		FlxG._game.removeChild(buttonE);
+		FlxG._game.removeChild(buttonT);
 	}
 }
 
