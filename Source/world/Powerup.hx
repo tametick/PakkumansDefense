@@ -28,12 +28,14 @@ class Powerup extends WarpSprite {
 				img = Image.SHOTGUN; 
 				duration = 4; 
 			}
+		
 		loadGraphic(Library.getFilename(img));
-		
 		setColor(clr);
-		
-		setPosition(start);
+		if(start!=null){
+			setPosition(start);
+		}
 		start = null;
+		
 	}
 	
 	override public function update() {

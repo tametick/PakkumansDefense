@@ -102,6 +102,7 @@ class GameState extends BasicState {
 	public var coinCounter:FlxText;
 	var ghostCounter:FlxText;
 	public var towerCounter:FlxText;
+	public var timeCounter:FlxText;
 	
 	var killedGhosts:Int;
 	var spawnRate:Float;
@@ -243,19 +244,23 @@ class GameState extends BasicState {
 		newLevel();
 		//add(cursor);
 		
-		levelCounter = newText(0, -1, Std.int(FlxG.width - level.width - 8), "Level (0:0)",Colors.LGREEN);
+		levelCounter = newText(0, -1, Std.int(FlxG.width - level.width - 8), "Level "+levelNumber,Colors.LGREEN);
 		levelCounter.scrollFactor.x = 0;
 		levelCounter.scrollFactor.y = 0;
 		
-		coinCounter = newText(screenWidth/6*2, -1, Std.int(FlxG.width - level.width - 8), "$: 20",Colors.LBLUE);
+		timeCounter = newText(screenWidth/5, -1, Std.int(FlxG.width - level.width - 8), "2:00",Colors.LBLUE);
+		timeCounter.scrollFactor.x = 0;
+		timeCounter.scrollFactor.y = 0;
+		
+		coinCounter = newText(screenWidth/5*2, -1, Std.int(FlxG.width - level.width - 8), "$: 20",Colors.LBLUE);
 		coinCounter.scrollFactor.x = 0;
 		coinCounter.scrollFactor.y = 0;
 		
-		ghostCounter = newText(screenWidth/6*3, -1, Std.int(FlxG.width - level.width - 8), "Kills: 0", Colors.PINK);
+		ghostCounter = newText(screenWidth/5*3, -1, Std.int(FlxG.width - level.width - 8), "Kills: 0", Colors.PINK);
 		ghostCounter.scrollFactor.x = 0;
 		ghostCounter.scrollFactor.y = 0;
 		
-		towerCounter = newText(screenWidth*4/6, -1, Std.int(FlxG.width - level.width - 8), "Towers: 0",Colors.YELLOW);
+		towerCounter = newText(screenWidth*4/5, -1, Std.int(FlxG.width - level.width - 8), "Towers: 0",Colors.YELLOW);
 		towerCounter.scrollFactor.x = 0;
 		towerCounter.scrollFactor.y = 0;
 		
@@ -343,6 +348,7 @@ class GameState extends BasicState {
 			towerCounter.text = "Towers: 0";
 			ghostCounter.text = "Kills: "+level.player.kills;
 			levelCounter.text = "Level " + levelNumber;
+			timeCounter.text = "2:00";
 		}
 		
 		counter = -3;
@@ -350,7 +356,11 @@ class GameState extends BasicState {
 	
 	var up:FlxPoint;
 	override public function update() {
-			levelCounter.text = "Level " + levelNumber + "(" + Std.int((Std.int(level.player.time) / 60)) + ":" + (Std.int(level.player.time) % 60) + ")";
+			
+			var min = Std.int(level.player.time) % 60;		
+			timeCounter.text = Std.int((Std.int(level.player.time) / 60)) + ":" ;
+			if (min < 10) timeCounter.text += "0";
+			timeCounter.text+= min;
 		if (help < 3) {
 			if (FlxG.mouse.justPressed()) {
 				if (help == 1) {
@@ -368,8 +378,8 @@ class GameState extends BasicState {
 		
 		super.update();
 		
-		FlxG.overlap(level.player, level.coins, pickUpCoin);
 		FlxG.overlap(level.player, level.powerups, pickUpPowerup);
+		FlxG.overlap(level.player, level.coins, pickUpCoin);
 		FlxG.overlap(level.player, level.ghosts, gameOver);
 		FlxG.overlap(level.bullets, level.ghosts, killGhost);
 		
@@ -413,7 +423,7 @@ class GameState extends BasicState {
 		coinCounter.text = "$: " + level.player.coins;
 	}
 	
-	function gameOver(p:FlxObject, g:FlxObject) {
+	public function gameOver(p:FlxObject, g:FlxObject) {
 		if (!active)
 			return;
 		active = false;
@@ -449,10 +459,17 @@ class GameState extends BasicState {
 	}
 	
 	function addPowerup() {
-		var pu = level.spawnPowerup(level.freePos[Utils.randomIntInRange(0, level.freePos.length)-1]);
-		FlxG.play(Library.getSound(Sound.POWERUP));
-		add(level.powerupEffect);
-		level.powerupEffect.explode(pu.x, pu.y);
+		var pu,pup, pl:FlxPoint, cnt = 0;
+		pl = new FlxPoint(level.player.tileX,level.player.tileY);
+		do { cnt++;
+			pup = level.freePos[Utils.randomIntInRange(0, level.freePos.length) - 1];
+		}while (pl != pup && cnt <= 10);
+		if (pup != null) {
+			pu = level.spawnPowerup(pup);
+			FlxG.play(Library.getSound(Sound.POWERUP));
+			add(level.powerupEffect);
+			level.powerupEffect.explode(pu.x, pu.y);
+		}
 	}
 	
 	function pickUpPowerup(p:FlxObject, c:FlxObject) {	

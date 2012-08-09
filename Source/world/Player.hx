@@ -25,6 +25,9 @@ class Player extends WarpSprite {
 	private var thinking:Bool;
 	private var delay:Int;
 	
+	public var tileX:Int;
+	public var tileY:Int;
+	
 	var isMoving:Bool;
 	var facingNext:Int;
 	var bloodSplosion:Splosion;
@@ -42,8 +45,6 @@ class Player extends WarpSprite {
 
 	public function new(level:Level, start:FlxPoint) {
 		super(level);
-		
-		time = 0;
 		
 		loadGraphic(Library.getFilename(Image.PAKKU), true, true, 5, 5);
 		addAnimation("walk", [0, 1], 5);
@@ -108,7 +109,10 @@ class Player extends WarpSprite {
 	
 	override public function update() {
 		super.update();
-		time += FlxG.elapsed;
+		time -= FlxG.elapsed;
+		if (time <= 0) {
+			cast(FlxG.state, GameState).gameOver(null, null);
+		}
 		if (thinking) {
 			if (delay >= 3) {
 					spawnTower();
@@ -155,11 +159,12 @@ class Player extends WarpSprite {
 				move();
 			}
 		}
+		
+		tileX = Utils.pixelToTile(x);
+		tileY = Utils.pixelToTile(y);
 	}
 	private function spawnTower() {
 		thinking = false;
-		var tileX = Utils.pixelToTile(x);
-		var tileY = Utils.pixelToTile(y);
 		
 		for ( ii in tileY - 1... tileY + 2) {
 			for ( jj in tileX - 1... tileX + 2) {

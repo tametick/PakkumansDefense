@@ -106,6 +106,8 @@ class Level extends FlxTilemap {
 			player.level = this;
 		}
 		
+		player.time = 120;
+		
 		ghosts = new FlxGroup();
 		towers = new FlxGroup();
 		bullets = new FlxGroup();
@@ -123,7 +125,7 @@ class Level extends FlxTilemap {
 		
 		var playerPos = new FlxPoint(player.x, player.y);
 		Utils.convertPixelToTilePosition(playerPos);
-		
+				
 		var tries = 0;
 		do {
 			pos = getFreeTile();
@@ -131,12 +133,20 @@ class Level extends FlxTilemap {
 			
 			posTaken = FlxG.overlap(ghosts, g);
 			tries++;
-		} while (FlxU.getDistance(pos, playerPos) < 5 || posTaken || tries>20);
+		} while (FlxU.getDistance(pos, playerPos) < 5 || posTaken || tries>20 || FlxU.getDistance(movePoint(pos, 10), movePoint(playerPos, 10)) < 5);
 		
 		if(g!=null)
 			ghosts.add(g);
 		
 		return g;
+	}
+	
+	public function movePoint(p:FlxPoint,d:Int):FlxPoint {
+		var alternateX = p.x + 5;
+		if (alternateX >= Library.levelW) alternateX -= Library.levelW;
+		var alternateY = p.y + 5;
+		if (alternateY >= Library.levelH) alternateY -= Library.levelH;
+		return new FlxPoint(alternateX, alternateY);
 	}
 	
 	public function spawnPowerup(pos:FlxPoint):Powerup {
