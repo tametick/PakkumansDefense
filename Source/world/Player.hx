@@ -135,19 +135,19 @@ class Player extends WarpSprite {
 		}
 		
 		// change facing according to keyboard input
-		if (FlxG.keys.A || FlxG.keys.LEFT || touch==LEFT) {
+		if (FlxG.keys.justPressed("A") || FlxG.keys.justPressed("LEFT") || touch==LEFT) {
 			facingNext = FlxObject.LEFT;
 			arrow.play("W");
-		} if (FlxG.keys.D || FlxG.keys.RIGHT || touch==RIGHT) {
+		} if (FlxG.keys.justPressed("D") || FlxG.keys.justPressed("RIGHT") || touch==RIGHT) {
 			facingNext = FlxObject.RIGHT;
 			arrow.play("E");
-		} if (FlxG.keys.S || FlxG.keys.DOWN || touch==DOWN) {
+		} if (FlxG.keys.justPressed("S") || FlxG.keys.justPressed("DOWN") || touch==DOWN) {
 			facingNext = FlxObject.DOWN;
 			arrow.play("S");
-		} if (FlxG.keys.W || FlxG.keys.UP || touch==UP) {
+		} if (FlxG.keys.justPressed("W") || FlxG.keys.justPressed("UP") || touch==UP) {
 			facingNext = FlxObject.UP;
 			arrow.play("N");
-		} if (FlxG.keys.SPACE ||touch == TOWER) {
+		} if (FlxG.keys.justPressed("SPACE") ||touch == TOWER) {
 			if (level.player.coins >= Library.towerCost || Library.debug) {
 				spawnTower();
 			} else {
