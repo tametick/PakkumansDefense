@@ -1,7 +1,10 @@
 package world;
 import data.Library;
 import org.flixel.FlxPoint;
+import states.GameState;
 import utils.Colors;
+import org.flixel.FlxG;
+
 
 class Coin extends WarpSprite {
 	public var type:CoinType;
@@ -18,8 +21,16 @@ class Coin extends WarpSprite {
 				makeGraphic(2, 2, Colors.BLUEGRAY);
 				snd = Sound.MONEY;
 			case BIG:
-				loadGraphic(Library.getFilename(Image.TOWER));
-				snd = Sound.MONEY;
+				loadGraphic(Library.getFilename(Image.FRUIT));
+				snd = Sound.FRUIT;
+				switch (cast(FlxG.state,GameState).levelNumber % 3) {
+					case 0:
+						setColor(Colors.ORANGE);
+					case 1:
+						setColor(Colors.YELLOW);
+					case 2:
+						setColor(Colors.PINK);
+				}
 		}
 		
 		

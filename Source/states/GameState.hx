@@ -102,7 +102,7 @@ class GameState extends BasicState {
 	}
 	
 	public static var startingLevel:Int;
-	var levelNumber(default, setLevelNumber):Int;
+	public var levelNumber(default, setLevelNumber):Int;
 	function setLevelNumber(l:Int):Int {
 		levelNumber = l;
 		

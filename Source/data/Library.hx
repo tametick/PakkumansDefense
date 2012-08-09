@@ -89,6 +89,7 @@ enum Image {
 	CASH;
 	FREEZE;
 	SHOTGUN;
+	FRUIT;
 }
 
 enum Sound {
@@ -100,6 +101,7 @@ enum Sound {
 	DEATH;
 	POWERUP;
 	ERROR;
+	FRUIT;
 }
 
 enum Music {
