@@ -280,7 +280,7 @@ class GameState extends BasicState {
 		levelCounter.scrollFactor.x = 0;
 		levelCounter.scrollFactor.y = 0;
 		
-		timeCounter = newText(screenWidth/5, -1, Std.int(FlxG.width - level.width - 8), "2:00",Colors.LBLUE);
+		timeCounter = newText(screenWidth/5, -1, Std.int(FlxG.width - level.width - 8), "2:00",Colors.ORANGE);
 		timeCounter.scrollFactor.x = 0;
 		timeCounter.scrollFactor.y = 0;
 		
