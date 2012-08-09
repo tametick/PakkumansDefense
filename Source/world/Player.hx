@@ -144,7 +144,7 @@ class Player extends WarpSprite {
 		} if (FlxG.keys.W || FlxG.keys.UP || touch==UP) {
 			facingNext = FlxObject.UP;
 			arrow.play("N");
-		} if (touch == TOWER) {
+		} if (FlxG.keys.SPACE ||touch == TOWER) {
 			if (level.player.coins >= Library.towerCost || Library.debug) {
 				spawnTower();
 			} else {

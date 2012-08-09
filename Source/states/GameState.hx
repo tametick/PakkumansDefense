@@ -45,6 +45,8 @@ class GameState extends BasicState {
 	static var buttonE2Data:BitmapData;
 	static var buttonW2Data:BitmapData;
 	static var buttonT2Data:BitmapData;
+	static var buttonT2DataR:BitmapData;
+
 	
 	var bg: FlxSprite;
 	var level:Level;
@@ -72,7 +74,11 @@ class GameState extends BasicState {
 			case DOWN:
 				buttonS.bitmapData = buttonS2Data;
 			case TOWER:
-				buttonT.bitmapData = buttonT2Data;
+				if (level.player.coins < Library.towerCost) {
+					buttonT.bitmapData = buttonT2DataR;
+				} else {
+					buttonT.bitmapData = buttonT2Data;
+				}
 		}
 	}
 	public function setUnhighlighted(direction:Command) {
@@ -137,6 +143,8 @@ class GameState extends BasicState {
 			buttonW2Data = Library.getImage(Image.BUTTONS_OVERLAY_W2);
 			buttonE2Data = Library.getImage(Image.BUTTONS_OVERLAY_E2);
 			buttonT2Data = Library.getImage(Image.BUTTONS_OVERLAY_T2);
+			buttonT2DataR = Library.getImage(Image.BUTTONS_OVERLAY_T2R);
+
 			buttonW.y = buttonE.y = 84;
 			buttonE.x = 359;
 			buttonS.x = buttonN.x = 126;
@@ -262,15 +270,15 @@ class GameState extends BasicState {
 		timeCounter.scrollFactor.x = 0;
 		timeCounter.scrollFactor.y = 0;
 		
-		coinCounter = newText(screenWidth/5*2, -1, Std.int(FlxG.width - level.width - 8), "$: 20",Colors.LBLUE);
+		coinCounter = newText(screenWidth/6*2, -1, Std.int(FlxG.width - level.width - 8), "$: "+Library.towerCost,Colors.LBLUE);
 		coinCounter.scrollFactor.x = 0;
 		coinCounter.scrollFactor.y = 0;
 		
-		ghostCounter = newText(screenWidth/5*3, -1, Std.int(FlxG.width - level.width - 8), "Kills: 0", Colors.PINK);
+		ghostCounter = newText(screenWidth/6*3, -1, Std.int(FlxG.width - level.width - 8), "Kills: 0", Colors.PINK);
 		ghostCounter.scrollFactor.x = 0;
 		ghostCounter.scrollFactor.y = 0;
 		
-		towerCounter = newText(screenWidth*4/5, -1, Std.int(FlxG.width - level.width - 8), "Towers: 0",Colors.YELLOW);
+		towerCounter = newText(screenWidth/6*4.5, -1, Std.int(FlxG.width - level.width - 8), "Towers: 0",Colors.YELLOW);
 		towerCounter.scrollFactor.x = 0;
 		towerCounter.scrollFactor.y = 0;
 		
