@@ -152,9 +152,6 @@ class Level extends FlxTilemap {
 	public function spawnPowerup(pos:FlxPoint):Powerup {
 		var p = new Powerup(this, pos);
 		powerups.add(p);
-		if (Library.debug) {
-			//trace("powerup added "+pos.x+" "+pos.y);
-		}
 		return p;
 	}
 	

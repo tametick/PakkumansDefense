@@ -14,7 +14,6 @@ class Library {
 	public static inline var towerCost = 20;
 	
 	public static inline var debug = false;
-	public static inline var mobile = true;
 	
 	static var assets:Hash<Dynamic> = new Hash<Dynamic>();
 	

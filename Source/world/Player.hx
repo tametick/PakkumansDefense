@@ -109,6 +109,9 @@ class Player extends WarpSprite {
 	
 	override public function update() {
 		super.update();
+		if (cast(FlxG.state, GameState).help < 3)
+			return;
+		
 		time -= FlxG.elapsed;
 		if (time <= 0) {
 			cast(FlxG.state, GameState).gameOver(null, null);

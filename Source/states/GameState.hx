@@ -59,7 +59,7 @@ class GameState extends BasicState {
 	
 	var mouse:FlxText;
 	
-	var help:Int;
+	public var help:Int;
 	static var help1:FlxGroup;
 	static var help2:FlxGroup;
 	 
@@ -156,11 +156,13 @@ class GameState extends BasicState {
 		var mouseIndex = FlxG._game.getChildIndex(FlxG._game._mouse);
 		
 		FlxG._game.addChildAt(hud, mouseIndex);
+		#if !keyboard
 		FlxG._game.addChild(buttonS);
 		FlxG._game.addChild(buttonN);
 		FlxG._game.addChild(buttonW);
 		FlxG._game.addChild(buttonE);
 		FlxG._game.addChild(buttonT);
+		#end
 		
 		FlxG.playMusic(Library.getMusic(THEME));
 		help = 1;
@@ -172,12 +174,10 @@ class GameState extends BasicState {
 			help1Bg.makeGraphic(screenWidth, screenHeight, 0x88000000);
 			help1.add(help1Bg);
 			
+			#if keyboard
+			var help1Text = new FlxText(-2, 0, screenWidth, "Arrows/WASD to change direction");
+			#else
 			var help1Text = new FlxText(-2, 0, screenWidth, "Tap edges to change direction");
-			help1Text.setFormat(Library.getFont().fontName,null,null,"center");
-			help1Text.scrollFactor.x = help1Text.scrollFactor.y = 0;
-			help1Text.y = screenHeight / 2 - help1Text.height + Library.tileSize +1;
-			help1.add(help1Text);
-			
 			var w1 = new FlxSprite(0, 0);
 			var e1 = new FlxSprite(0, 0);
 			var n1 = new FlxSprite(0, 0);
@@ -206,12 +206,21 @@ class GameState extends BasicState {
 			s1.x = n1.x;
 			s1.y = Library.tileSize * Library.levelH - s1.height - 1;
 			help1.add(s1);
+			#end
 			
+			help1Text.setFormat(Library.getFont().fontName,null,null,"center");
+			help1Text.scrollFactor.x = help1Text.scrollFactor.y = 0;
+			help1Text.y = screenHeight / 2 - help1Text.height + Library.tileSize +1;
+			help1.add(help1Text);
 			
 			var help2Bg = new FlxSprite(0, 0);
 			help2Bg.makeGraphic(screenWidth, screenHeight, 0x88000000);
 			help2.add(help2Bg);
 			
+			#if keyboard
+			var help2Text = new FlxText(0, 0, screenWidth, "Space bar to build towers");
+			#else
+			var help2Text = new FlxText(0, 0, screenWidth, "Tap center to build towers");
 			var w2 = new FlxSprite(0, 0);
 			var e2 = new FlxSprite(0, 0);
 			var n2 = new FlxSprite(0, 0);
@@ -240,9 +249,9 @@ class GameState extends BasicState {
 			help2.add(e2);
 			help2.add(n2);
 			help2.add(s2);
+			#end
 			
 			
-			var help2Text = new FlxText(0, 0, screenWidth, "Tap center to build towers");
 			help2Text.setFormat(Library.getFont().fontName,null,null,"center");
 			help2Text.scrollFactor.x = help2Text.scrollFactor.y = 0;
 			help2Text.y = screenHeight / 2 - help2Text.height + Library.tileSize +1;
@@ -253,9 +262,9 @@ class GameState extends BasicState {
 		Actuate.defaultEase = Linear.easeNone;
 		
 		Log.setColor(0xFFFFFF);
-		if(!Library.mobile) {
-			FlxG.mouse.show();
-		}
+		#if keyboard
+		FlxG.mouse.show();
+		#end
 		FlxG.bgColor = Colors.BLACK;
 		
 		//cursor = new Cursor();
@@ -373,14 +382,13 @@ class GameState extends BasicState {
 	}
 	
 	var up:FlxPoint;
-	override public function update() {
-			
-			var min = Std.int(level.player.time) % 60;		
-			timeCounter.text = Std.int((Std.int(level.player.time) / 60)) + ":" ;
-			if (min < 10) timeCounter.text += "0";
-			timeCounter.text+= min;
+	override public function update() {			
+		var min = Std.int(level.player.time) % 60;		
+		timeCounter.text = Std.int((Std.int(level.player.time) / 60)) + ":" ;
+		if (min < 10) timeCounter.text += "0";
+		timeCounter.text+= min;
 		if (help < 3) {
-			if (FlxG.mouse.justPressed()) {
+			if (FlxG.mouse.justPressed() || FlxG.keys.justReleased("SPACE")) {
 				if (help == 1) {
 					help = 2;
 					remove(help1);
