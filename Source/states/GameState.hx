@@ -476,13 +476,13 @@ class GameState extends BasicState {
 	}
 	
 	function pickUpCoin(p:FlxObject, c:FlxObject) {	
-		FlxG.play(Library.getSound(Sound.MONEY));
+		FlxG.play(Library.getSound(cast(c,Coin).snd));
 		
 		level.freePos.insert(0,new FlxPoint(Std.int(c.x/Library.tileSize),Std.int(c.y/Library.tileSize)));
 		
 		level.coins.remove(c, true);
 		level.player.coins++;
-				
+		if(cast(c,Coin).type==BIG)	level.player.coins+=9;	
 		coinCounter.text = "$: " + level.player.coins;
 		if (level.coins.length % 15 == 0) {
 			addPowerup();

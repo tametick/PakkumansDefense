@@ -77,6 +77,13 @@ class Level extends FlxTilemap {
 		var coinStart = new FlxPoint();
 		var x = 0;
 		var y = 0;
+		
+		var bigCX, bigCY;
+		do {
+			bigCX = Utils.randomInt(Std.int(Library.levelW / 2));
+			bigCY = Utils.randomInt(Std.int(Library.levelH / 2));
+		}while(map[bigCY*(Library.levelW)+bigCX]!=0);
+ trace(bigCX + " " + bigCY);
 		for (mi in 0...map.length) {
 			if (x >= Library.levelW) {
 				x = 0;
@@ -86,7 +93,15 @@ class Level extends FlxTilemap {
 			if (map[mi] == 0 && !(x==playerStart.x && y==playerStart.y)) {
 				coinStart.x = x;
 				coinStart.y = y;
-				coins.add(new Coin(this, coinStart));
+				if ((x == bigCX && y == bigCY) ||
+				(x == Library.levelW -bigCX-1 && y == bigCY)	||
+				(x == Library.levelW -bigCX-1 && y == Library.levelH-bigCY-1)	||
+				(x == bigCX && y == Library.levelH -  bigCY-1)) {
+					coins.add(new Coin(this, coinStart,BIG));
+				} else {
+					coins.add(new Coin(this, coinStart));
+				}
+				
 			}
 			
 			x++;
