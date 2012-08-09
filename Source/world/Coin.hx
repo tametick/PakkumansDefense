@@ -25,11 +25,11 @@ class Coin extends WarpSprite {
 				snd = Sound.FRUIT;
 				switch (cast(FlxG.state,GameState).levelNumber % 3) {
 					case 0:
-						setColor(Colors.ORANGE);
-					case 1:
-						setColor(Colors.YELLOW);
-					case 2:
 						setColor(Colors.PINK);
+					case 1:
+						setColor(Colors.ORANGE);
+					case 2:
+						setColor(Colors.RED);
 				}
 		}
 		
