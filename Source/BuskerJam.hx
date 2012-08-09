@@ -4,7 +4,6 @@ import nme.events.Event;
 import nme.Lib;
 
 import flash.events.MouseEvent;
-
 import org.flixel.FlxGame;
 import states.GameState;
 import states.HighScoreState;
@@ -18,7 +17,7 @@ class BuskerJam extends FlxGame {
 		Lib.current.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, nothing);
 	}
 	static function nothing(e:Event) {	}
-
+	
 	public function new() {
 		if(Library.debug) {
 			super(240, 160, GameState, 2);

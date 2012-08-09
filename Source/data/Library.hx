@@ -11,7 +11,7 @@ class Library {
 	public static inline var levelW = 15;
 	public static inline var levelH = 11;
 	
-	public static inline var debug = false;
+	public static inline var debug = true;
 	public static inline var mobile = true;
 	
 	static var assets:Hash<Dynamic> = new Hash<Dynamic>();
@@ -63,7 +63,10 @@ class Library {
 enum Image {
 	BG;
 	HUD_OVERLAY;
-	BUTTONS_OVERLAY;
+	BUTTONS_OVERLAY_S;
+	BUTTONS_OVERLAY_N;
+	BUTTONS_OVERLAY_W;
+	BUTTONS_OVERLAY_E;
 	HIGHSCORE;
 	LEVEL_SELECT;
 	CURSOR;

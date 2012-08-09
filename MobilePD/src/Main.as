@@ -13,6 +13,8 @@ package
 	import flash.system.LoaderContext;
 	import flash.ui.Multitouch;
 	import flash.ui.MultitouchInputMode;
+	import flash.events.StageOrientationEvent;
+	import flash.display.StageOrientation;
 	
 	public class Main extends Sprite 
 	{
@@ -24,22 +26,33 @@ package
 		{
 			loading = new Loading();
 			addChild(loading);
-			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.align = StageAlign.TOP_LEFT;
+			stage.scaleMode = StageScaleMode.SHOW_ALL;
+			stage.align = StageAlign.TOP;
 			stage.addEventListener(Event.DEACTIVATE, deactivate);
 			
 			// touch or gesture?
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			
-			// entry point		
+			// entry point
 			var mLoader:Loader = new Loader();
 			var ctx:LoaderContext = new LoaderContext();
 			ctx.allowCodeImport = true;
 			mLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteHandler);
 			mLoader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onProgressHandler);
 			mLoader.loadBytes(new Game(), ctx);
-		}
+			
+			//stage.addEventListener(StageOrientationEvent.ORIENTATION_CHANGING, orientationChanging);
 
+		}
+		/*
+		private function orientationChanging(e:StageOrientationEvent):void 
+		{
+			if (e.afterOrientation == "default" || e.afterOrientation == "upsideDown")
+			{
+				e.preventDefault();
+			}
+		}
+		*/
 		private function onCompleteHandler(loadEvent:Event):void
 		{
 			var cnt:DisplayObject = loadEvent.currentTarget.content;

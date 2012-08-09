@@ -29,7 +29,10 @@ import world.Player;
 
 class GameState extends BasicState {
 	static var hud:Bitmap;
-	static var buttons:Bitmap;
+	static var button_s:Bitmap;
+	static var button_n:Bitmap;
+	static var button_e:Bitmap;
+	static var button_w:Bitmap;
 	var bg: FlxSprite;
 	var level:Level;
 	
@@ -80,14 +83,25 @@ class GameState extends BasicState {
 		
 		if (hud == null) {
 			hud = new Bitmap(Library.getImage(Image.HUD_OVERLAY));
-			buttons = new Bitmap(Library.getImage(Image.BUTTONS_OVERLAY),PixelSnapping.AUTO,true);
-			buttons.width = hud.width *= 2;
-			buttons.height = hud.height *= 2;
+			hud.width *= 2;
+			hud.height *= 2;
+			button_s = new Bitmap(Library.getImage(Image.BUTTONS_OVERLAY_S), PixelSnapping.AUTO, true);
+			button_n = new Bitmap(Library.getImage(Image.BUTTONS_OVERLAY_N), PixelSnapping.AUTO, true);
+			button_w = new Bitmap(Library.getImage(Image.BUTTONS_OVERLAY_W), PixelSnapping.AUTO, true);
+			button_e = new Bitmap(Library.getImage(Image.BUTTONS_OVERLAY_E), PixelSnapping.AUTO, true);
+			button_w.y = button_e.y = 84;
+			button_e.x = 359;
+			button_s.x = button_n.x = 126;
+			button_s.y = 240;
 		}
 		
 		var mouseIndex = FlxG._game.getChildIndex(FlxG._game._mouse);
-		FlxG._game.addChildAt(buttons, mouseIndex);
+		
 		FlxG._game.addChildAt(hud, mouseIndex);
+		FlxG._game.addChild(button_s);
+		FlxG._game.addChild(button_n);
+		FlxG._game.addChild(button_w);
+		FlxG._game.addChild(button_e);
 		
 		FlxG.playMusic(Library.getMusic(THEME));
 		help = 1;
@@ -436,8 +450,10 @@ class GameState extends BasicState {
 		cursor = null;
 		
 		FlxG._game.removeChild(hud);
-		FlxG._game.removeChild(buttons);
-		
+		FlxG._game.removeChild(button_s);
+		FlxG._game.removeChild(button_n);
+		FlxG._game.removeChild(button_w);
+		FlxG._game.removeChild(button_e);
 	}
 }
 
