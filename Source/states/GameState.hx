@@ -29,10 +29,20 @@ import world.Player;
 
 class GameState extends BasicState {
 	static var hud:Bitmap;
-	static var button_s:Bitmap;
-	static var button_n:Bitmap;
-	static var button_e:Bitmap;
-	static var button_w:Bitmap;
+	static var buttonS:Bitmap;
+	static var buttonN:Bitmap;
+	static var buttonE:Bitmap;
+	static var buttonW:Bitmap;
+	
+	static var buttonSData:BitmapData;
+	static var buttonNData:BitmapData;
+	static var buttonEData:BitmapData;
+	static var buttonWData:BitmapData;
+	static var buttonS2Data:BitmapData;
+	static var buttonN2Data:BitmapData;
+	static var buttonE2Data:BitmapData;
+	static var buttonW2Data:BitmapData;
+	
 	var bg: FlxSprite;
 	var level:Level;
 	
@@ -48,6 +58,32 @@ class GameState extends BasicState {
 	static var help1:FlxGroup;
 	static var help2:FlxGroup;
 	 
+	public function setHighlighted(direction:Command) {
+		switch (direction) {
+			case LEFT:
+				buttonW.bitmapData = buttonW2Data;
+			case RIGHT:
+				buttonE.bitmapData = buttonE2Data;
+			case UP:
+				buttonN.bitmapData = buttonN2Data;
+			case DOWN:
+				buttonS.bitmapData = buttonS2Data;
+			case TOWER:
+		}
+	}
+	public function setUnhighlighted(direction:Command) {
+		switch (direction) {
+			case LEFT:
+				buttonW.bitmapData = buttonWData;
+			case RIGHT:
+				buttonE.bitmapData = buttonEData;
+			case UP:
+				buttonN.bitmapData = buttonNData;
+			case DOWN:
+				buttonS.bitmapData = buttonSData;
+			case TOWER:
+		}
+	}
 	
 	public static var startingLevel:Int;
 	var levelNumber(default, setLevelNumber):Int;
@@ -85,23 +121,27 @@ class GameState extends BasicState {
 			hud = new Bitmap(Library.getImage(Image.HUD_OVERLAY));
 			hud.width *= 2;
 			hud.height *= 2;
-			button_s = new Bitmap(Library.getImage(Image.BUTTONS_OVERLAY_S), PixelSnapping.AUTO, true);
-			button_n = new Bitmap(Library.getImage(Image.BUTTONS_OVERLAY_N), PixelSnapping.AUTO, true);
-			button_w = new Bitmap(Library.getImage(Image.BUTTONS_OVERLAY_W), PixelSnapping.AUTO, true);
-			button_e = new Bitmap(Library.getImage(Image.BUTTONS_OVERLAY_E), PixelSnapping.AUTO, true);
-			button_w.y = button_e.y = 84;
-			button_e.x = 359;
-			button_s.x = button_n.x = 126;
-			button_s.y = 240;
+			buttonS = new Bitmap(buttonSData = Library.getImage(Image.BUTTONS_OVERLAY_S), PixelSnapping.AUTO, true);
+			buttonN = new Bitmap(buttonNData = Library.getImage(Image.BUTTONS_OVERLAY_N), PixelSnapping.AUTO, true);
+			buttonW = new Bitmap(buttonWData = Library.getImage(Image.BUTTONS_OVERLAY_W), PixelSnapping.AUTO, true);
+			buttonE = new Bitmap(buttonEData = Library.getImage(Image.BUTTONS_OVERLAY_E), PixelSnapping.AUTO, true);
+			buttonS2Data = Library.getImage(Image.BUTTONS_OVERLAY_S2);
+			buttonN2Data = Library.getImage(Image.BUTTONS_OVERLAY_N2);
+			buttonW2Data = Library.getImage(Image.BUTTONS_OVERLAY_W2);
+			buttonE2Data = Library.getImage(Image.BUTTONS_OVERLAY_E2);
+			buttonW.y = buttonE.y = 84;
+			buttonE.x = 359;
+			buttonS.x = buttonN.x = 126;
+			buttonS.y = 240;
 		}
 		
 		var mouseIndex = FlxG._game.getChildIndex(FlxG._game._mouse);
 		
 		FlxG._game.addChildAt(hud, mouseIndex);
-		FlxG._game.addChild(button_s);
-		FlxG._game.addChild(button_n);
-		FlxG._game.addChild(button_w);
-		FlxG._game.addChild(button_e);
+		FlxG._game.addChild(buttonS);
+		FlxG._game.addChild(buttonN);
+		FlxG._game.addChild(buttonW);
+		FlxG._game.addChild(buttonE);
 		
 		FlxG.playMusic(Library.getMusic(THEME));
 		help = 1;
@@ -450,10 +490,10 @@ class GameState extends BasicState {
 		cursor = null;
 		
 		FlxG._game.removeChild(hud);
-		FlxG._game.removeChild(button_s);
-		FlxG._game.removeChild(button_n);
-		FlxG._game.removeChild(button_w);
-		FlxG._game.removeChild(button_e);
+		FlxG._game.removeChild(buttonS);
+		FlxG._game.removeChild(buttonN);
+		FlxG._game.removeChild(buttonW);
+		FlxG._game.removeChild(buttonE);
 	}
 }
 

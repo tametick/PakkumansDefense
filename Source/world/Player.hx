@@ -120,8 +120,13 @@ class Player extends WarpSprite {
 		}
 		
 		var touch:Command = null;
+		var s = cast(FlxG.state, GameState);
 		if(FlxG.mouse.justPressed()) {
 			 touch = getCommand();
+			 s.setHighlighted(touch);
+		} else if (FlxG.mouse.justReleased()) {
+			touch = getCommand();
+			s.setUnhighlighted(touch);
 		}
 		
 		// change facing according to keyboard input
