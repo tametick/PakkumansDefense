@@ -90,6 +90,7 @@ enum Image {
 	FREEZE;
 	SHOTGUN;
 	FRUIT;
+	HASTE;
 }
 
 enum Sound {

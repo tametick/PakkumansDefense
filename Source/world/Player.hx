@@ -12,6 +12,7 @@ import world.Splosion;
 import utils.Colors;
 import utils.Utils;
 import nme.display.BitmapData;
+import world.Powerup;
 
 
 class Player extends WarpSprite {
@@ -49,7 +50,9 @@ class Player extends WarpSprite {
 		loadGraphic(Library.getFilename(Image.PAKKU), true, true, 5, 5);
 		addAnimation("walk", [0, 1], 5);
 		play("walk");
+		
 		setColor(Colors.YELLOW);
+		
 		
 		arrow = new FlxSprite();
 		arrow.loadGraphic(Library.getFilename(Image.ARROW), true, false, 16, 16);
@@ -168,6 +171,12 @@ class Player extends WarpSprite {
 		
 		tileX = Utils.pixelToTile(x);
 		tileY = Utils.pixelToTile(y);
+		
+		if (level.activePowerups.exists(Type.enumConstructor(PowerupType.HASTE))) {
+			setColor(Colors.PINK);
+		} else {
+			setColor(Colors.YELLOW);
+		}
 	}
 	private function spawnTower() {
 		thinking = false;
@@ -241,7 +250,9 @@ class Player extends WarpSprite {
 	function startMoving(dx:Int, dy:Int) {
 		isMoving = true;
 		var duration = 0.2;
-		
+		if (level.activePowerups.exists(Type.enumConstructor(PowerupType.HASTE))) {
+		 duration /= 2;
+		}
 		var rawX = this.x + dx * Library.tileSize;
 		var rawY = this.y + dy * Library.tileSize;
 		

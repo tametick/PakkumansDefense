@@ -43,6 +43,15 @@ class Powerup extends WarpSprite {
 				#else
 				duration = 6; 
 				#end
+				
+			case HASTE:
+				clr = Colors.PINK;
+				img = Image.HASTE;
+				#if keyboard
+				duration = 4; 
+				#else
+				duration = 6; 
+				#end
 			}
 		
 		loadGraphic(Library.getFilename(img));
@@ -68,4 +77,5 @@ enum PowerupType {
 	FREEZE;
 	CASHFORKILLS;
 	SHOTGUN;
+	HASTE;
 }
