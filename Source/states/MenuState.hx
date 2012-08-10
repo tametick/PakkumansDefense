@@ -24,8 +24,13 @@ class MenuState extends BasicState {
 		
 		bg = new FlxSprite(0, 0, Library.getFilename(Image.BG));
 		add(bg);
-		
-		text = newText(0, FlxG.height / 2 + 20, FlxG.width, "Click to Start",Colors.WHITE,"center");
+		var t;
+		#if keyboard
+			t = "Click or press Space to Start";
+		#else
+			t = "Tap to Start";
+		#end
+		text = newText(0, FlxG.height / 2 + 20, FlxG.width, t,Colors.WHITE,"center");
 		
 		toggleText();
 	}	
@@ -45,7 +50,7 @@ class MenuState extends BasicState {
 	override public function update():Void {
 		super.update();
 		
-		if (FlxG.mouse.justPressed() && active) {
+		if ((FlxG.mouse.justPressed()||FlxG.keys.justReleased("SPACE")||(FlxG.keys.justReleased("ENTER"))) && active) {
 			active = false;
 			FlxG.fade(0, 0.5);
 			Actuate.timer(0.5).onComplete(FlxG.switchState, [new LevelSelectState()]);

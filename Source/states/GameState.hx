@@ -26,6 +26,7 @@ import org.flixel.FlxState;
 import org.flixel.FlxText;
 import org.flixel.plugin.photonstorm.baseTypes.Bullet;
 import org.flixel.plugin.photonstorm.FlxGridOverlay;
+import org.flixel.system.input.Input;
 import ui.Cursor;
 import utils.Colors;
 import utils.Utils;
@@ -441,7 +442,7 @@ class GameState extends BasicState {
 		if (min < 10) timeCounter.text += "0";
 		timeCounter.text+= min;
 		if (help < 3) {
-			if (FlxG.mouse.justPressed() || FlxG.keys.justReleased("SPACE") || FlxG.keys.justPressed("NUMPADFIVE") ) {
+			if (FlxG.mouse.justPressed() || FlxG.keys.justReleased("SPACE") || FlxG.keys.justReleased("ENTER") ) {
 				if (help == 1) {
 					help = 2;
 					remove(help1);
@@ -456,7 +457,7 @@ class GameState extends BasicState {
 		}
 		
 		super.update();
-		
+
 		FlxG.overlap(level.player, level.powerups, pickUpPowerup);
 		FlxG.overlap(level.player, level.coins, pickUpCoin);
 		FlxG.overlap(level.player, level.ghosts, gameOver);
@@ -594,5 +595,6 @@ class GameState extends BasicState {
 		FlxG._game.removeChild(buttonT);
 		#end
 	}
+	
 }
 
