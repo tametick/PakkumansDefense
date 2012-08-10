@@ -67,6 +67,8 @@ class GameState extends BasicState {
 	public var help:Int;
 	static var help1:FlxGroup;
 	static var help2:FlxGroup;
+	
+	public var ctrls:CtrlMode;
 	 
 	public function setHighlighted(direction:Command) {
 		switch (direction) {
@@ -167,29 +169,65 @@ class GameState extends BasicState {
 			hud = new Bitmap(Library.getImage(Image.HUD_OVERLAY));
 			hud.width *= 2;
 			hud.height *= 2;
-			buttonS = drawTriangle(0, 0, 160, 0, 80, 80);
-			buttonS2 = drawTriangle(0, 0, 160, 0, 80, 80, 0.6);
+			
+			
+			
+			ctrls = CtrlMode.GAMEPAD;
+			var dim1, dim2;
+			switch(ctrls) {
+				default:
+					dim1 = 80;
+					dim2 = 160;	
+				case CtrlMode.GAMEPAD:
+					dim1 = 40;
+					dim2 = 80;	
+				
+			}
+			
+			    buttonS = drawTriangle(0, 0, dim2, 0, dim1, dim1);
+				buttonS2 = drawTriangle(0, 0, dim2, 0, dim1, dim1, 0.6);
+				
+				buttonN = drawTriangle(0,dim1,dim1,0,dim2,dim1);
+				buttonN2 = drawTriangle(0,dim1,dim1,0,dim2,dim1, 0.6);
+				
+				buttonW = drawTriangle(0,dim1,dim1,0,dim1,dim2);
+				buttonW2 = drawTriangle(0,dim1,dim1,0,dim1,dim2,0.6);
+				
+				buttonE = drawTriangle(0,0,dim1,dim1,0,dim2);
+				buttonE2 = drawTriangle(0,0,dim1,dim1,0,dim2,0.6);
+			
 			buttonS2.visible = false;
-			buttonN = drawTriangle(0,80,80,0,160,80);
-			buttonN2 = drawTriangle(0,80,80,0,160,80, 0.6);
 			buttonN2.visible = false;
-			buttonW = drawTriangle(0,80,80,0,80,160);
-			buttonW2 = drawTriangle(0,80,80,0,80,160,0.6);
 			buttonW2.visible = false;
-			buttonE = drawTriangle(0,0,80,80,0,160);
-			buttonE2 = drawTriangle(0,0,80,80,0,160,0.6);
 			buttonE2.visible = false;
 			
 			buttonT = new Bitmap(buttonTData = Library.getImage(Image.BUTTONS_OVERLAY_T), PixelSnapping.AUTO, true);
 			buttonT2Data = Library.getImage(Image.BUTTONS_OVERLAY_T2);
 			buttonT2DataR = Library.getImage(Image.BUTTONS_OVERLAY_T2R);
+			
+			var spacer2 = 2 * dim1 + dim2;
+			var spacer1 = dim1 + dim2;
+			
+			switch(ctrls) {
+				default:
+					buttonW.y = buttonE.y = 80;
+					buttonE.x = 400;
+					buttonS.x = buttonN.x = 160;
+					buttonS.y = 240;
+					buttonT.x = 180;
+					buttonT.y = 100;		
+				case CtrlMode.GAMEPAD:
+					
+					buttonN.y = 320-spacer2;
+					buttonW.y = buttonE.y = 320-spacer1;
+					buttonE.x = dim1+dim2;
+					buttonS.x = buttonN.x = dim1;
+					buttonS.y = 320-dim1;
+					buttonT.x = 480-120;
+					buttonT.y = 320-(spacer2+120)/2;
+			}
 
-			buttonW.y = buttonE.y = 80;
-			buttonE.x = 400;
-			buttonS.x = buttonN.x = 160;
-			buttonS.y = 240;
-			buttonT.x = 180;
-			buttonT.y = 100;
+			
 			
 			buttonS2.x = buttonS.x;
 			buttonS2.y = buttonS.y;
@@ -599,5 +637,13 @@ class GameState extends BasicState {
 		#end
 	}
 	
+}
+
+enum CtrlMode {
+	OVERLAY;
+	OVERLAY_HIDDEN;
+	GAMEPAD;
+	GAMEPAD_L;
+	SWIPE;	
 }
 

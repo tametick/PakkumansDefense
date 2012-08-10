@@ -68,8 +68,15 @@ class Player extends WarpSprite {
 		
 		coins = 20;
 		
-		if(clickMap==null) {
-			clickMap = Library.getImage(Image.CLICK_MAP);
+		var clkMap;
+		if (clickMap == null) { trace(cast(FlxG.state,GameState).ctrls);
+			switch(cast(FlxG.state,GameState).ctrls) {
+				default:
+					clkMap = Image.CLICK_MAP;
+				case CtrlMode.GAMEPAD:
+					clkMap = Image.CLICK_MAP_PAD;
+			}
+			clickMap = Library.getImage(clkMap);
 		}
 	}
 	
@@ -104,9 +111,9 @@ class Player extends WarpSprite {
 				if ( FlxG.mouse.screenX < 0) return LEFT;
 				if ( FlxG.mouse.screenY < 0) return UP;
 				if ( FlxG.mouse.screenX > 160) return RIGHT;
-				return DOWN;			
+				if ( FlxG.mouse.screenY > 106)return DOWN;			
 		}
-		
+		return null;
 	}
 	
 	
