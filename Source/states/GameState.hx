@@ -147,7 +147,7 @@ class GameState extends BasicState {
 		shape.graphics.drawTriangles(triangle);
 		shape.graphics.endFill();
 		
-		var bmp = new Bitmap(new BitmapData(228, 152, true, 0x00000000),PixelSnapping.AUTO,true);
+		var bmp = new Bitmap(new BitmapData(160, 160, true, 0x00000000),PixelSnapping.AUTO,true);
 		bmp.bitmapData.draw(shape);
 		Lib.stage.quality = StageQuality.LOW;
 		return bmp;
@@ -164,26 +164,26 @@ class GameState extends BasicState {
 			hud = new Bitmap(Library.getImage(Image.HUD_OVERLAY));
 			hud.width *= 2;
 			hud.height *= 2;
-			buttonS = drawTriangle(0, 0, 227, 0, 113, 79);
-			buttonS2 = drawTriangle(0, 0, 227, 0, 113, 79, 0.6);
+			buttonS = drawTriangle(0, 0, 160, 0, 80, 80);
+			buttonS2 = drawTriangle(0, 0, 160, 0, 80, 80, 0.6);
 			buttonS2.visible = false;
-			buttonN = drawTriangle(0,79,113,0,227,79);
-			buttonN2 = drawTriangle(0,79,113,0,227,79, 0.6);
+			buttonN = drawTriangle(0,80,80,0,160,80);
+			buttonN2 = drawTriangle(0,80,80,0,160,80, 0.6);
 			buttonN2.visible = false;
-			buttonW = drawTriangle(0,75,120,0,120,151);
-			buttonW2 = drawTriangle(0,75,120,0,120,151,0.6);
+			buttonW = drawTriangle(0,80,80,0,80,160);
+			buttonW2 = drawTriangle(0,80,80,0,80,160,0.6);
 			buttonW2.visible = false;
-			buttonE = drawTriangle(0,0,120,75,0,151);
-			buttonE2 = drawTriangle(0,0,120,75,0,151,0.6);
+			buttonE = drawTriangle(0,0,80,80,0,160);
+			buttonE2 = drawTriangle(0,0,80,80,0,160,0.6);
 			buttonE2.visible = false;
 			
 			buttonT = new Bitmap(buttonTData = Library.getImage(Image.BUTTONS_OVERLAY_T), PixelSnapping.AUTO, true);
 			buttonT2Data = Library.getImage(Image.BUTTONS_OVERLAY_T2);
 			buttonT2DataR = Library.getImage(Image.BUTTONS_OVERLAY_T2R);
 
-			buttonW.y = buttonE.y = 84;
-			buttonE.x = 359;
-			buttonS.x = buttonN.x = 126;
+			buttonW.y = buttonE.y = 80;
+			buttonE.x = 400;
+			buttonS.x = buttonN.x = 160;
 			buttonS.y = 240;
 			buttonT.x = 180;
 			buttonT.y = 100;
