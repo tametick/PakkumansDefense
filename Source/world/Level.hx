@@ -80,8 +80,8 @@ class Level extends FlxTilemap {
 		
 		var bigCX, bigCY;
 		do {
-			bigCX = Utils.randomInt(Std.int(Library.levelW / 2));
-			bigCY = Utils.randomInt(Std.int(Library.levelH / 2));
+			bigCX = Utils.randomInt(Std.int(Library.levelW / 2)-2)+1;
+			bigCY = Utils.randomInt(Std.int(Library.levelH / 2)-2)+1;
 		} while(map[bigCY*(Library.levelW)+bigCX]!=0);
 
 		for (mi in 0...map.length) {
