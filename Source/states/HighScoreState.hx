@@ -77,7 +77,7 @@ class HighScoreState extends BasicState {
 		return 0;
 	}
 	
-	override public function update():Void {
+	override public function update():Void {		
 		super.update();
 		
 		if ((FlxG.mouse.justPressed()||(FlxG.keys.justReleased("SPACE")||(FlxG.keys.justReleased("ENTER")))) && active) {

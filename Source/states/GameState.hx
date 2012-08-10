@@ -201,9 +201,8 @@ class GameState extends BasicState {
 			buttonE2.y = buttonE.y;
 		}
 		
-		var settingsIndex = FlxG._game.getChildIndex(BasicState.settings);
-		
-		FlxG._game.addChildAt(hud, settingsIndex);
+		var index = FlxG._game.getChildIndex(FlxG._game._mouse);
+		FlxG._game.addChildAt(hud, index);
 		#if !keyboard
 		FlxG._game.addChild(buttonS);
 		FlxG._game.addChild(buttonN);
@@ -438,7 +437,9 @@ class GameState extends BasicState {
 	}
 	
 	var up:FlxPoint;
-	override public function update() {			
+	override public function update() {
+		super.update();
+		
 		var min = Std.int(level.player.time) % 60;		
 		timeCounter.text = Std.int((Std.int(level.player.time) / 60)) + ":" ;
 		if (min < 10) timeCounter.text += "0";
@@ -458,7 +459,7 @@ class GameState extends BasicState {
 			return;
 		}
 		
-		super.update();
+		
 
 		FlxG.overlap(level.player, level.powerups, pickUpPowerup);
 		FlxG.overlap(level.player, level.coins, pickUpCoin);
