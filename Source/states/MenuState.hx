@@ -14,6 +14,8 @@ class MenuState extends BasicState {
 	var text:FlxText;
 
 	override public function create():Void {
+		super.create();
+		
 		FlxG.playMusic(Library.getMusic(MENU));
 		
 		#if keyboard

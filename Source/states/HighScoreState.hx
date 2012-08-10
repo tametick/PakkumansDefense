@@ -18,6 +18,8 @@ class HighScoreState extends BasicState {
 	var scores:FlxSave;
 	var title:FlxText;
 	override public function create() {
+		super.create();
+		
 		FlxG.fade(0, 0.5, true, null, true);
 		
 		add(new FlxSprite(0,0,Library.getFilename(Image.HIGHSCORE)));

@@ -20,6 +20,8 @@ class LevelSelectState extends BasicState {
 	var buttons:FlxGroup;
 	
 	override public function create() {
+		super.create();
+		
 		FlxG.fade(0, 0.5, true, null, true);
 		
 		add(new FlxSprite(0,0,Library.getFilename(Image.LEVEL_SELECT)));

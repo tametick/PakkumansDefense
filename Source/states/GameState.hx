@@ -155,6 +155,8 @@ class GameState extends BasicState {
 	}
 	
 	override public function create():Void {
+		super.create();
+		
 		screenWidth = Std.int(FlxG.width * 2 / 3);
 		screenHeight = Std.int(FlxG.height * 2 / 3);
 		
@@ -199,9 +201,9 @@ class GameState extends BasicState {
 			buttonE2.y = buttonE.y;
 		}
 		
-		var mouseIndex = FlxG._game.getChildIndex(FlxG._game._mouse);
+		var settingsIndex = FlxG._game.getChildIndex(BasicState.settings);
 		
-		FlxG._game.addChildAt(hud, mouseIndex);
+		FlxG._game.addChildAt(hud, settingsIndex);
 		#if !keyboard
 		FlxG._game.addChild(buttonS);
 		FlxG._game.addChild(buttonN);
