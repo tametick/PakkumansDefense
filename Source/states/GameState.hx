@@ -7,8 +7,12 @@ import data.Score;
 import haxe.Log;
 import nme.display.Bitmap;
 import nme.display.BitmapData;
+import nme.display.CapsStyle;
+import nme.display.JointStyle;
+import nme.display.LineScaleMode;
 import nme.display.PixelSnapping;
 import nme.display.Shape;
+import nme.display.StageQuality;
 import nme.geom.Point;
 import nme.Lib;
 import nme.Vector;
@@ -33,14 +37,14 @@ import world.Player;
 
 class GameState extends BasicState {
 	static var hud:Bitmap;
-	static var buttonS:Shape;
-	static var buttonN:Shape;
-	static var buttonE:Shape;
-	static var buttonW:Shape;
-	static var buttonS2:Shape;
-	static var buttonN2:Shape;
-	static var buttonE2:Shape;
-	static var buttonW2:Shape;
+	static var buttonS:Bitmap;
+	static var buttonN:Bitmap;
+	static var buttonE:Bitmap;
+	static var buttonW:Bitmap;
+	static var buttonS2:Bitmap;
+	static var buttonN2:Bitmap;
+	static var buttonE2:Bitmap;
+	static var buttonW2:Bitmap;
 	
 	static var buttonT:Bitmap;
 	static var buttonTData:BitmapData;
@@ -134,14 +138,19 @@ class GameState extends BasicState {
 	
 	var cursor:FlxSprite;
 	
-	function drawTriangle(v1x:Float, v1y:Float, v2x:Float, v2y:Float, v3x:Float, v3y:Float, ?alpha=0.2, ?color=0xffffff):Shape {
+	function drawTriangle(v1x:Float, v1y:Float, v2x:Float, v2y:Float, v3x:Float, v3y:Float, ?alpha = 0.2, ?color = 0xffffff):Bitmap {
+		Lib.stage.quality = StageQuality.BEST;
 		var shape = new Shape();
+		//shape.graphics.lineStyle(1, color, alpha, false, null, null,JointStyle.ROUND);
 		shape.graphics.beginFill(color, alpha);
 		var triangle = Vector.ofArray([v1x, v1y, v2x, v2y, v3x, v3y]);
 		shape.graphics.drawTriangles(triangle);
 		shape.graphics.endFill();
-		shape.cacheAsBitmap = true;
-		return shape;
+		
+		var bmp = new Bitmap(new BitmapData(228, 152, true, 0x00000000),PixelSnapping.AUTO,true);
+		bmp.bitmapData.draw(shape);
+		Lib.stage.quality = StageQuality.LOW;
+		return bmp;
 	}
 	
 	override public function create():Void {
