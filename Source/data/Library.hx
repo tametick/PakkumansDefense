@@ -83,6 +83,7 @@ enum Image {
 	SHOTGUN;
 	FRUIT;
 	HASTE;
+	SETTINGS;
 }
 
 enum Sound {
