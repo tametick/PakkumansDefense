@@ -13,7 +13,7 @@ class Library {
 	
 	public static inline var towerCost = 20;
 	
-	public static inline var debug = false;
+	public static inline var debug = true;
 	
 	static var assets:Hash<Dynamic> = new Hash<Dynamic>();
 	
@@ -64,15 +64,7 @@ class Library {
 enum Image {
 	BG;
 	HUD_OVERLAY;
-	BUTTONS_OVERLAY_S;
-	BUTTONS_OVERLAY_N;
-	BUTTONS_OVERLAY_W;
-	BUTTONS_OVERLAY_E;
 	BUTTONS_OVERLAY_T;
-	BUTTONS_OVERLAY_S2;
-	BUTTONS_OVERLAY_N2;
-	BUTTONS_OVERLAY_W2;
-	BUTTONS_OVERLAY_E2;
 	BUTTONS_OVERLAY_T2;
 	BUTTONS_OVERLAY_T2R;
 	HIGHSCORE;

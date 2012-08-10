@@ -9,3 +9,4 @@ Export/*
 Assets/data/*.hash
 Assets/*.hash
 MobilePD/dist/*
+*.build

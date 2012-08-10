@@ -8,6 +8,10 @@ import haxe.Log;
 import nme.display.Bitmap;
 import nme.display.BitmapData;
 import nme.display.PixelSnapping;
+import nme.display.Shape;
+import nme.geom.Point;
+import nme.Lib;
+import nme.Vector;
 import org.flixel.FlxG;
 import org.flixel.FlxGroup;
 import org.flixel.FlxObject;
@@ -29,21 +33,17 @@ import world.Player;
 
 class GameState extends BasicState {
 	static var hud:Bitmap;
-	static var buttonS:Bitmap;
-	static var buttonN:Bitmap;
-	static var buttonE:Bitmap;
-	static var buttonW:Bitmap;
-	static var buttonT:Bitmap;
+	static var buttonS:Shape;
+	static var buttonN:Shape;
+	static var buttonE:Shape;
+	static var buttonW:Shape;
+	static var buttonS2:Shape;
+	static var buttonN2:Shape;
+	static var buttonE2:Shape;
+	static var buttonW2:Shape;
 	
-	static var buttonSData:BitmapData;
-	static var buttonNData:BitmapData;
-	static var buttonEData:BitmapData;
-	static var buttonWData:BitmapData;
+	static var buttonT:Bitmap;
 	static var buttonTData:BitmapData;
-	static var buttonS2Data:BitmapData;
-	static var buttonN2Data:BitmapData;
-	static var buttonE2Data:BitmapData;
-	static var buttonW2Data:BitmapData;
 	static var buttonT2Data:BitmapData;
 	static var buttonT2DataR:BitmapData;
 
@@ -66,16 +66,20 @@ class GameState extends BasicState {
 	public function setHighlighted(direction:Command) {
 		switch (direction) {
 			case LEFT:
-				buttonW.bitmapData = buttonW2Data;
+				buttonW.visible = false;
+				buttonW2.visible = true;
 				FlxG.play(Library.getSound(CLICK));
 			case RIGHT:
-				buttonE.bitmapData = buttonE2Data;
+				buttonE.visible = false;
+				buttonE2.visible = true;
 				FlxG.play(Library.getSound(CLICK));
 			case UP:
-				buttonN.bitmapData = buttonN2Data;
+				buttonN.visible = false;
+				buttonN2.visible = true;
 				FlxG.play(Library.getSound(CLICK));
 			case DOWN:
-				buttonS.bitmapData = buttonS2Data;
+				buttonS.visible = false;
+				buttonS2.visible = true;
 				FlxG.play(Library.getSound(CLICK));
 			case TOWER:
 				if (level.player.coins < Library.towerCost) {
@@ -89,13 +93,17 @@ class GameState extends BasicState {
 	public function setUnhighlighted(direction:Command) {
 		switch (direction) {
 			case LEFT:
-				buttonW.bitmapData = buttonWData;
+				buttonW.visible = true;
+				buttonW2.visible = false;
 			case RIGHT:
-				buttonE.bitmapData = buttonEData;
+				buttonE.visible = true;
+				buttonE2.visible = false;
 			case UP:
-				buttonN.bitmapData = buttonNData;
+				buttonN.visible = true;
+				buttonN2.visible = false;
 			case DOWN:
-				buttonS.bitmapData = buttonSData;
+				buttonS.visible = true;
+				buttonS2.visible = false;
 			case TOWER:
 				buttonT.bitmapData = buttonTData;
 		}
@@ -126,6 +134,15 @@ class GameState extends BasicState {
 	
 	var cursor:FlxSprite;
 	
+	function drawTriangle(v1x:Float, v1y:Float, v2x:Float, v2y:Float, v3x:Float, v3y:Float, ?alpha=0.2, ?color=0xffffff):Shape {
+		var shape = new Shape();
+		shape.graphics.beginFill(color, alpha);
+		var triangle = Vector.ofArray([v1x, v1y, v2x, v2y, v3x, v3y]);
+		shape.graphics.drawTriangles(triangle);
+		shape.graphics.endFill();
+		shape.cacheAsBitmap = true;
+		return shape;
+	}
 	
 	override public function create():Void {
 		screenWidth = Std.int(FlxG.width * 2 / 3);
@@ -138,15 +155,20 @@ class GameState extends BasicState {
 			hud = new Bitmap(Library.getImage(Image.HUD_OVERLAY));
 			hud.width *= 2;
 			hud.height *= 2;
-			buttonS = new Bitmap(buttonSData = Library.getImage(Image.BUTTONS_OVERLAY_S), PixelSnapping.AUTO, true);
-			buttonN = new Bitmap(buttonNData = Library.getImage(Image.BUTTONS_OVERLAY_N), PixelSnapping.AUTO, true);
-			buttonW = new Bitmap(buttonWData = Library.getImage(Image.BUTTONS_OVERLAY_W), PixelSnapping.AUTO, true);
-			buttonE = new Bitmap(buttonEData = Library.getImage(Image.BUTTONS_OVERLAY_E), PixelSnapping.AUTO, true);
+			buttonS = drawTriangle(0, 0, 227, 0, 113, 79);
+			buttonS2 = drawTriangle(0, 0, 227, 0, 113, 79, 0.6);
+			buttonS2.visible = false;
+			buttonN = drawTriangle(0,79,113,0,227,79);
+			buttonN2 = drawTriangle(0,79,113,0,227,79, 0.6);
+			buttonN2.visible = false;
+			buttonW = drawTriangle(0,75,120,0,120,151);
+			buttonW2 = drawTriangle(0,75,120,0,120,151,0.6);
+			buttonW2.visible = false;
+			buttonE = drawTriangle(0,0,120,75,0,151);
+			buttonE2 = drawTriangle(0,0,120,75,0,151,0.6);
+			buttonE2.visible = false;
+			
 			buttonT = new Bitmap(buttonTData = Library.getImage(Image.BUTTONS_OVERLAY_T), PixelSnapping.AUTO, true);
-			buttonS2Data = Library.getImage(Image.BUTTONS_OVERLAY_S2);
-			buttonN2Data = Library.getImage(Image.BUTTONS_OVERLAY_N2);
-			buttonW2Data = Library.getImage(Image.BUTTONS_OVERLAY_W2);
-			buttonE2Data = Library.getImage(Image.BUTTONS_OVERLAY_E2);
 			buttonT2Data = Library.getImage(Image.BUTTONS_OVERLAY_T2);
 			buttonT2DataR = Library.getImage(Image.BUTTONS_OVERLAY_T2R);
 
@@ -156,6 +178,15 @@ class GameState extends BasicState {
 			buttonS.y = 240;
 			buttonT.x = 180;
 			buttonT.y = 100;
+			
+			buttonS2.x = buttonS.x;
+			buttonS2.y = buttonS.y;
+			buttonN2.x = buttonN.x;
+			buttonN2.y = buttonN.y;
+			buttonW2.x = buttonW.x;
+			buttonW2.y = buttonW.y;
+			buttonE2.x = buttonE.x;
+			buttonE2.y = buttonE.y;
 		}
 		
 		var mouseIndex = FlxG._game.getChildIndex(FlxG._game._mouse);
@@ -167,6 +198,11 @@ class GameState extends BasicState {
 		FlxG._game.addChild(buttonW);
 		FlxG._game.addChild(buttonE);
 		FlxG._game.addChild(buttonT);
+		
+		FlxG._game.addChild(buttonS2);
+		FlxG._game.addChild(buttonN2);
+		FlxG._game.addChild(buttonW2);
+		FlxG._game.addChild(buttonE2);
 		#end
 		
 		FlxG.playMusic(Library.getMusic(THEME));
