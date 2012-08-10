@@ -78,7 +78,7 @@ class HighScoreState extends BasicState {
 	override public function update():Void {
 		super.update();
 		
-		if (FlxG.mouse.justPressed() && active) {
+		if ((FlxG.mouse.justPressed()||(FlxG.keys.justReleased("SPACE"))) && active) {
 			active = false;
 			FlxG.fade(0, 0.5);
 			Actuate.timer(0.5).onComplete(FlxG.switchState, [new MenuState()]);
