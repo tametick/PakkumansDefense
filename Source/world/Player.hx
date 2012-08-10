@@ -69,12 +69,14 @@ class Player extends WarpSprite {
 		coins = 20;
 		
 		var clkMap;
-		if (clickMap == null) { trace(cast(FlxG.state,GameState).ctrls);
+		if (clickMap == null) { 
 			switch(cast(FlxG.state,GameState).ctrls) {
 				default:
 					clkMap = Image.CLICK_MAP;
 				case CtrlMode.GAMEPAD:
 					clkMap = Image.CLICK_MAP_PAD;
+				case CtrlMode.GAMEPAD_L:
+					clkMap = Image.CLICK_MAP_PAD_L;
 			}
 			clickMap = Library.getImage(clkMap);
 		}
@@ -94,6 +96,7 @@ class Player extends WarpSprite {
 
 	
 	function getCommand():Command {
+		
 		var color = clickMap.getPixel(FlxG.mouse.screenX, FlxG.mouse.screenY);
 		
 		switch (color) {
@@ -108,6 +111,7 @@ class Player extends WarpSprite {
 			case 0xffffff:
 				return TOWER;
 			default:
+				if(cast(FlxG.state,GameState).ctrls==CtrlMode.OVERLAY)
 				if ( FlxG.mouse.screenX < 0) return LEFT;
 				if ( FlxG.mouse.screenY < 0) return UP;
 				if ( FlxG.mouse.screenX > 160) return RIGHT;
@@ -139,9 +143,14 @@ class Player extends WarpSprite {
 		var s = cast(FlxG.state, GameState);
 		if(FlxG.mouse.justPressed()) {
 			 touch = getCommand();
-			 s.setHighlighted(touch);
+			 if(touch!=null){
+				s.setHighlighted(touch);
+			 }
 		} else if (FlxG.mouse.justReleased()) {
-			s.setUnhighlighted(getCommand());
+			touch = getCommand();
+			if(touch!=null){
+				s.setUnhighlighted(getCommand());
+			}
 		}
 		
 		// change facing according to keyboard input

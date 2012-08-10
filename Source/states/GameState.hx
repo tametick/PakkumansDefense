@@ -172,13 +172,13 @@ class GameState extends BasicState {
 			
 			
 			
-			ctrls = CtrlMode.GAMEPAD;
+			ctrls = CtrlMode.GAMEPAD_L;
 			var dim1, dim2;
 			switch(ctrls) {
 				default:
 					dim1 = 80;
 					dim2 = 160;	
-				case CtrlMode.GAMEPAD:
+				case CtrlMode.GAMEPAD,CtrlMode.GAMEPAD_L:
 					dim1 = 40;
 					dim2 = 80;	
 				
@@ -217,13 +217,21 @@ class GameState extends BasicState {
 					buttonT.x = 180;
 					buttonT.y = 100;		
 				case CtrlMode.GAMEPAD:
-					
 					buttonN.y = 320-spacer2;
 					buttonW.y = buttonE.y = 320-spacer1;
-					buttonE.x = dim1+dim2;
+					buttonE.x = spacer1;
 					buttonS.x = buttonN.x = dim1;
 					buttonS.y = 320-dim1;
 					buttonT.x = 480-120;
+					buttonT.y = 320 - (spacer2 + 120) / 2;
+				case CtrlMode.GAMEPAD_L:
+					buttonN.y = 320-spacer2;
+					buttonW.y = buttonE.y = 320-spacer1;
+					buttonE.x = 480 - dim1;
+					buttonW.x = 480 - spacer2;
+					buttonS.x = buttonN.x = 480-spacer1;
+					buttonS.y = 320-dim1;
+					buttonT.x = 0;
 					buttonT.y = 320-(spacer2+120)/2;
 			}
 
@@ -641,7 +649,6 @@ class GameState extends BasicState {
 
 enum CtrlMode {
 	OVERLAY;
-	OVERLAY_HIDDEN;
 	GAMEPAD;
 	GAMEPAD_L;
 	SWIPE;	
