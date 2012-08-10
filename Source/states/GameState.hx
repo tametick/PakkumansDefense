@@ -441,7 +441,7 @@ class GameState extends BasicState {
 		if (min < 10) timeCounter.text += "0";
 		timeCounter.text+= min;
 		if (help < 3) {
-			if (FlxG.mouse.justPressed() || FlxG.keys.justReleased("SPACE")) {
+			if (FlxG.mouse.justPressed() || FlxG.keys.justReleased("SPACE") || FlxG.keys.justPressed("NUMPADFIVE") ) {
 				if (help == 1) {
 					help = 2;
 					remove(help1);

@@ -150,7 +150,7 @@ class Player extends WarpSprite {
 		} if (FlxG.keys.justPressed("W") || FlxG.keys.justPressed("UP") || touch==UP) {
 			facingNext = FlxObject.UP;
 			arrow.play("N");
-		} if (FlxG.keys.justPressed("SPACE") ||touch == TOWER) {
+		} if (FlxG.keys.justPressed("SPACE") || FlxG.keys.justPressed("NUMPADFIVE") || touch == TOWER) {
 			if (level.player.coins >= Library.towerCost || Library.debug) {
 				spawnTower();
 			} else {
