@@ -2,6 +2,7 @@ import data.Library;
 import nme.display.Bitmap;
 import nme.events.Event;
 import nme.Lib;
+import states.BasicState;
 
 import flash.events.MouseEvent;
 import org.flixel.FlxGame;
@@ -12,7 +13,8 @@ import states.MenuState;
 
 
 class BuskerJam extends FlxGame {	
-	static var settings:Bitmap;
+	public static var returnToState:Class<BasicState>;
+	
 	public static function main () {
 		Lib.current.addChild (new BuskerJam());
 		Lib.current.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, nothing);
