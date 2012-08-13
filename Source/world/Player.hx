@@ -3,6 +3,9 @@ package world;
 import air.update.events.StatusFileUpdateErrorEvent;
 import com.eclecticdesignstudio.motion.Actuate;
 import data.Library;
+import nme.Lib;
+import nme.ui.Multitouch;
+import nme.ui.MultitouchInputMode;
 import org.flixel.FlxG;
 import org.flixel.FlxObject;
 import org.flixel.FlxPoint;
@@ -13,7 +16,7 @@ import utils.Colors;
 import utils.Utils;
 import nme.display.BitmapData;
 import world.Powerup;
-
+import flash.events.TransformGestureEvent;
 
 class Player extends WarpSprite {
 	public var coins:Int;
@@ -25,6 +28,7 @@ class Player extends WarpSprite {
 	
 	private var thinking:Bool;
 	private var delay:Int;
+	var touch:Command = null;
 	
 	public var tileX:Int;
 	public var tileY:Int;
@@ -46,6 +50,13 @@ class Player extends WarpSprite {
 
 	public function new(level:Level, start:FlxPoint) {
 		super(level);
+		
+		if (cast(FlxG.state, GameState).ctrls == CtrlMode.SWIPE){
+		
+			Multitouch.inputMode = MultitouchInputMode.GESTURE;
+			Lib.current.addEventListener(TransformGestureEvent.GESTURE_SWIPE , swipe);
+					
+		}
 		
 		loadGraphic(Library.getFilename(Image.PAKKU), true, true, 5, 5);
 		addAnimation("walk", [0, 1], 5);
@@ -112,10 +123,18 @@ class Player extends WarpSprite {
 				return TOWER;
 			default:
 				if(cast(FlxG.state,GameState).ctrls==CtrlMode.OVERLAY)
-				if ( FlxG.mouse.screenX < 0) return LEFT;
-				if ( FlxG.mouse.screenY < 0) return UP;
-				if ( FlxG.mouse.screenX > 160) return RIGHT;
-				if ( FlxG.mouse.screenY > 106)return DOWN;			
+				if ( FlxG.mouse.screenX < 0) {
+					return LEFT;
+				}
+				if ( FlxG.mouse.screenY < 0) {
+					return UP;
+				}
+				if ( FlxG.mouse.screenX > 160) {
+					return RIGHT;
+				}
+				if ( FlxG.mouse.screenY > 106) {
+					return DOWN;			
+				}
 		}
 		return null;
 	}
@@ -128,7 +147,7 @@ class Player extends WarpSprite {
 		
 		time -= FlxG.elapsed;
 		if (time <= 0) {
-			cast(FlxG.state, GameState).gameOver(null, null);
+			cast(FlxG.state, GameState).gameOver();
 		}
 		if (thinking) {
 			if (delay >= 3) {
@@ -139,17 +158,24 @@ class Player extends WarpSprite {
 			}
 		}
 		
-		var touch:Command = null;
+		
 		var s = cast(FlxG.state, GameState);
-		if(FlxG.mouse.justPressed()) {
-			 touch = getCommand();
-			 if(touch!=null){
-				s.setHighlighted(touch);
-			 }
-		} else if (FlxG.mouse.justReleased()) {
-			touch = getCommand();
-			if(touch!=null){
-				s.setUnhighlighted(getCommand());
+		
+		if(s.ctrls!=CtrlMode.SWIPE){
+			if(FlxG.mouse.justPressed()) {
+				 touch = getCommand();
+				 if(touch!=null){
+					s.setHighlighted(touch);
+				 }
+			} else if (FlxG.mouse.justReleased()) {
+				touch = getCommand();
+				if(touch!=null){
+					s.setUnhighlighted(getCommand());
+				}
+			}
+		} else {
+			if (FlxG.mouse.justPressed() && touch == null) {
+				touch = TOWER;
 			}
 		}
 		
@@ -157,21 +183,27 @@ class Player extends WarpSprite {
 		if (FlxG.keys.justPressed("A") || FlxG.keys.justPressed("LEFT") || touch==LEFT) {
 			facingNext = FlxObject.LEFT;
 			arrow.play("W");
+			touch = null;
 		} if (FlxG.keys.justPressed("D") || FlxG.keys.justPressed("RIGHT") || touch==RIGHT) {
 			facingNext = FlxObject.RIGHT;
 			arrow.play("E");
+			touch = null;
 		} if (FlxG.keys.justPressed("S") || FlxG.keys.justPressed("DOWN") || touch==DOWN) {
 			facingNext = FlxObject.DOWN;
 			arrow.play("S");
+			touch = null;
 		} if (FlxG.keys.justPressed("W") || FlxG.keys.justPressed("UP") || touch==UP) {
 			facingNext = FlxObject.UP;
 			arrow.play("N");
+			touch = null;
 		} if (FlxG.keys.justPressed("SPACE") || FlxG.keys.justPressed("ENTER") || touch == TOWER) {
 			if (level.player.coins >= Library.towerCost || Library.debug) {
 				spawnTower();
+				
 			} else {
 				FlxG.play(Library.getSound(Sound.ERROR));
 			}
+			touch = null;
 		}
 		
 		if (!isMoving) {
@@ -193,6 +225,24 @@ class Player extends WarpSprite {
 		} else {
 			setColor(Colors.YELLOW);
 		}
+	}
+	
+	public function swipe(e:TransformGestureEvent){
+		if (e.offsetX == 1) {
+			touch = RIGHT; 
+		} else
+		if (e.offsetX == -1) {
+			touch = LEFT; 
+		} else
+		if (e.offsetY == 1) {
+			touch = DOWN; 
+		} else
+		if (e.offsetY == -1) {
+			touch = UP; 
+		} else {
+			touch = TOWER;
+		}
+		
 	}
 	private function spawnTower() {
 		thinking = false;

@@ -7,6 +7,7 @@ import org.flixel.FlxPoint;
 import org.flixel.FlxSprite;
 import org.flixel.FlxTilemap;
 import org.flixel.FlxU;
+import states.GameState;
 import utils.Colors;
 import utils.Utils;
 import world.Ghost;
@@ -29,6 +30,7 @@ class Level extends FlxTilemap {
 		super();
 		
 		freePos = [];
+		cast(FlxG.state, GameState).ctrls = CtrlMode.SWIPE;
 		
 		var w = Library.levelW;
 		var h = Library.levelH;

@@ -15,6 +15,7 @@ import nme.display.Shape;
 import nme.display.StageQuality;
 import nme.geom.Point;
 import nme.Lib;
+import nme.ui.MultitouchInputMode;
 import nme.Vector;
 import org.flixel.FlxG;
 import org.flixel.FlxGroup;
@@ -35,6 +36,8 @@ import world.Powerup;
 import world.Ghost;
 import world.Level;
 import world.Player;
+import flash.events.TransformGestureEvent;
+
 
 class GameState extends BasicState {
 	static var hud:Bitmap;
@@ -172,7 +175,7 @@ class GameState extends BasicState {
 			
 			
 			
-			ctrls = CtrlMode.GAMEPAD_L;
+			ctrls = CtrlMode.SWIPE;
 			var dim1, dim2;
 			switch(ctrls) {
 				default:
@@ -184,22 +187,31 @@ class GameState extends BasicState {
 				
 			}
 			
-			    buttonS = drawTriangle(0, 0, dim2, 0, dim1, dim1);
-				buttonS2 = drawTriangle(0, 0, dim2, 0, dim1, dim1, 0.6);
+			buttonS = drawTriangle(0, 0, dim2, 0, dim1, dim1);
+			buttonS2 = drawTriangle(0, 0, dim2, 0, dim1, dim1, 0.6);
 				
-				buttonN = drawTriangle(0,dim1,dim1,0,dim2,dim1);
-				buttonN2 = drawTriangle(0,dim1,dim1,0,dim2,dim1, 0.6);
+			buttonN = drawTriangle(0,dim1,dim1,0,dim2,dim1);
+			buttonN2 = drawTriangle(0,dim1,dim1,0,dim2,dim1, 0.6);
 				
-				buttonW = drawTriangle(0,dim1,dim1,0,dim1,dim2);
-				buttonW2 = drawTriangle(0,dim1,dim1,0,dim1,dim2,0.6);
+			buttonW = drawTriangle(0,dim1,dim1,0,dim1,dim2);
+			buttonW2 = drawTriangle(0,dim1,dim1,0,dim1,dim2,0.6);
 				
-				buttonE = drawTriangle(0,0,dim1,dim1,0,dim2);
-				buttonE2 = drawTriangle(0,0,dim1,dim1,0,dim2,0.6);
+			buttonE = drawTriangle(0,0,dim1,dim1,0,dim2);
+			buttonE2 = drawTriangle(0,0,dim1,dim1,0,dim2,0.6);
 			
 			buttonS2.visible = false;
 			buttonN2.visible = false;
 			buttonW2.visible = false;
 			buttonE2.visible = false;
+			
+			if (ctrls == CtrlMode.SWIPE) {
+				buttonS.visible = false;
+				buttonN.visible = false;
+				buttonW.visible = false;
+				buttonE.visible = false;
+				}
+				
+			
 			
 			buttonT = new Bitmap(buttonTData = Library.getImage(Image.BUTTONS_OVERLAY_T), PixelSnapping.AUTO, true);
 			buttonT2Data = Library.getImage(Image.BUTTONS_OVERLAY_T2);
@@ -552,7 +564,7 @@ class GameState extends BasicState {
 		coinCounter.text = "$: " + level.player.coins;
 	}
 	
-	public function gameOver(p:FlxObject, g:FlxObject) {
+	public function gameOver(?p:FlxObject, ?g:FlxObject) {
 		if (!active)
 			return;
 		active = false;
