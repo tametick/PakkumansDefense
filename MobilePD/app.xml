@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<application xmlns="http://ns.adobe.com/air/application/3.1">
+	<id>air.MobilePD</id>
+	<versionNumber>0.1.2</versionNumber>
+	<supportedProfiles>mobileDevice</supportedProfiles>
+	<filename>MobilePD</filename>
+	
+	<name>MobilePD</name>
+	<description>asdf</description>
+	<copyright>Ido Yehieli</copyright>
+	
+	<initialWindow>
+		<title>MobilePD</title>
+		<content>MobilePD.swf</content>
+		<visible>true</visible>
+		<fullScreen>true</fullScreen>
+		<autoOrients>false</autoOrients>
+		<aspectRatio>landscape</aspectRatio>
+		<renderMode>direct</renderMode>
+	</initialWindow>
+
+
+</application>

@@ -287,7 +287,20 @@ class GameState extends BasicState {
 			#if keyboard
 			var help1Text = new FlxText(-2, 0, screenWidth, "Arrows/WASD to change direction");
 			#else
-			var help1Text = new FlxText(-2, 0, screenWidth, "Tap edges to change direction");
+			var instructions;
+			var instructions1;
+			switch(ctrls) {
+				default:
+					instructions = "Tap edges to change direction";
+					instructions1 = "Tap center to build towers";
+				case CtrlMode.GAMEPAD,CtrlMode.GAMEPAD_L:
+					instructions = "Tap arrows to change direction";	
+					instructions1 = "Tap tower to build towers";
+				case CtrlMode.SWIPE:
+					instructions = "Swipe to change direction";
+					instructions1 = "Tap to build towers";
+			}
+			var help1Text = new FlxText(-2, 0, screenWidth, instructions);
 			var w1 = new FlxSprite(0, 0);
 			var e1 = new FlxSprite(0, 0);
 			var n1 = new FlxSprite(0, 0);
@@ -330,7 +343,7 @@ class GameState extends BasicState {
 			#if keyboard
 			var help2Text = new FlxText(0, 0, screenWidth, "Space bar to build towers");
 			#else
-			var help2Text = new FlxText(0, 0, screenWidth, "Tap center to build towers");
+			var help2Text = new FlxText(0, 0, screenWidth, instructions1);
 			var w2 = new FlxSprite(0, 0);
 			var e2 = new FlxSprite(0, 0);
 			var n2 = new FlxSprite(0, 0);

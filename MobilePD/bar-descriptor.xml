@@ -1,0 +1,46 @@
+<!-- previously known as blackberry-tablet.xml until os 2.0 -->
+<qnx>
+	<initialWindow>
+		<systemChrome>none</systemChrome>
+		<transparent>true</transparent>
+		<visible>true</visible>
+		<autoOrients>true</autoOrients>
+		<aspectRatio>landscape</aspectRatio>
+	</initialWindow>
+	
+	<!-- Publisher must match your App World vendor name exactly.-->
+	<publisher>[YOUR_AUTHOR_NAME]</publisher>
+	
+	<!-- from http://www.mellisdesigns.com/blog/?p=37 -->
+	<author>o-o</author>
+	
+	<!-- Author ID is required for intalling debug apps onto PlayBook hardware.
+		 Find your Author ID inside of any packaged BAR file (open as a ZIP file)
+		 under META-INF\MANIFEST.MF (open in text editor) - Line 6 - Package-Author-Id -->
+	<authorId>gYAAgDJe1UOwu0ydXVbtIHT8i2o</authorId>
+	
+	<!-- Build ID is added onto the end of the version listed in application.xml -->
+	<buildId>1000</buildId>
+	
+	<!-- Minimum OS version requirement -->
+    <platformVersion>0.0.0.1</platformVersion>
+	
+	<!-- Category Choices: If your app doesn't fit in either of these, do not assign a category at all.
+		core.games::Games*
+		core.media::Media*
+		
+		Uncomment to use.
+	-->
+	<!-- <category>core.games</category> -->
+	
+	<!-- Uncomment the following line to use the permissions API. Documentation available from RIM. -->
+	<!-- <action>use_camera</action> -->
+	
+	<!-- You may replace this filename with any icon image in your project. Valid maximum size is 86x86. -->  
+	<!--  <icon>
+		<image>blackberry-tablet-icon.png</image>
+	</icon> -->
+
+	<!-- App specific splash screens. Both landscape & portrait orientations allowed -  1024x600 -->
+	<!--  <splashscreen>landscape-splash.png</splashscreen> -->
+</qnx>
