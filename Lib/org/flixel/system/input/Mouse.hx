@@ -95,7 +95,7 @@ class Mouse extends FlxPoint
 	 * @param	XOffset		The number of pixels between the mouse's screen position and the graphic's top left corner.
 	 * @param	YOffset		The number of pixels between the mouse's screen position and the graphic's top left corner. 
 	 */
-	public function show(?Graphic:Class<Bitmap> = null, ?Scale:Float = 1, ?XOffset:Int = 0, ?YOffset:Int=0):Void
+	public function show(?Graphic:Dynamic = null, ?Scale:Float = 1, ?XOffset:Int = 0, ?YOffset:Int=0):Void
 	{
 		_cursorContainer.visible = true;
 		if (Graphic != null)
@@ -195,8 +195,6 @@ class Mouse extends FlxPoint
 	 * Also updates the just pressed/just released flags.
 	 * @param	X			The current X position of the mouse in the window.
 	 * @param	Y			The current Y position of the mouse in the window.
-	 * @param	XScroll		The amount the game world has scrolled horizontally.
-	 * @param	YScroll		The amount the game world has scrolled vertically.
 	 */
 	public function update(X:Int,Y:Int):Void
 	{

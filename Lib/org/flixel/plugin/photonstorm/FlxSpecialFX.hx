@@ -2,14 +2,6 @@
  * FlxSpecialFX
  * -- Part of the Flixel Power Tools set
  * 
- * v1.6 Added WowCopperFX
- * v1.5 Added RevealFX
- * v1.4 Added BlurFX and CenterSlideFX
- * v1.3 Renamed DropDown to FloodFill
- * v1.2 Added GlitchFX and StarfieldFX
- * v1.1 Added SineWaveFX
- * v1.0 First release of the new FlxSpecialFX system
- * 
  * @version 1.6 - September 19th 2011
  * @link http://www.photonstorm.com
  * @author Richard Davey / Photon Storm
@@ -17,29 +9,20 @@
 
 package org.flixel.plugin.photonstorm;
 
-//import flash.utils.TypedDictionary;
+import nme.ObjectHash;
 import org.flixel.FlxBasic;
 import org.flixel.FlxG;
 import org.flixel.FlxU;
 import org.flixel.plugin.photonstorm.fx.BaseFX;
-import org.flixel.plugin.photonstorm.fx.BlurFX;
-import org.flixel.plugin.photonstorm.fx.CenterSlideFX;
-import org.flixel.plugin.photonstorm.fx.FloodFillFX;
 import org.flixel.plugin.photonstorm.fx.GlitchFX;
-import org.flixel.plugin.photonstorm.fx.PlasmaFX;
-import org.flixel.plugin.photonstorm.fx.RainbowLineFX;
-import org.flixel.plugin.photonstorm.fx.RevealFX;
-import org.flixel.plugin.photonstorm.fx.SineWaveFX;
 import org.flixel.plugin.photonstorm.fx.StarfieldFX;
-import org.flixel.plugin.photonstorm.fx.WowCopperFX;
 
 /**
  * FlxSpecialFX is a single point of access to all of the FX Plugins available in the Flixel Power Tools
  */
 class FlxSpecialFX extends FlxBasic
 {
-	//private static var members:TypedDictionary<BaseFX, BaseFX> = new TypedDictionary(true);
-	private static var members:FlxDictionary<BaseFX> = new FlxDictionary<BaseFX>();
+	private static var members:ObjectHash<BaseFX, BaseFX> = new ObjectHash<BaseFX, BaseFX>();
 	
 	public function new() 
 	{
@@ -49,62 +32,6 @@ class FlxSpecialFX extends FlxBasic
 	//	THE SPECIAL FX PLUGINS AVAILABLE
 	
 	/**
-	 * Creates a Plama field Effect
-	 * 
-	 * @return	PlasmaFX
-	 */
-	public static function plasma():PlasmaFX
-	{
-		var temp:PlasmaFX = new PlasmaFX();
-		
-		members.set(temp, temp);
-		
-		return temp;
-	}
-	
-	/**
-	 * Creates a Rainbow Line Effect
-	 * 
-	 * @return	RainbowLineFX
-	 */
-	public static function rainbowLine():RainbowLineFX
-	{
-		var temp:RainbowLineFX = new RainbowLineFX();
-		
-		members.set(temp, temp);
-		
-		return temp;
-	}
-	
-	/**
-	 * Creates a Flood Fill Effect
-	 * 
-	 * @return	FloodFillFX
-	 */
-	public static function floodFill():FloodFillFX
-	{
-		var temp:FloodFillFX = new FloodFillFX();
-		
-		members.set(temp, temp);
-		
-		return temp;
-	}
-	
-	/**
-	 * Creates a Sine Wave Down Effect
-	 * 
-	 * @return	SineWaveFX
-	 */
-	public static function sineWave():SineWaveFX
-	{
-		var temp:SineWaveFX = new SineWaveFX();
-		
-		members.set(temp, temp);
-		
-		return temp;
-	}
-	
-	/**
 	 * Creates a Glitch Effect
 	 * 
 	 * @return	GlitchFX
@@ -112,9 +39,7 @@ class FlxSpecialFX extends FlxBasic
 	public static function glitch():GlitchFX
 	{
 		var temp:GlitchFX = new GlitchFX();
-		
 		members.set(temp, temp);
-		
 		return temp;
 	}
 	
@@ -126,70 +51,9 @@ class FlxSpecialFX extends FlxBasic
 	public static function starfield():StarfieldFX
 	{
 		var temp:StarfieldFX = new StarfieldFX();
-		
 		members.set(temp, temp);
-		
 		return temp;
 	}
-	
-	/**
-	 * Creates a Blur Effect
-	 * 
-	 * @return	BlurFX
-	 */
-	public static function blur():BlurFX
-	{
-		var temp:BlurFX = new BlurFX();
-		
-		members.set(temp, temp);
-		
-		return temp;
-	}
-	
-	/**
-	 * Creates a Center Slide Effect
-	 * 
-	 * @return	CenterSlideFX
-	 */
-	public static function centerSlide():CenterSlideFX
-	{
-		var temp:CenterSlideFX = new CenterSlideFX();
-		
-		members.set(temp, temp);
-		
-		return temp;
-	}
-	
-	/**
-	 * Creates a Reveal Effect
-	 * 
-	 * @return	RevealFX
-	 */
-	public static function reveal():RevealFX
-	{
-		var temp:RevealFX = new RevealFX();
-		
-		members.set(temp, temp);
-		
-		return temp;
-	}
-	
-	/**
-	 * Creates a WOW Copper Effect
-	 * 
-	 * @return	WowCopperFX
-	 */
-	public static function wowCopper():WowCopperFX
-	{
-		var temp:WowCopperFX = new WowCopperFX();
-		
-		members.set(temp, temp);
-		
-		return temp;
-	}
-	
-	
-	
 	
 	//	GLOBAL FUNCTIONS
 	
@@ -198,7 +62,7 @@ class FlxSpecialFX extends FlxBasic
 	 * 
 	 * @param	source	A reference to the FX Plugin you wish to run. If null it will start all currently added FX Plugins
 	 */
-	public static function startFX(source:BaseFX = null):Void
+	public static function startFX(?source:BaseFX = null):Void
 	{
 		if (source != null)
 		{
@@ -218,7 +82,7 @@ class FlxSpecialFX extends FlxBasic
 	 * 
 	 * @param	source	A reference to the FX Plugin you wish to stop. If null it will stop all currently added FX Plugins
 	 */
-	public static function stopFX(source:BaseFX = null):Void
+	public static function stopFX(?source:BaseFX = null):Void
 	{
 		if (source != null)
 		{
@@ -241,7 +105,7 @@ class FlxSpecialFX extends FlxBasic
 	 */
 	public static function isActive(source:BaseFX):Bool
 	{
-		if (members.get(source) != null)
+		if (members.exists(source))
 		{
 			return members.get(source).active;
 		}
@@ -263,8 +127,7 @@ class FlxSpecialFX extends FlxBasic
 		{
 			if (obj.active)
 			{
-				//obj.draw();
-				Reflect.callMethod(obj, Reflect.field(obj, "draw"), []);
+				obj.draw();
 			}
 		}
 	}
@@ -277,12 +140,10 @@ class FlxSpecialFX extends FlxBasic
 	 */
 	public static function remove(source:BaseFX):Bool
 	{
-		if (members.get(source) != null)
+		if (members.exists(source))
 		{
 			members.get(source).destroy();
-			
-			members.delete(source);
-			
+			members.remove(source);
 			return true;
 		}
 		
@@ -308,6 +169,5 @@ class FlxSpecialFX extends FlxBasic
 	{
 		clear();
 	}
-	
 	
 }

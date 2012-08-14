@@ -12,13 +12,18 @@
 
 package org.flixel.plugin.photonstorm.fx;
 
-import flash.display.BitmapData;
-import flash.geom.Point;
-import flash.geom.Rectangle;
-import flash.Lib;
+import nme.display.BitmapData;
+import nme.display.BitmapInt32;
+import nme.geom.Point;
+import nme.geom.Rectangle;
+import nme.Lib;
+import org.flixel.FlxCamera;
+import org.flixel.FlxG;
+import org.flixel.plugin.photonstorm.FlxColor;
+import org.flixel.tileSheetManager.TileSheetManager;
+
 import org.flixel.FlxSprite;
 import org.flixel.plugin.photonstorm.FlxGradient;
-
 
 /**
  * Creates a 2D or 3D Star Field effect on an FlxSprite for use in your game.
@@ -45,13 +50,13 @@ class StarfieldFX extends BaseFX
 	 */
 	public var starYOffset:Float;
 	
-	private var stars:Array<Dynamic>;
+	private var stars:Array<StarObject>;
 	private var starfieldType:Int;
 	
 	#if flash
 	private var backgroundColor:UInt;
 	#else
-	private var backgroundColor:Int;
+	private var backgroundColor:BitmapInt32;
 	#end
 	
 	private var updateSpeed:Int;
@@ -60,7 +65,7 @@ class StarfieldFX extends BaseFX
 	#if flash
 	private var depthColours:Array<UInt>;
 	#else
-	private var depthColours:Array<Int>;
+	private var depthColours:Array<BitmapInt32>;
 	#end
 	
 	public static inline var STARFIELD_TYPE_2D:Int = 1;
@@ -68,11 +73,15 @@ class StarfieldFX extends BaseFX
 	
 	public function new() 
 	{
+		super();
+		
 		starXOffset = -1;
 		starYOffset = 0;
+		#if !neko
 		backgroundColor = 0xff000000;
-		
-		super();
+		#else
+		backgroundColor = {rgb: 0x000000, a: 0xff};
+		#end
 	}
 	
 	/**
@@ -86,33 +95,31 @@ class StarfieldFX extends BaseFX
 	 * @param	type			Type of starfield. Either STARFIELD_TYPE_2D (default, stars move horizontally) or STARFIELD_TYPE_3D (stars flow out from the center)
 	 * @param	updateInterval	How many ms should pass before the next starfield update (default 20)
 	 */
-	#if flash
-	public function create(x:Int, y:Int, width:UInt, height:UInt, ?quantity:UInt = 200, ?type:Int = 1, ?updateInterval:Int = 20):FlxSprite
-	#else
 	public function create(x:Int, y:Int, width:Int, height:Int, ?quantity:Int = 200, ?type:Int = 1, ?updateInterval:Int = 20):FlxSprite
-	#end
 	{
+		#if flash
 		sprite = new FlxSprite(x, y).makeGraphic(width, height, backgroundColor);
-		
 		canvas = new BitmapData(Math.floor(sprite.width), Math.floor(sprite.height), true, backgroundColor);
-		
+		#else
+		sprite = new StarSprite(x, y, width, height, backgroundColor);
+		var starDefs:Array<StarDef> = cast(sprite, StarSprite).starData;
+		#end
 		starfieldType = type;
-		
 		updateSpeed = speed;
 		
 		//	Stars come from the middle of the starfield in 3D mode
 		centerX = width >> 1;
 		centerY = height >> 1;
-			
+		
 		clsRect = new Rectangle(0, 0, width, height);
 		clsPoint = new Point();
 		clsColor = backgroundColor;
 		
-		stars = new Array();
+		stars = new Array<StarObject>();
 		
 		for (i in 0...(quantity))
 		{
-			var star:Dynamic = {};
+			var star:StarObject = new StarObject();
 			
 			star.index = i;
 			star.x = Std.int(Math.random() * width);
@@ -132,20 +139,31 @@ class StarfieldFX extends BaseFX
 			star.alpha = 0;
 			
 			stars.push(star);
+			
+			#if (cpp || neko)
+			starDefs.push( { x: 0, y: 0, red: 0, green: 0, blue: 0, alpha: 0 } );
+			#end
 		}
 		
 		//	Colours array
 		if (type == STARFIELD_TYPE_2D)
 		{
+			#if !neko
 			depthColours = FlxGradient.createGradientArray(1, 5, [0xff585858, 0xffF4F4F4]);
+			#else
+			depthColours = FlxGradient.createGradientArray(1, 5, [{rgb: 0x585858, a: 0xff}, {rgb: 0xF4F4F4, a: 0xff}]);
+			#end
 		}
 		else
 		{
+			#if !neko
 			depthColours = FlxGradient.createGradientArray(1, 300, [0xff292929, 0xffffffff]);
+			#else
+			depthColours = FlxGradient.createGradientArray(1, 300, [{rgb: 0x292929, a: 0xff}, {rgb: 0xffffff, a: 0xff}]);
+			#end
 		}
 		
 		active = true;
-		
 		return sprite;
 	}
 	
@@ -158,10 +176,17 @@ class StarfieldFX extends BaseFX
 	#if flash
 	public function setBackgroundColor(backgroundColor:UInt):Void
 	#else
-	public function setBackgroundColor(backgroundColor:Int):Void
+	public function setBackgroundColor(backgroundColor:BitmapInt32):Void
 	#end
 	{
 		clsColor = backgroundColor;
+		
+		#if (cpp || neko)
+		if (sprite != null)
+		{
+			cast(sprite, StarSprite).setBackgroundColor(backgroundColor);
+		}
+		#end
 	}
 	
 	/**
@@ -174,9 +199,29 @@ class StarfieldFX extends BaseFX
 	#if flash
 	public function setStarDepthColors(depth:Int, ?lowestColor:UInt = 0xff585858, ?highestColor:UInt = 0xffF4F4F4):Void
 	#else
-	public function setStarDepthColors(depth:Int, ?lowestColor:Int = 0xff585858, ?highestColor:Int = 0xffF4F4F4):Void
+	public function setStarDepthColors(depth:Int, ?lowestColor:BitmapInt32 = null, ?highestColor:BitmapInt32 = null):Void
 	#end
 	{
+		#if (cpp || neko)
+		if (lowestColor == null)
+		{
+			#if cpp
+			lowestColor = 0xff585858;
+			#else
+			lowestColor = {rgb: 0x585858, a: 0xff};
+			#end
+		}
+		
+		if (highestColor == null)
+		{
+			#if cpp
+			highestColor = 0xffF4F4F4;
+			#else
+			highestColor = {rgb: 0xF4F4F4, a: 0xff};
+			#end
+		}
+		#end
+		
 		//	Depth is the same, we just need to update the gradient then
 		depthColours = FlxGradient.createGradientArray(1, depth, [lowestColor, highestColor]);
 		
@@ -221,12 +266,31 @@ class StarfieldFX extends BaseFX
 	
 	private function update2DStarfield():Void
 	{
-		for (star in stars)
+		#if (cpp || neko)
+		var starSprite:StarSprite = cast(sprite, StarSprite);
+		var starArray:Array<StarDef> = starSprite.starData;
+		#end
+		
+		var star:StarObject;
+		
+		for (i in 0...(stars.length))
 		{
-			star.x += (starXOffset * star.speed);
-			star.y += (starYOffset * star.speed);
+			star = stars[i];
+			star.x += Math.floor(starXOffset * star.speed);
+			star.y += Math.floor(starYOffset * star.speed);
 			
+			#if flash
 			canvas.setPixel32(star.x, star.y, depthColours[Math.floor(star.speed - 1)]);
+			#else
+			var starColor:BitmapInt32 = depthColours[Math.floor(star.speed - 1)];
+			var rgba:RGBA = FlxColor.getRGB(starColor);
+			
+			var starDef:StarDef = starArray[i];
+			starDef.red = rgba.red / 255;
+			starDef.green = rgba.green / 255;
+			starDef.blue = rgba.blue / 255;
+			starDef.alpha = rgba.alpha / 255;
+			#end
 			
 			if (star.x > sprite.width)
 			{
@@ -234,7 +298,7 @@ class StarfieldFX extends BaseFX
 			}
 			else if (star.x < 0)
 			{
-				star.x = sprite.width;
+				star.x = Math.floor(sprite.width);
 			}
 			
 			if (star.y > sprite.height)
@@ -243,18 +307,31 @@ class StarfieldFX extends BaseFX
 			}
 			else if (star.y < 0)
 			{
-				star.y = sprite.height;
+				star.y = Math.floor(sprite.height);
 			}
+			
+			#if (cpp || neko)
+			starDef.x = star.x - starSprite.halfWidth;
+			starDef.y = star.y - starSprite.halfHeight;
+			#end
 		}
 	}
 	
 	private function update3DStarfield():Void
 	{
-		for (star in stars)
+		#if (cpp || neko)
+		var starSprite:StarSprite = cast(sprite, StarSprite);
+		var starArray:Array<StarDef> = starSprite.starData;
+		#end
+		
+		var star:StarObject;
+		
+		for (i in 0...(stars.length))
 		{
+			star = stars[i];
 			star.d *= 1.1;
-			star.x = centerX + ((Math.cos(star.r) * star.d) * star.speed);
-			star.y = centerY + ((Math.sin(star.r) * star.d) * star.speed);
+			star.x = Math.floor(centerX + ((Math.cos(star.r) * star.d) * star.speed));
+			star.y = Math.floor(centerY + ((Math.sin(star.r) * star.d) * star.speed));
 			
 			star.alpha = star.d * 2;
 			
@@ -263,7 +340,22 @@ class StarfieldFX extends BaseFX
 				star.alpha = 255;
 			}
 			
+			#if flash
 			canvas.setPixel32(star.x, star.y, 0xffffffff);
+			#elseif neko
+			var rgba:RGBA = FlxColor.getRGB( { rgb: 0xffffff, a: 0xff } );
+			#elseif cpp
+			var rgba:RGBA = FlxColor.getRGB(0xffffffff);
+			#end
+			
+			#if (cpp || neko)
+			// TODO: update 3D starfield on cpp and neko targets
+			var starDef:StarDef = starArray[i];
+			starDef.red = rgba.red / 255;
+			starDef.green = rgba.green / 255;
+			starDef.blue = rgba.blue / 255;
+			starDef.alpha = rgba.alpha / 255;
+			#end
 			//canvas.setPixel32(star.x, star.y, FlxColor.getColor32(255, star.alpha, star.alpha, star.alpha));
 			
 			if (star.x < 0 || star.x > sprite.width || star.y < 0 || star.y > sprite.height)
@@ -276,16 +368,27 @@ class StarfieldFX extends BaseFX
 				star.alpha = 0;
 				
 				stars[star.index] = star;
+				
+				#if (cpp || neko)
+				starDef.alpha = 0;
+				#end
 			}
+			
+			#if (cpp || neko)
+			starDef.x = star.x - starSprite.halfWidth;
+			starDef.y = star.y - starSprite.halfHeight;
+			#end
 		}
 	}
 	
-	public function draw():Void
+	override public function draw():Void
 	{
 		if (Lib.getTimer() > tick)
 		{
+			#if flash
 			canvas.lock();
 			canvas.fillRect(clsRect, clsColor);
+			#end
 			
 			if (starfieldType == STARFIELD_TYPE_2D)
 			{
@@ -296,9 +399,10 @@ class StarfieldFX extends BaseFX
 				update3DStarfield();
 			}
 			
+			#if flash
 			canvas.unlock();
-			
 			sprite.pixels = canvas;
+			#end
 			
 			if (updateSpeed > 0)
 			{
@@ -307,4 +411,318 @@ class StarfieldFX extends BaseFX
 		}
 	}
 	
+}
+
+#if (cpp || neko)
+class StarSprite extends FlxSprite
+{
+	
+	/**
+	 * Information about stars positions and colors
+	 */
+	public var starData:Array<StarDef>;
+	
+	/**
+	 * Starfield's background
+	 */
+	public var bgRed:Float;
+	public var bgGreen:Float;
+	public var bgBlue:Float;
+	public var bgAlpha:Float;
+	
+	public var halfWidth:Float;
+	public var halfHeight:Float;
+	
+	public function new(?X:Float = 0, ?Y:Float = 0, ?Width:Int = 1, ?Height:Int = 1, ?bgColor:BitmapInt32)
+	{
+		super(X, Y);
+		
+		#if !neko
+		makeGraphic(1, 1, 0xffffffff);
+		#else
+		makeGraphic(1, 1, {rgb: 0xffffff, a: 0xff});
+		#end
+		
+		setBackgroundColor(bgColor);
+		_tileSheetData.isColored = true;
+		
+		_frameID = _framesData.frameIDs[0];
+		
+		width = Width;
+		height = Height;
+		
+		halfWidth = 0.5 * Width;
+		halfHeight = 0.5 * Height;
+		
+		starData = new Array<StarDef>();
+	}
+	
+	public function setBackgroundColor(bgColor:BitmapInt32):Void
+	{
+		var rgba:RGBA = FlxColor.getRGB(bgColor);
+		bgRed = rgba.red / 255;
+		bgGreen = rgba.green / 255;
+		bgBlue = rgba.blue / 255;
+		bgAlpha = rgba.alpha / 255;
+	}
+	
+	override public function destroy():Void 
+	{
+		starData = null;
+		super.destroy();
+	}
+	
+	override public function draw():Void 
+	{
+		if(_flickerTimer != 0)
+		{
+			_flicker = !_flicker;
+			if (_flicker)
+			{
+				return;
+			}
+		}
+		
+		if (cameras == null)
+		{
+			cameras = FlxG.cameras;
+		}
+		var camera:FlxCamera;
+		var i:Int = 0;
+		var l:Int = cameras.length;
+		
+		var currDrawData:Array<Float>;
+		var currIndex:Int;
+		
+		var radians:Float;
+		var cos:Float;
+		var sin:Float;
+		
+		var starRed:Float;
+		var starGreen:Float;
+		var starBlue:Float;
+		
+		var starDef:StarDef;
+		
+		while(i < l)
+		{
+			camera = cameras[i++];
+			
+			if (!onScreen(camera))
+			{
+				continue;
+			}
+			
+			currDrawData = _tileSheetData.drawData[camera.ID];
+			currIndex = _tileSheetData.positionData[camera.ID];
+			
+			_point.x = (x - (camera.scroll.x * scrollFactor.x) - (offset.x)) + origin.x;
+			_point.y = (y - (camera.scroll.y * scrollFactor.y) - (offset.y)) + origin.y;
+			
+			if (simpleRender)
+			{	//Simple render
+				
+				_point.x += halfWidth;
+				_point.y += halfHeight;
+				
+				// draw background
+				currDrawData[currIndex++] = _point.x;
+				currDrawData[currIndex++] = _point.y;
+				
+				currDrawData[currIndex++] = _frameID;
+				
+				currDrawData[currIndex++] = width;
+				currDrawData[currIndex++] = 0;
+				currDrawData[currIndex++] = 0;
+				currDrawData[currIndex++] = height;
+				
+				if (camera.isColored)
+				{
+					currDrawData[currIndex++] = bgRed * camera.red; 
+					currDrawData[currIndex++] = bgGreen * camera.green;
+					currDrawData[currIndex++] = bgBlue * camera.blue;
+				}
+				else
+				{
+					currDrawData[currIndex++] = bgRed; 
+					currDrawData[currIndex++] = bgGreen;
+					currDrawData[currIndex++] = bgBlue;
+				}
+				
+				currDrawData[currIndex++] = bgAlpha * _alpha;
+				
+				// draw stars
+				for (j in 0...(starData.length))
+				{
+					starDef = starData[j];
+					
+					currDrawData[currIndex++] = _point.x + starDef.x + 0.5;
+					currDrawData[currIndex++] = _point.y + starDef.y + 0.5;
+					
+					currDrawData[currIndex++] = _frameID;
+					
+					currDrawData[currIndex++] = 1;
+					currDrawData[currIndex++] = 0;
+					currDrawData[currIndex++] = 0;
+					currDrawData[currIndex++] = 1;
+					
+					starRed = starDef.red;
+					starGreen = starDef.green;
+					starBlue = starDef.blue;
+					
+					if (camera.isColored)
+					{
+						starRed *= camera.red;
+						starGreen *= camera.green;
+						starBlue *= camera.blue;
+					}
+					
+					#if cpp
+					if (_color < 0xffffff)
+					#else
+					if (_color.rgb < 0xffffff)
+					#end
+					{
+						starRed *= _red;
+						starGreen *= _green;
+						starBlue *= _blue;
+					}
+					
+					currDrawData[currIndex++] = starRed; 
+					currDrawData[currIndex++] = starGreen;
+					currDrawData[currIndex++] = starBlue;
+					
+					currDrawData[currIndex++] = _alpha * starDef.alpha;
+				}
+				
+				_tileSheetData.positionData[camera.ID] = currIndex;
+			}
+			else
+			{	//Advanced render
+				radians = angle * 0.017453293;
+				cos = Math.cos(radians);
+				sin = Math.sin(radians);
+				
+				_point.x += halfWidth;
+				_point.y += halfHeight;
+				
+				// draw background
+				currDrawData[currIndex++] = _point.x;
+				currDrawData[currIndex++] = _point.y;
+				
+				currDrawData[currIndex++] = _frameID;
+				
+				currDrawData[currIndex++] = cos * scale.x * width;
+				currDrawData[currIndex++] = -sin * scale.y * height;
+				currDrawData[currIndex++] = sin * scale.x * width;
+				currDrawData[currIndex++] = cos * scale.y * height;
+				
+				if (camera.isColored)
+				{
+					currDrawData[currIndex++] = bgRed * camera.red; 
+					currDrawData[currIndex++] = bgGreen * camera.green;
+					currDrawData[currIndex++] = bgBlue * camera.blue;
+				}
+				else
+				{
+					currDrawData[currIndex++] = bgRed; 
+					currDrawData[currIndex++] = bgGreen;
+					currDrawData[currIndex++] = bgBlue;
+				}
+				
+				currDrawData[currIndex++] = bgAlpha * _alpha;
+				
+				// draw stars
+				for (j in 0...(starData.length))
+				{
+					starDef = starData[j];
+					
+					var localX:Float = starDef.x;
+					var localY:Float = starDef.y;
+					
+					var relativeX:Float = (localX * cos * scale.x - localY * sin * scale.y);
+					var relativeY:Float = (localX * sin * scale.x + localY * cos * scale.y);
+					
+					currDrawData[currIndex++] = _point.x + relativeX;
+					currDrawData[currIndex++] = _point.y + relativeY;
+					
+					currDrawData[currIndex++] = _frameID;
+					
+					currDrawData[currIndex++] = cos * scale.x;
+					currDrawData[currIndex++] = -sin * scale.y;
+					currDrawData[currIndex++] = sin * scale.x;
+					currDrawData[currIndex++] = cos * scale.y;
+					
+					starRed = starDef.red;
+					starGreen = starDef.green;
+					starBlue = starDef.blue;
+					
+					if (camera.isColored)
+					{
+						starRed *= camera.red;
+						starGreen *= camera.green;
+						starBlue *= camera.blue;
+					}
+					
+					#if cpp
+					if (_color < 0xffffff)
+					#else
+					if (_color.rgb < 0xffffff)
+					#end
+					{
+						starRed *= _red;
+						starGreen *= _green;
+						starBlue *= _blue;
+					}
+					
+					currDrawData[currIndex++] = starRed; 
+					currDrawData[currIndex++] = starGreen;
+					currDrawData[currIndex++] = starBlue;
+					
+					currDrawData[currIndex++] = _alpha * starDef.alpha;
+				}
+				
+				_tileSheetData.positionData[camera.ID] = currIndex;
+			}
+			FlxBasic._VISIBLECOUNT++;
+			if (FlxG.visualDebug && !ignoreDrawDebug)
+			{
+				drawDebug(camera);
+			}
+		}
+	}
+	
+	override public function updateTileSheet():Void
+	{
+		if (_pixels != null && frameWidth >= 1 && frameHeight >= 1)
+		{
+			_tileSheetData = TileSheetManager.addTileSheet(_pixels);
+			_tileSheetData.antialiasing = _antialiasing;
+			_framesData = _tileSheetData.addSpriteFramesData(Math.floor(frameWidth), Math.floor(frameHeight));
+		}
+	}
+	
+}
+
+typedef StarDef = {
+	var x:Float;
+	var y:Float;
+	var red:Float;
+	var green:Float;
+	var blue:Float;
+	var alpha:Float;
+}
+#end
+
+class StarObject 
+{
+	public var index:Int;
+	public var x:Int;
+	public var y:Int;
+	public var d:Float;
+	public var speed:Float;
+	public var r:Float;
+	public var alpha:Float;
+	
+	public function new() {  }
 }

@@ -12,14 +12,28 @@ import nme.geom.Matrix;
 import nme.geom.Point;
 import nme.geom.Rectangle;
 import nme.media.Sound;
+import nme.media.SoundTransform;
+
+#if (cpp || neko)
+import org.flixel.system.input.JoystickManager;
+#end
+
+import org.flixel.system.input.TouchManager;
+import nme.ui.Multitouch;
+
+import org.flixel.plugin.pxText.PxBitmapFont;
 import org.flixel.system.input.Keyboard;
 import org.flixel.system.input.Mouse;
 import org.flixel.tileSheetManager.TileSheetManager;
+import org.flixel.tweens.misc.MultiVarTween;
 
 import org.flixel.plugin.DebugPathDisplay;
 import org.flixel.plugin.TimerManager;
 import org.flixel.system.FlxDebugger;
 import org.flixel.system.FlxQuadTree;
+
+import org.flixel.tweens.FlxTween;
+import org.flixel.tweens.util.Ease;
 
 /**
  * This is a global helper class full of useful functions for audio,
@@ -29,7 +43,34 @@ import org.flixel.system.FlxQuadTree;
  */
 class FlxG 
 {
-
+	
+	/**
+	 * The maximum number of concurrent touch points supported by the current device.
+	 */
+	public static var maxTouchPoints:Int = 0;
+	
+	/**
+	 * Indicates whether the current environment supports basic touch input, such as a single finger tap.
+	 */
+	public static var supportsTouchEvents:Bool = false;
+	
+	/**
+	 * A reference to a <code>TouchManager</code> object. Useful for devices with multitouch support
+	 */
+	public static var touchManager:TouchManager;
+	
+	#if (cpp || neko)
+	/**
+	 * A reference to a <code>JoystickManager</code> object. Important for input!
+	 */
+	public static var joystickManager:JoystickManager;
+	#end
+	
+	/**
+	 * Global tweener for tweening between multiple worlds
+	 */
+	public static var tweener:FlxBasic = new FlxBasic();
+	
 	#if flash
 	public static var bgColor(getBgColor, setBgColor):UInt;
 	#else
@@ -44,19 +85,19 @@ class FlxG
 	 * If you build and maintain your own version of flixel,
 	 * you can give it your own name here.
 	 */
-	static public inline var LIBRARY_NAME:String = "flixel";
+	static public inline var LIBRARY_NAME:String = "HaxeFlixel";
 	
 	/**
 	 * Assign a major version to your library.
 	 * Appears before the decimal in the console.
 	 */
-	static public inline var LIBRARY_MAJOR_VERSION:Int = 2;
+	static public inline var LIBRARY_MAJOR_VERSION:Int = 1;
 	
 	/**
 	 * Assign a minor version to your library.
 	 * Appears after the decimal in the console.
 	 */
-	static public inline var LIBRARY_MINOR_VERSION:Int = 55;
+	static public inline var LIBRARY_MINOR_VERSION:Int = 06;
 	
 	/**
 	 * Debugger overlay layout preset: Wide but low windows at the bottom of the screen.
@@ -588,6 +629,10 @@ class FlxG
 	{
 		keys.reset();
 		mouse.reset();
+		
+		#if (cpp || neko)
+		joystickManager.reset();
+		#end
 	}
 	
 	// TODO: Return from Sound -> Class<Sound>
@@ -646,6 +691,46 @@ class FlxG
 		return sound;
 	}
 	
+	#if android
+	private static var _soundCache:Hash<Sound> = new Hash<Sound>();
+	private static var _soundTransform:SoundTransform = new SoundTransform();
+	
+	static public function addSound(EmbeddedSound:String):Sound
+	{
+		if (_soundCache.exists(EmbeddedSound))
+		{
+			return _soundCache.get(EmbeddedSound);
+		}
+		else
+		{
+			var sound:Sound = Assets.getSound(EmbeddedSound);
+			_soundCache.set(EmbeddedSound, sound);
+			return sound;
+		}
+	}
+	
+	static public function play(EmbeddedSound:String, ?Volume:Float = 1.0, ?Looped:Bool = false, ?AutoDestroy:Bool = true):FlxSound
+	{
+		var sound:Sound = null;
+		
+		_soundTransform.volume = (FlxG.mute ? 0 : 1) * FlxG.volume * Volume;
+		_soundTransform.pan = 0;
+		
+		if (_soundCache.exists(EmbeddedSound))
+		{
+			_soundCache.get(EmbeddedSound).play(0, 0, _soundTransform);
+		}
+		else
+		{
+			sound = Assets.getSound(EmbeddedSound);
+			
+			_soundCache.set(EmbeddedSound, sound);
+			sound.play(0, 0, _soundTransform);
+		}
+		
+		return null;
+	}
+	#else
 	/**
 	 * Creates a new sound object from an embedded <code>Class</code> object.
 	 * NOTE: Just calls FlxG.loadSound() with AutoPlay == true.
@@ -659,6 +744,7 @@ class FlxG
 	{
 		return FlxG.loadSound(EmbeddedSound, Volume, Looped, AutoDestroy, true);
 	}
+	#end
 		
 	/**
 	 * Creates a new sound object from a URL.
@@ -704,7 +790,7 @@ class FlxG
 		{
 			// volumeHandler(FlxG.mute ? 0 : _volume);
 			var param:Float = FlxG.mute ? 0 : _volume;
-			Reflect.callMethod(FlxG, Reflect.field(FlxG, "volumeHandler"), [param]);
+			Reflect.callMethod(FlxG, Reflect.getProperty(FlxG, "volumeHandler"), [param]);
 		}
 		return Volume;
 	}
@@ -828,7 +914,11 @@ class FlxG
 		var key:String = Key;
 		if(key == null)
 		{
+			#if !neko
 			key = Width + "x" + Height + ":" + Color;
+			#else
+			key = Width + "x" + Height + ":" + Color.a + "." + Color.rgb;
+			#end
 			if(Unique && checkBitmapCache(key))
 			{
 				var inc:Int = 0;
@@ -842,7 +932,6 @@ class FlxG
 		}
 		if (!checkBitmapCache(key))
 		{
-			//_cache[Key] = new BitmapData(Width,Height,true,Color);
 			_cache.set(key, new BitmapData(Width, Height, true, Color));
 		}
 		return _cache.get(key);
@@ -858,6 +947,11 @@ class FlxG
 	 */
 	static public function addBitmap(Graphic:Dynamic, ?Reverse:Bool = false, ?Unique:Bool = false, ?Key:String = null, ?FrameWidth:Int = 0, ?FrameHeight:Int = 0):BitmapData
 	{
+		if (Graphic == null)
+		{
+			return null;
+		}
+		
 		var isClass:Bool = true;
 		var isBitmap:Bool = true;
 		if (Std.is(Graphic, Class))
@@ -1209,7 +1303,7 @@ class FlxG
 		#if !flash
 		if (Color == null)
 		{
-			Color = BLACK;
+			Color = FlxG.BLACK;
 		}
 		#end
 		
@@ -1252,11 +1346,7 @@ class FlxG
 	{
 		if (FlxG.camera == null)
 		{
-			#if !neko
-			return 0xff000000;
-			#else
-			return BLACK;
-			#end
+			return FlxG.BLACK;
 		}
 		else
 		{
@@ -1424,6 +1514,8 @@ class FlxG
 	 */
 	static public function init(Game:FlxGame, Width:Int, Height:Int, Zoom:Float):Void
 	{
+		//FlxAssets.cacheSounds();
+		
 		FlxG._game = Game;
 		FlxG.width = Math.floor(Math.abs(Width));
 		FlxG.height = Math.floor(Math.abs(Height));
@@ -1453,6 +1545,10 @@ class FlxG
 		FlxG.mouse = new Mouse(FlxG._game._mouse);
 		FlxG.keys = new Keyboard();
 		FlxG.mobile = false;
+		
+		#if (cpp || neko)
+		FlxG.joystickManager = new JoystickManager();
+		#end
 
 		FlxG.levels = new Array();
 		FlxG.scores = new Array();
@@ -1465,6 +1561,7 @@ class FlxG
 	static public function reset():Void
 	{
 		#if (cpp || neko)
+		PxBitmapFont.clearStorage();
 		TileSheetManager.clear();
 		#end
 		FlxG.clearBitmapCache();
@@ -1499,6 +1596,15 @@ class FlxG
 		{
 			FlxG.mouse.update(Math.floor(FlxG._game.mouseX), Math.floor(FlxG._game.mouseY));
 		}
+		
+		if (FlxG.supportsTouchEvents)
+		{
+			FlxG.touchManager.update();
+		}
+		
+		#if (cpp || neko)
+		FlxG.joystickManager.update();
+		#end
 	}
 	
 	/**
@@ -1627,6 +1733,43 @@ class FlxG
 				plugin.draw();
 			}
 		}
+	}
+	
+	/**
+	 * Tweens numeric public properties of an Object. Shorthand for creating a MultiVarTween tween, starting it and adding it to a Tweener.
+	 * @param	object		The object containing the properties to tween.
+	 * @param	values		An object containing key/value pairs of properties and target values.
+	 * @param	duration	Duration of the tween.
+	 * @param	options		An object containing key/value pairs of the following optional parameters:
+	 * 						type		Tween type.
+	 * 						complete	Optional completion callback function.
+	 * 						ease		Optional easer function.
+	 * 						tweener		The Tweener to add this Tween to.
+	 * @return	The added MultiVarTween object.
+	 *
+	 * Example: FlxG.tween(object, { x: 500, y: 350 }, 2.0, { ease: easeFunction, complete: onComplete } );
+	 */
+	public static function tween(object:Dynamic, values:Dynamic, duration:Float, ?options:Dynamic = null):MultiVarTween
+	{
+		var type:Int = FlxTween.ONESHOT,
+			complete:CompleteCallback = null,
+			ease:EaseFunction = null,
+			tweener:FlxBasic = FlxG.tweener;
+		if (Std.is(object, FlxBasic)) 
+		{
+			tweener = cast(object, FlxBasic);
+		}
+		if (options)
+		{
+			if (Reflect.hasField(options, "type")) type = options.type;
+			if (Reflect.hasField(options, "complete")) complete = options.complete;
+			if (Reflect.hasField(options, "ease")) ease = options.ease;
+			if (Reflect.hasField(options, "tweener")) tweener = options.tweener;
+		}
+		var tween:MultiVarTween = new MultiVarTween(complete, type);
+		tween.tween(object, values, duration, ease);
+		tweener.addTween(tween);
+		return tween;
 	}
 	
 }

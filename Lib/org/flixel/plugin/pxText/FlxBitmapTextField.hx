@@ -24,6 +24,7 @@ class FlxBitmapTextField extends FlxSprite
 	private var _font:PxBitmapFont;
 	private var _text:String;
 	private var _textColor:Int;
+	private var _useTextColor:Bool;
 	private var _outline:Bool;
 	private var _outlineColor:Int;
 	private var _shadow:Bool;
@@ -59,8 +60,11 @@ class FlxBitmapTextField extends FlxSprite
 	 */
 	public function new(?pFont:PxBitmapFont = null) 
 	{
+		super();
+		
 		_text = "";
 		_textColor = 0x0;
+		_useTextColor = true;
 		_outline = false;
 		_outlineColor = 0x0;
 		_shadow = false;
@@ -80,8 +84,6 @@ class FlxBitmapTextField extends FlxSprite
 		_fixedWidth = true;
 		_wordWrap = true;
 		_alpha = 1;
-		
-		super();
 		
 		if (pFont == null)
 		{
@@ -154,6 +156,8 @@ class FlxBitmapTextField extends FlxSprite
 			cameras = FlxG.cameras;
 		}
 		var camera:FlxCamera;
+		var currDrawData:Array<Float>;
+		var currIndex:Int;
 		var i:Int = 0;
 		var l:Int = cameras.length;
 		
@@ -178,34 +182,47 @@ class FlxBitmapTextField extends FlxSprite
 		while(i < l)
 		{
 			camera = cameras[i++];
-			camID = camera.ID;
+			currDrawData = _tileSheetData.drawData[camera.ID];
+			currIndex = _tileSheetData.positionData[camera.ID];
+			
+			var isColoredCamera:Bool = camera.isColored;
 			
 			if (!onScreen(camera))
 			{
 				continue;
 			}
-			_point.x = x - Math.floor(camera.scroll.x * scrollFactor.x) - Math.floor(offset.x);
-			_point.y = y - Math.floor(camera.scroll.y * scrollFactor.y) - Math.floor(offset.y);
+			_point.x = (x - (camera.scroll.x * scrollFactor.x) - (offset.x)) + origin.x;
+			_point.y = (y - (camera.scroll.y * scrollFactor.y) - (offset.y)) + origin.y;
 			
 			if (simpleRender)
 			{	
 				if (_background)
 				{
-					_tileSheetData.drawData[camID].push(Math.floor(_point.x) + origin.x + _bgDrawData[1]);
-					_tileSheetData.drawData[camID].push(Math.floor(_point.y) + origin.y + _bgDrawData[2]);
+					currDrawData[currIndex++] = _point.x + _bgDrawData[1];
+					currDrawData[currIndex++] = _point.y + _bgDrawData[2];
 					
-					_tileSheetData.drawData[camID].push(_bgDrawData[0]);
+					currDrawData[currIndex++] = _bgDrawData[0];
 					
-					_tileSheetData.drawData[camID].push(width);
-					_tileSheetData.drawData[camID].push(0);
-					_tileSheetData.drawData[camID].push(0);
-					_tileSheetData.drawData[camID].push(height);
+					currDrawData[currIndex++] = width;
+					currDrawData[currIndex++] = 0;
+					currDrawData[currIndex++] = 0;
+					currDrawData[currIndex++] = height;
 					
-					_tileSheetData.drawData[camID].push(_bgDrawData[3] * camera.red); 
-					_tileSheetData.drawData[camID].push(_bgDrawData[4] * camera.green);
-					_tileSheetData.drawData[camID].push(_bgDrawData[5] * camera.blue);
+					if (isColoredCamera)
+					{
+						currDrawData[currIndex++] = _bgDrawData[3] * camera.red; 
+						currDrawData[currIndex++] = _bgDrawData[4] * camera.green;
+						currDrawData[currIndex++] = _bgDrawData[5] * camera.blue;
+					}
+					else
+					{
+						currDrawData[currIndex++] = _bgDrawData[3]; 
+						currDrawData[currIndex++] = _bgDrawData[4];
+						currDrawData[currIndex++] = _bgDrawData[5];
+					}
 					
-					_tileSheetData.drawData[camID].push(_alpha);
+					
+					currDrawData[currIndex++] = _alpha;
 				}
 				
 				//Simple render
@@ -221,36 +238,29 @@ class FlxBitmapTextField extends FlxSprite
 						currTileGreen = _drawData[currPosInArr + 4];
 						currTileBlue = _drawData[currPosInArr + 5];
 						
-						_tileSheetData.drawData[camID].push(Math.floor(_point.x) + origin.x + currTileX);
-						_tileSheetData.drawData[camID].push(Math.floor(_point.y) + origin.y + currTileY);
+						currDrawData[currIndex++] = _point.x + currTileX;
+						currDrawData[currIndex++] = _point.y + currTileY;
 						
-						_tileSheetData.drawData[camID].push(currTileID);
+						currDrawData[currIndex++] = currTileID;
 						
-					//	_tileSheetData.drawData[camID].push(_fontScale); // scale
-					//	_tileSheetData.drawData[camID].push(0.0); // rotation
+						currDrawData[currIndex++] = _fontScale;
+						currDrawData[currIndex++] = 0;
+						currDrawData[currIndex++] = 0;
+						currDrawData[currIndex++] = _fontScale;
 						
-						_tileSheetData.drawData[camID].push(_fontScale);
-						_tileSheetData.drawData[camID].push(0);
-						_tileSheetData.drawData[camID].push(0);
-						_tileSheetData.drawData[camID].push(_fontScale);
-						
-						#if !neko
-						if (camera.color < 0xffffff)
-						#else
-						if (camera.color.rgb < 0xffffff)
-						#end
+						if (isColoredCamera)
 						{
-							_tileSheetData.drawData[camID].push(currTileRed * camera.red); 
-							_tileSheetData.drawData[camID].push(currTileGreen * camera.green);
-							_tileSheetData.drawData[camID].push(currTileBlue * camera.blue);
+							currDrawData[currIndex++] = currTileRed * camera.red; 
+							currDrawData[currIndex++] = currTileGreen * camera.green;
+							currDrawData[currIndex++] = currTileBlue * camera.blue;
 						}
 						else
 						{
-							_tileSheetData.drawData[camID].push(currTileRed); 
-							_tileSheetData.drawData[camID].push(currTileGreen);
-							_tileSheetData.drawData[camID].push(currTileBlue);
+							currDrawData[currIndex++] = currTileRed; 
+							currDrawData[currIndex++] = currTileGreen;
+							currDrawData[currIndex++] = currTileBlue;
 						}
-						_tileSheetData.drawData[camID].push(_alpha);
+						currDrawData[currIndex++] = _alpha;
 					}
 					
 					j++;
@@ -270,21 +280,30 @@ class FlxBitmapTextField extends FlxSprite
 					relativeX = (currTileX * cos * scale.x - currTileY * sin * scale.y);
 					relativeY = (currTileX * sin * scale.x + currTileY * cos * scale.y);
 					
-					_tileSheetData.drawData[camID].push(Math.floor(_point.x) + origin.x + relativeX);
-					_tileSheetData.drawData[camID].push(Math.floor(_point.y) + origin.y + relativeY);
+					currDrawData[currIndex++] = _point.x + relativeX;
+					currDrawData[currIndex++] = _point.y + relativeY;
 					
-					_tileSheetData.drawData[camID].push(_bgDrawData[0]);
+					currDrawData[currIndex++] = _bgDrawData[0];
 					
-					_tileSheetData.drawData[camID].push(cos * scale.x * width * _fontScale);
-					_tileSheetData.drawData[camID].push( -sin * scale.y * height * _fontScale);
-					_tileSheetData.drawData[camID].push(sin * scale.x * width * _fontScale);
-					_tileSheetData.drawData[camID].push(cos * scale.y * height * _fontScale);
+					currDrawData[currIndex++] = cos * scale.x * width * _fontScale;
+					currDrawData[currIndex++] = -sin * scale.y * height * _fontScale;
+					currDrawData[currIndex++] = sin * scale.x * width * _fontScale;
+					currDrawData[currIndex++] = cos * scale.y * height * _fontScale;
 					
-					_tileSheetData.drawData[camID].push(_bgDrawData[3] * camera.red); 
-					_tileSheetData.drawData[camID].push(_bgDrawData[4] * camera.green);
-					_tileSheetData.drawData[camID].push(_bgDrawData[5] * camera.blue);
+					if (isColoredCamera)
+					{
+						currDrawData[currIndex++] = _bgDrawData[3] * camera.red; 
+						currDrawData[currIndex++] = _bgDrawData[4] * camera.green;
+						currDrawData[currIndex++] = _bgDrawData[5] * camera.blue;
+					}
+					else
+					{
+						currDrawData[currIndex++] = _bgDrawData[3]; 
+						currDrawData[currIndex++] = _bgDrawData[4];
+						currDrawData[currIndex++] = _bgDrawData[5];
+					}
 					
-					_tileSheetData.drawData[camID].push(_alpha);
+					currDrawData[currIndex++] = _alpha;
 				}
 				
 				while (j < textLength)
@@ -299,47 +318,39 @@ class FlxBitmapTextField extends FlxSprite
 						currTileGreen = _drawData[currPosInArr + 4];
 						currTileBlue = _drawData[currPosInArr + 5];
 						
-					//	relativeX = (currTileX * cos - currTileY * sin) * scale.x;
-					//	relativeY = (currTileX * sin + currTileY * cos) * scale.x;
-						
 						relativeX = (currTileX * cos * scale.x - currTileY * sin * scale.y);
 						relativeY = (currTileX * sin * scale.x + currTileY * cos * scale.y);
 						
-						_tileSheetData.drawData[camID].push(Math.floor(_point.x) + origin.x + relativeX);
-						_tileSheetData.drawData[camID].push(Math.floor(_point.y) + origin.y + relativeY);
+						currDrawData[currIndex++] = _point.x + relativeX;
+						currDrawData[currIndex++] = _point.y + relativeY;
 						
-						_tileSheetData.drawData[camID].push(currTileID);
+						currDrawData[currIndex++] = currTileID;
 						
-					//	_tileSheetData.drawData[camID].push(_fontScale * scale.x); // scale
-					//	_tileSheetData.drawData[camID].push(-radians); // rotation
+						currDrawData[currIndex++] = cos * scale.x * _fontScale;
+						currDrawData[currIndex++] = -sin * scale.y * _fontScale;
+						currDrawData[currIndex++] = sin * scale.x * _fontScale;
+						currDrawData[currIndex++] = cos * scale.y * _fontScale;
 						
-						_tileSheetData.drawData[camID].push(cos * scale.x * _fontScale);
-						_tileSheetData.drawData[camID].push( -sin * scale.y * _fontScale);
-						_tileSheetData.drawData[camID].push(sin * scale.x * _fontScale);
-						_tileSheetData.drawData[camID].push(cos * scale.y * _fontScale);
-						
-						#if !neko
-						if (camera.color < 0xffffff)
-						#else
-						if (camera.color.rgb < 0xffffff)
-						#end
+						if (isColoredCamera)
 						{
-							_tileSheetData.drawData[camID].push(currTileRed * camera.red); 
-							_tileSheetData.drawData[camID].push(currTileGreen * camera.green);
-							_tileSheetData.drawData[camID].push(currTileBlue * camera.blue);
+							currDrawData[currIndex++] = currTileRed * camera.red; 
+							currDrawData[currIndex++] = currTileGreen * camera.green;
+							currDrawData[currIndex++] = currTileBlue * camera.blue;
 						}
 						else
 						{
-							_tileSheetData.drawData[camID].push(currTileRed); 
-							_tileSheetData.drawData[camID].push(currTileGreen);
-							_tileSheetData.drawData[camID].push(currTileBlue);
+							currDrawData[currIndex++] = currTileRed; 
+							currDrawData[currIndex++] = currTileGreen;
+							currDrawData[currIndex++] = currTileBlue;
 						}
-						_tileSheetData.drawData[camID].push(_alpha);
+						currDrawData[currIndex++] = _alpha;
 					}
 					
 					j++;
 				}
 			}
+			
+			_tileSheetData.positionData[camera.ID] = currIndex;
 			
 			FlxBasic._VISIBLECOUNT++;
 			if (FlxG.visualDebug && !ignoreDrawDebug)
@@ -404,6 +415,25 @@ class FlxBitmapTextField extends FlxSprite
 		if (_textColor != value)
 		{
 			_textColor = value;
+			updateGlyphs(true, false, false);
+			_pendingTextChange = true;
+			updateBitmapData();
+		}
+		return value;
+	}
+	
+	public var useTextColor(get_useTextColor, set_useTextColor):Bool;
+	
+	private function get_useTextColor():Bool 
+	{
+		return _useTextColor;
+	}
+	
+	private function set_useTextColor(value:Bool):Bool 
+	{
+		if (_useTextColor != value)
+		{
+			_useTextColor = value;
 			updateGlyphs(true, false, false);
 			_pendingTextChange = true;
 			updateBitmapData();
@@ -724,7 +754,7 @@ class FlxBitmapTextField extends FlxSprite
 			#if (flash || js)
 			_font.render(_pixels, _preparedTextGlyphs, t, _textColor, ox + _padding, oy + row * (fontHeight + _lineSpacing) + _padding, _letterSpacing);
 			#else
-			_font.render(_drawData, t, _textColor, _color, _alpha, ox + _padding - halfWidth, oy + row * (Math.floor(fontHeight * _fontScale) + _lineSpacing) + _padding - halfHeight, _letterSpacing, _fontScale);
+			_font.render(_drawData, t, _textColor, _color, _alpha, ox + _padding - halfWidth, oy + row * (Math.floor(fontHeight * _fontScale) + _lineSpacing) + _padding - halfHeight, _letterSpacing, _fontScale, _useTextColor);
 			#end
 			row++;
 		}
@@ -1107,7 +1137,7 @@ class FlxBitmapTextField extends FlxSprite
 		if (textGlyphs)
 		{
 			clearPreparedGlyphs(_preparedTextGlyphs);
-			_preparedTextGlyphs = _font.getPreparedGlyphs(_fontScale, _textColor);
+			_preparedTextGlyphs = _font.getPreparedGlyphs(_fontScale, _textColor, _useTextColor);
 		}
 		
 		if (shadowGlyphs)

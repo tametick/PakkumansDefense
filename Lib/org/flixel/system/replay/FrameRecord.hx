@@ -40,6 +40,7 @@ class FrameRecord
 		frame = Math.floor(Frame);
 		keys = Keys;
 		mouse = Mouse;
+		
 		return this;
 	}
 	
@@ -60,7 +61,7 @@ class FrameRecord
 	{
 		var output:String = frame + "k";
 		
-		if(keys != null)
+		if (keys != null)
 		{
 			var object:CodeValuePair;
 			var i:Int = 0;
