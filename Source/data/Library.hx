@@ -86,6 +86,7 @@ enum Image {
 	FRUIT;
 	HASTE;
 	SETTINGS;
+	CONFUSION;
 }
 
 enum Sound {

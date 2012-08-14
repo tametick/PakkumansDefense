@@ -243,6 +243,19 @@ class Level extends FlxTilemap {
 		return null;
 	}
 	
+	public function lookAround(x:Int, y:Int):FlxPoint {
+		for ( i in x - 1 ... x + 2 )
+					{
+						for ( j in y - 1 ... y + 2 )
+							{
+								if (isFree(i, j)) {
+									return new FlxPoint(i, j);
+								}
+							}
+					}
+		return null;
+	}
+	
 	override public function destroy() {
 		super.destroy();
 		

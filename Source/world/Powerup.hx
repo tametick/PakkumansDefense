@@ -28,7 +28,7 @@ class Powerup extends WarpSprite {
 				duration = 6; 
 				#end
 			case CASHFORKILLS: 
-				clr = Colors.GREEN; 
+				clr = Colors.LGREEN; 
 				img = Image.CASH; 
 				#if keyboard
 				duration = 4; 
@@ -47,6 +47,14 @@ class Powerup extends WarpSprite {
 			case HASTE:
 				clr = Colors.PINK;
 				img = Image.HASTE;
+				#if keyboard
+				duration = 4; 
+				#else
+				duration = 6; 
+				#end
+			case CONFUSION:
+				clr = Colors.GRAY;
+				img = Image.CONFUSION;
 				#if keyboard
 				duration = 4; 
 				#else
@@ -78,4 +86,5 @@ enum PowerupType {
 	CASHFORKILLS;
 	SHOTGUN;
 	HASTE;
+	CONFUSION;
 }

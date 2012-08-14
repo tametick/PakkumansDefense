@@ -9,6 +9,7 @@ import org.flixel.FlxU;
 import utils.Colors;
 import states.GameState;
 import world.Powerup;
+import utils.Utils;
 
 class Ghost extends WarpSprite {
 	var shade:UInt;
@@ -66,9 +67,28 @@ class Ghost extends WarpSprite {
 			if (counter >= 1 && pathSpeed == 0) {
 				setColor(shade);
 				counter = 0;
-			
-				p0.x = level.player.x + level.player.width/2;
-				p0.y = level.player.y + level.player.height/2;
+				
+				var tx :Int= 0;
+				var ty :Int= 0;
+				puName = Type.enumConstructor(PowerupType.CONFUSION);
+				if (!level.activePowerups.exists(puName)) {
+					tx = Std.int(level.player.x);
+					ty = Std.int(level.player.y);
+				} else {
+					var tw = cast(level.towers.members[Utils.randomIntInRange(0, level.towers.length-1)],Tower);
+					tx = Utils.pixelToTile(tw.x);
+					ty = Utils.pixelToTile(tw.y);
+					
+					var p = level.lookAround(tx, ty);
+					
+					tx = Std.int(p.x*Library.tileSize);		
+					ty = Std.int(p.y*Library.tileSize);
+				}
+					
+				
+				
+				p0.x = tx + level.player.width/2;
+				p0.y = ty + level.player.height/2;
 				p1.x = x + width/2;
 				p1.y = y + height/2;
 			
@@ -82,6 +102,7 @@ class Ghost extends WarpSprite {
 			setColor(Colors.LBLUE);
 		}
 	}
+	
 }
 
 enum GhostType {
