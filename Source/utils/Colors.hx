@@ -17,6 +17,4 @@ class Colors {
 	public static inline var BLUE = 0xff005784;
 	public static inline var LBLUE = 0xff31a2f2;
 	public static inline var BLUEGRAY = 0xffb2dcef;
-	
-	public static inline var transparent50 = 0x75ffffff;
 }

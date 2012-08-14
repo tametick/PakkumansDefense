@@ -163,9 +163,9 @@ class Player extends WarpSprite {
 					s.setHighlighted(touch);
 				 }
 			} else if (FlxG.mouse.justReleased()) {
-				var touch2 = getCommand();
-				if(touch2!=null){
-					s.setUnhighlighted(touch2);
+				touch = getCommand();
+				if(touch!=null){
+					s.setUnhighlighted(getCommand());
 				}
 			}
 		} else {

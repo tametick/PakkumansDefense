@@ -6,10 +6,10 @@ call bat\SetupApplication.bat
 :target
 ::goto desktop
 ::goto android-debug
-goto android-test
+::goto android-test
 ::goto ios-debug
 ::goto ios-test
-::goto blackberry-test
+goto blackberry-test
 
 :desktop
 :: http://help.adobe.com/en_US/air/build/WSfffb011ac560372f-6fa6d7e0128cca93d31-8000.html
@@ -91,7 +91,7 @@ exit
 echo berry start
 set ROOT=C:\Users\Andrew\mercurial-stuff\buskers\buskers\mobilePD
 copy /Y %ROOT%\bin\MobilePD.swf %ROOT%
-call blackberry-airpackager  -connect 169.254.0.2 -package mobilePD.bar -installApp -launchApp app.xml bar-descriptor.xml MobilePD.swf -devMode -device 169.254.0.1 -password secret
+call blackberry-airpackager -target bar-debug -connect 169.254.0.2 -package mobilePD.bar -installApp -launchApp app.xml bar-descriptor.xml MobilePD.swf -devMode -device 169.254.0.1 -password secret
 echo berry stop
 exit
 :installfail
