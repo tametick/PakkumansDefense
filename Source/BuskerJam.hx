@@ -27,8 +27,7 @@ class BuskerJam extends FlxGame {
 			super(240, 160, GameState, 2);
 			forceDebugger = true;
 		} else {
-			//super(240, 160, MenuState, 2);
-			super(240, 160, SettingsState, 2);
+			super(240, 160, MenuState, 2);
 		}
 	}
 	
