@@ -14,29 +14,28 @@
 
 package org.flixel.plugin.photonstorm;
 
+import flash.display.BitmapData;
 import flash.events.MouseEvent;
+import flash.geom.Rectangle;
+import nme.display.BitmapInt32;
 import org.flixel.FlxCamera;
 import org.flixel.FlxG;
 import org.flixel.FlxGroup;
 import org.flixel.FlxSprite;
 import org.flixel.FlxText;
-import utils.Colors;
 
+#if (cpp || neko)
+import org.flixel.tileSheetManager.TileSheetManager;
+#end
 
 /**
  * A simple button class that calls a function when clicked by the mouse.
  */
 class FlxButtonPlus extends FlxGroup
 {
-	#if flash
-	static public inline var NORMAL:UInt = 0;
-	static public inline var HIGHLIGHT:UInt = 1;
-	static public inline var PRESSED:UInt = 2;
-	#else
 	static public inline var NORMAL:Int = 0;
 	static public inline var HIGHLIGHT:Int = 1;
 	static public inline var PRESSED:Int = 2;
-	#end
 	
 	/**
 	 * Set this to true if you want this button to function even while the game is paused.
@@ -45,11 +44,7 @@ class FlxButtonPlus extends FlxGroup
 	/**
 	 * Shows the current state of the button.
 	 */
-	#if flash
-	var _status:UInt;
-	#else
 	var _status:Int;
-	#end
 	/**
 	 * This function is called when the button is clicked.
 	 */
@@ -62,8 +57,6 @@ class FlxButtonPlus extends FlxGroup
 	 * Whether or not the button has initialized itself yet.
 	 */
 	var _initialized:Bool;
-	
-	
 	
 	//	Flixel Power Tools Modification from here down
 	
@@ -104,7 +97,7 @@ class FlxButtonPlus extends FlxGroup
 	#if flash
 	public var borderColor:UInt;
 	#else
-	public var borderColor:Int;
+	public var borderColor:BitmapInt32;
 	#end
 	
 	/**
@@ -113,7 +106,7 @@ class FlxButtonPlus extends FlxGroup
 	#if flash
 	public var offColor:Array<UInt>;
 	#else
-	public var offColor:Array<Int>;
+	public var offColor:Array<BitmapInt32>;
 	#end
 	
 	/**
@@ -122,7 +115,7 @@ class FlxButtonPlus extends FlxGroup
 	#if flash
 	public var onColor:Array<UInt>;
 	#else
-	public var onColor:Array<Int>;
+	public var onColor:Array<BitmapInt32>;
 	#end
 	
 	private var _x:Int;
@@ -144,9 +137,15 @@ class FlxButtonPlus extends FlxGroup
 	 */
 	public function new(X:Int, Y:Int, Callback:Dynamic, ?Params:Array<Dynamic> = null, ?Label:String = null, ?Width:Int = 100, ?Height:Int = 20)
 	{
+		#if !neko
 		borderColor = 0xffffffff;
-		offColor = [0xff008000, 0xff00FF00];
+		offColor = [0xff008000, 0xff00ff00];
 		onColor = [0xff800000, 0xffff0000];
+		#else
+		borderColor = { rgb: 0xffffff, a: 0xff };
+		offColor = [{ rgb: 0x008000, a: 0xff }, { rgb: 0x00FF00, a: 0xff }];
+		onColor = [{ rgb: 0x800000, a: 0xff }, { rgb: 0xFF0000, a: 0xff }];
+		#end
 		
 		super(4);
 		
@@ -157,20 +156,27 @@ class FlxButtonPlus extends FlxGroup
 		_onClick = Callback;
 		
 		buttonNormal = new FlxExtendedSprite(X, Y);
+		#if flash
 		buttonNormal.makeGraphic(Width, Height, borderColor);
-		buttonNormal.stamp(FlxGradient.createGradientFlxSprite(Width - 2, Height - 2, offColor), 1, 1);
+		#end
+		
+		updateInactiveButtonColors(offColor);
+		
 		buttonNormal.solid = false;
 		buttonNormal.scrollFactor.x = 0;
 		buttonNormal.scrollFactor.y = 0;
 		
 		buttonHighlight = new FlxExtendedSprite(X, Y);
+		#if flash
 		buttonHighlight.makeGraphic(Width, Height, borderColor);
-		buttonHighlight.stamp(FlxGradient.createGradientFlxSprite(Width - 2, Height - 2, onColor), 1, 1);
+		#end
+		
+		updateActiveButtonColors(onColor);
+		
 		buttonHighlight.solid = false;
 		buttonHighlight.visible = false;
 		buttonHighlight.scrollFactor.x = 0;
 		buttonHighlight.scrollFactor.y = 0;
-		
 		
 		add(buttonNormal);
 		add(buttonHighlight);
@@ -178,10 +184,10 @@ class FlxButtonPlus extends FlxGroup
 		if (Label != null)
 		{
 			textNormal = new FlxText(X-2, Y + 1, Width, Label);
-			textNormal.setFormat(null, 8, borderColor, "center", 0xff000000);
+			textNormal.setFormat(null, 8, 0xffffff, "center", 0x000000);
 			
 			textHighlight = new FlxText(X-2, Y + 1, Width, Label);
-			textHighlight.setFormat(null, 8, borderColor, "center", 0xff000000);
+			textHighlight.setFormat(null, 8, 0xffffff, "center", 0x000000);
 			
 			add(textNormal);
 			add(textHighlight);
@@ -295,11 +301,7 @@ class FlxButtonPlus extends FlxGroup
 	 */
 	function updateButton():Void
 	{
-		#if flash
-		var prevStatus:UInt = _status;
-		#else
 		var prevStatus:Int = _status;
-		#end
 		
 		if (FlxG.mouse.visible)
 		{
@@ -432,7 +434,7 @@ class FlxButtonPlus extends FlxGroup
 		if (exists && visible && active && (_status == PRESSED) && (_onClick != null) && (pauseProof || !FlxG.paused))
 		{
 			//_onClick.apply(null, onClickParams);
-			Reflect.callMethod(this, Reflect.field(this, "_onClick"), onClickParams);
+			Reflect.callMethod(this, Reflect.getProperty(this, "_onClick"), onClickParams);
 		}
 	}
 	
@@ -444,12 +446,49 @@ class FlxButtonPlus extends FlxGroup
 	#if flash
 	public function updateInactiveButtonColors(colors:Array<UInt>):Void
 	#else
-	public function updateInactiveButtonColors(colors:Array<Int>):Void
+	public function updateInactiveButtonColors(colors:Array<BitmapInt32>):Void
 	#end
 	{
 		offColor = colors;
 		
+		#if flash
 		buttonNormal.stamp(FlxGradient.createGradientFlxSprite(width - 2, height - 2, offColor), 1, 1);
+		#else
+		var colA:Int;
+		var colRGB:Int;
+		
+		var normalKey:String = "Gradient: " + width + " x " + height + ", colors: [";
+		for (col in offColor)
+		{
+			#if cpp
+			colA = (col >> 24) & 255;
+			colRGB = col & 0x00ffffff;
+			#elseif neko
+			colA = col.a;
+			colRGB = col.rgb;
+			#end
+			
+			normalKey = normalKey + colRGB + "_" + colA + ", ";
+		}
+		normalKey = normalKey + "]";
+		
+		if (FlxG._cache.exists(normalKey) == false)
+		{
+			#if neko
+			var normalBitmap:BitmapData = FlxG.createBitmap(width, height, { rgb: 0x000000, a: 0x00 }, false, normalKey);
+			#else
+			var normalBitmap:BitmapData = FlxG.createBitmap(width, height, 0x00000000, false, normalKey);
+			#end
+			normalBitmap.fillRect(new Rectangle(0, 0, width, height), borderColor);
+			FlxGradient.overlayGradientOnBitmapData(normalBitmap, width - 2, height - 2, offColor, 1, 1);
+		}
+		buttonNormal.pixels = FlxG._cache.get(normalKey);
+		
+		if (textNormal != null)
+		{
+			TileSheetManager.swapTileSheets(textNormal.getTileSheetIndex(), buttonNormal.getTileSheetIndex());
+		}
+		#end
 	}
 	
 	/**
@@ -460,12 +499,49 @@ class FlxButtonPlus extends FlxGroup
 	#if flash
 	public function updateActiveButtonColors(colors:Array<UInt>):Void
 	#else
-	public function updateActiveButtonColors(colors:Array<Int>):Void
+	public function updateActiveButtonColors(colors:Array<BitmapInt32>):Void
 	#end
 	{
 		onColor = colors;
 		
+		#if flash
 		buttonHighlight.stamp(FlxGradient.createGradientFlxSprite(width - 2, height - 2, onColor), 1, 1);
+		#else
+		var colA:Int;
+		var colRGB:Int;
+		
+		var highlightKey:String = "Gradient: " + width + " x " + height + ", colors: [";
+		for (col in onColor)
+		{
+			#if cpp
+			colA = (col >> 24) & 255;
+			colRGB = col & 0x00ffffff;
+			#elseif neko
+			colA = col.a;
+			colRGB = col.rgb;
+			#end
+			
+			highlightKey = highlightKey + colRGB + "_" + colA + ", ";
+		}
+		highlightKey = highlightKey + "]";
+		
+		if (FlxG._cache.exists(highlightKey) == false)
+		{
+			#if neko
+			var highlightBitmap:BitmapData = FlxG.createBitmap(width, height, { rgb: 0x000000, a: 0x00 }, false, highlightKey);
+			#else
+			var highlightBitmap:BitmapData = FlxG.createBitmap(width, height, 0x00000000, false, highlightKey);
+			#end
+			highlightBitmap.fillRect(new Rectangle(0, 0, width, height), borderColor);
+			FlxGradient.overlayGradientOnBitmapData(highlightBitmap, width - 2, height - 2, onColor, 1, 1);
+		}
+		buttonHighlight.pixels = FlxG._cache.get(highlightKey);
+		
+		if (textHighlight != null)
+		{
+			TileSheetManager.swapTileSheets(textHighlight.getTileSheetIndex(), buttonHighlight.getTileSheetIndex());
+		}
+		#end
 	}
 	
 	public var text(null, setText):String;

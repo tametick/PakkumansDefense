@@ -137,6 +137,31 @@ class FlxWeapon
 	private static inline var FIRE_FROM_ANGLE:Int = 4;
 	private static inline var FIRE_FROM_PARENT_ANGLE:Int = 5;
 	
+
+	public function destroy() {
+		magazineSwapSound = null;
+		magazineSwapCallback = null;
+		
+		onPreFireSound = null;
+		onFireSound = null;
+		onPostFireSound = null;		
+		onPreFireCallback = null;
+		onFireCallback = null;
+		onPostFireCallback = null;
+		
+		currentBullet = null;
+		
+		rndFactorPosition = null;
+		velocity = null;
+		positionOffset = null;
+		
+		parent = null;
+		bounds = null;
+		if(group!=null)
+			group.destroy();
+		group = null;
+	}
+	
 	/**
 	 * Creates the FlxWeapon class which will fire your bullets.<br>
 	 * You should call one of the makeBullet functions to visually create the bullets.<br>
@@ -175,31 +200,6 @@ class FlxWeapon
 		{
 			setParent(parentRef, xVariable, yVariable);
 		}
-	}
-	
-	
-	public function destroy() {
-		magazineSwapSound = null;
-		magazineSwapCallback = null;
-		
-		onPreFireSound = null;
-		onFireSound = null;
-		onPostFireSound = null;		
-		onPreFireCallback = null;
-		onFireCallback = null;
-		onPostFireCallback = null;
-		
-		currentBullet = null;
-		
-		rndFactorPosition = null;
-		velocity = null;
-		positionOffset = null;
-		
-		parent = null;
-		bounds = null;
-		if(group!=null)
-			group.destroy();
-		group = null;
 	}
 	
 	/**
@@ -353,7 +353,7 @@ class FlxWeapon
 		if (onPreFireCallback != null)
 		{
 			//onPreFireCallback.apply();
-			Reflect.callMethod(this, Reflect.field(this, "onPreFireCallback"), []);
+			Reflect.callMethod(this, Reflect.getProperty(this, "onPreFireCallback"), []);
 		}
 		
 		if (onPreFireSound != null)
@@ -373,8 +373,8 @@ class FlxWeapon
 		
 		if (fireFromParent)
 		{
-			launchX += Math.floor(Reflect.field(parent, parentXVariable));
-			launchY += Math.floor(Reflect.field(parent, parentYVariable));
+			launchX += Math.floor(Reflect.getProperty(parent, parentXVariable));
+			launchY += Math.floor(Reflect.getProperty(parent, parentYVariable));
 		}
 		else if (fireFromPosition)
 		{
@@ -416,7 +416,7 @@ class FlxWeapon
 		if (onPostFireCallback != null)
 		{
 			//onPostFireCallback.apply();
-			Reflect.callMethod(this, Reflect.field(this, "onPostFireCallback"), []);
+			Reflect.callMethod(this, Reflect.getProperty(this, "onPostFireCallback"), []);
 		}
 		
 		if (onPostFireSound != null)

@@ -12,10 +12,11 @@
 
 package org.flixel.plugin.photonstorm.fx; 
 
-import flash.geom.Point;
-import flash.geom.Rectangle;
+import nme.geom.Point;
+import nme.geom.Rectangle;
+import nme.display.BitmapInt32;
 import org.flixel.FlxSprite;
-import flash.display.BitmapData;
+import nme.display.BitmapData;
 
 class BaseFX 
 {
@@ -29,6 +30,7 @@ class BaseFX
 	 */
 	public var sprite:FlxSprite;
 	
+	#if flash
 	/**
 	 * A scratch bitmapData used to build-up the effect before passing to sprite.pixels
 	 */
@@ -38,6 +40,7 @@ class BaseFX
 	 * TODO A snapshot of the sprite background before the effect is applied
 	 */
 	var back:BitmapData;
+	#end
 	
 	var image:BitmapData;
 	var sourceRef:FlxSprite;
@@ -47,17 +50,12 @@ class BaseFX
 	#if flash
 	var clsColor:UInt;
 	#else
-	var clsColor:Int;
+	var clsColor:BitmapInt32;
 	#end
 	
 	//	For staggered drawing updates
-	#if flash
-	var updateLimit:UInt;
-	var lastUpdate:UInt;
-	#else
 	var updateLimit:Int;
 	var lastUpdate:Int;
-	#end
 	var ready:Bool;
 	
 	var copyRect:Rectangle;
@@ -68,7 +66,6 @@ class BaseFX
 		updateLimit = 0;
 		lastUpdate = 0;
 		ready = false;
-		
 		active = false;
 	}
 	
@@ -77,11 +74,7 @@ class BaseFX
 	 * 
 	 * @param	delay	How many "game updates" should pass between each update? If your game runs at 30fps a value of 0 means it will do 30 updates per second. A value of 1 means it will do 15 updates per second, etc.
 	 */
-	#if flash
-	public function start(?delay:UInt = 0):Void
-	#else
 	public function start(?delay:Int = 0):Void
-	#end
 	{
 		updateLimit = delay;
 		lastUpdate = 0;
@@ -97,6 +90,11 @@ class BaseFX
 		ready = false;
 	}
 	
+	public function draw():Void
+	{
+		
+	}
+	
 	public function destroy():Void
 	{
 		if (sprite != null)
@@ -104,6 +102,7 @@ class BaseFX
 			sprite.kill();
 		}
 		
+		#if flash
 		if (canvas != null)
 		{
 			canvas.dispose();
@@ -113,6 +112,7 @@ class BaseFX
 		{
 			back.dispose();
 		}
+		#end
 		
 		if (image != null)
 		{
@@ -120,7 +120,6 @@ class BaseFX
 		}
 		
 		sourceRef = null;
-		
 		active = false;
 	}
 	

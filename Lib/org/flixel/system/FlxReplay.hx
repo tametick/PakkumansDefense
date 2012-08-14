@@ -115,7 +115,6 @@ class FlxReplay
 				if(frameCount >= _capacity)
 				{
 					_capacity *= 2;
-					//_frames.length = _capacity;
 					FlxU.SetArrayLength(_frames, _capacity);
 				}
 			}
@@ -162,7 +161,8 @@ class FlxReplay
 	{
 		var keysRecord:Array<CodeValuePair> = FlxG.keys.record();
 		var mouseRecord:MouseRecord = FlxG.mouse.record();
-		if((keysRecord == null) && (mouseRecord == null))
+		
+		if ((keysRecord == null) && (mouseRecord == null))
 		{
 			frame++;
 			return;
@@ -171,7 +171,6 @@ class FlxReplay
 		if(frameCount >= _capacity)
 		{
 			_capacity *= 2;
-			//_frames.length = _capacity;
 			FlxU.SetArrayLength(_frames, _capacity);
 		}
 	}

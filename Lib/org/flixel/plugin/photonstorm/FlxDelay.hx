@@ -57,10 +57,10 @@ class FlxDelay extends Sprite
 	 */
 	public function new(runFor:Int)
 	{
-		expires = 0;
 		super();
-		duration = runFor;
 		
+		expires = 0;
+		duration = runFor;
 		complete = false;
 	}
 	
@@ -166,7 +166,7 @@ class FlxDelay extends Sprite
 		
 		if (callbackFunction != null && runCallback == true)
 		{
-			Reflect.callMethod(this, Reflect.field(this, "callbackFunction"), []);
+			Reflect.callMethod(this, Reflect.getProperty(this, "callbackFunction"), []);
 		}
 		
 	}

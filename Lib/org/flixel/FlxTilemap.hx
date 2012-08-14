@@ -383,14 +383,19 @@ class FlxTilemap extends FlxObject
 		#if flash
 		Buffer.fill();
 		#else
-		_helperPoint.x = x - Std.int(Camera.scroll.x * scrollFactor.x); //copied from getScreenXY()
-		_helperPoint.y = y - Std.int(Camera.scroll.y * scrollFactor.y);
+		_helperPoint.x = x - (Camera.scroll.x * scrollFactor.x); //copied from getScreenXY()
+		_helperPoint.y = y - (Camera.scroll.y * scrollFactor.y);
 		var tileID:Int;
 		var debugColor:Int;
 		var drawX:Float;
 		var drawY:Float;
 		
-		var CameraID:Int = Camera.ID;
+		var currDrawData:Array<Float> = _tileSheetData.drawData[Camera.ID];
+		var currIndex:Int = _tileSheetData.positionData[Camera.ID];
+		
+		var isTilemapFlag:Bool = _tileSheetData.isTilemap;
+		var isColored:Bool = _tileSheetData.isColored;
+		var isColoredCamera:Bool = Camera.isColored;
 		#end
 		
 		//Copy tile images into the tile buffer
@@ -463,32 +468,35 @@ class FlxTilemap extends FlxObject
 				tileID = _rectIDs[columnIndex];
 				if (tileID != -1)
 				{
-					drawX = Math.floor(_helperPoint.x) + (columnIndex % widthInTiles) * _tileWidth;
-					drawY = Math.floor(_helperPoint.y) + Math.floor(columnIndex / widthInTiles) * _tileHeight;
-					_tileSheetData.drawData[CameraID].push(drawX);
-					_tileSheetData.drawData[CameraID].push(drawY);
-					_tileSheetData.drawData[CameraID].push(tileID);
+					drawX = (_helperPoint.x) + (columnIndex % widthInTiles) * _tileWidth;
+					drawY = (_helperPoint.y) + Math.floor(columnIndex / widthInTiles) * _tileHeight;
+					currDrawData[currIndex++] = drawX;
+					currDrawData[currIndex++] = drawY;
+					currDrawData[currIndex++] = tileID;
 					
-					if (_tileSheetData.isTilemap)
+					if (isTilemapFlag)
 					{
-						_tileSheetData.drawData[CameraID].push(Camera.red); // red
-						_tileSheetData.drawData[CameraID].push(Camera.green); //	green
-						_tileSheetData.drawData[CameraID].push(Camera.blue); //	blue
+						if (isColoredCamera)
+						{
+							currDrawData[currIndex++] = Camera.red; // red
+							currDrawData[currIndex++] = Camera.green; //	green
+							currDrawData[currIndex++] = Camera.blue; //	blue
+						}
 					}
 					else
 					{
-					//	_tileSheetData.drawData[CameraID].push(1.0); // scale
-					//	_tileSheetData.drawData[CameraID].push(0.0); // rotation
-					
-						_tileSheetData.drawData[CameraID].push(1);
-						_tileSheetData.drawData[CameraID].push(0);
-						_tileSheetData.drawData[CameraID].push(0);
-						_tileSheetData.drawData[CameraID].push(1);
-					
-						_tileSheetData.drawData[CameraID].push(Camera.red); // red
-						_tileSheetData.drawData[CameraID].push(Camera.green); //	green
-						_tileSheetData.drawData[CameraID].push(Camera.blue); //	blue
-						_tileSheetData.drawData[CameraID].push(1.0); // alpha
+						currDrawData[currIndex++] = 1;
+						currDrawData[currIndex++] = 0;
+						currDrawData[currIndex++] = 0;
+						currDrawData[currIndex++] = 1;
+						
+						if (isColoredCamera)
+						{
+							currDrawData[currIndex++] = Camera.red; // red
+							currDrawData[currIndex++] = Camera.green; //	green
+							currDrawData[currIndex++] = Camera.blue; //	blue
+						}
+						currDrawData[currIndex++] = 1.0; // alpha
 					}
 					
 					if(FlxG.visualDebug && !ignoreDrawDebug)
@@ -537,6 +545,11 @@ class FlxTilemap extends FlxObject
 			_flashPoint.y += _tileHeight;
 			row++;
 		}
+		
+		#if !flash
+		_tileSheetData.positionData[Camera.ID] = currIndex;
+		#end
+		
 		Buffer.x = screenXInTiles * _tileWidth;
 		Buffer.y = screenYInTiles * _tileHeight;
 	}
@@ -1551,6 +1564,108 @@ class FlxTilemap extends FlxObject
 			i++;
 		}
 		return true;
+	}
+	
+	/**
+	* Works exactly like ray() except it explicitly returns the hit result.
+	* Shoots a ray from the start point to the end point.
+	* If/when it passes through a tile, it returns that point.
+	* If it does not, it returns null.
+	* Usage:
+	* var hit:FlxPoint = tilemap.rayHit(startPoint, endPoint);
+	* if (hit != null) //code ;
+	*
+	* @param Start The world coordinates of the start of the ray.
+	* @param End The world coordinates of the end of the ray.
+	* @param Resolution Defaults to 1, meaning check every tile or so. Higher means more checks!
+	* @return Returns null if the ray made it from Start to End without hitting anything. Returns FlxPoint if a tile was hit.
+	*/
+	public function rayHit(Start:FlxPoint, End:FlxPoint, ?Resolution:Float = 1):FlxPoint
+	{
+		var Result:FlxPoint = null;
+		var step:Float = _tileWidth;
+		if (_tileHeight < _tileWidth)
+		{
+			step = _tileHeight;
+		}
+		step /= Resolution;
+		var deltaX:Float = End.x - Start.x;
+		var deltaY:Float = End.y - Start.y;
+		var distance:Float = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+		var steps:Int = Math.ceil(distance / step);
+		var stepX:Float = deltaX / steps;
+		var stepY:Float = deltaY / steps;
+		var curX:Float = Start.x - stepX - x;
+		var curY:Float = Start.y - stepY - y;
+		var tileX:Int;
+		var tileY:Int;
+		var i:Int = 0;
+		while (i < steps)
+		{
+			curX += stepX;
+			curY += stepY;
+
+			if ((curX < 0) || (curX > width) || (curY < 0) || (curY > height))
+			{
+				i++;
+				continue;
+			}
+
+			tileX = Math.floor(curX / _tileWidth);
+			tileY = Math.floor(curY / _tileHeight);
+			if (_tileObjects[_data[tileY * widthInTiles + tileX]].allowCollisions != 0)
+			{
+				//Some basic helper stuff
+				tileX *= _tileWidth;
+				tileY *= _tileHeight;
+				var rx:Float = 0;
+				var ry:Float = 0;
+				var q:Float;
+				var lx:Float = curX - stepX;
+				var ly:Float = curY - stepY;
+
+				//Figure out if it crosses the X boundary
+				q = tileX;
+				if (deltaX < 0)
+				{
+					q += _tileWidth;
+				}
+				rx = q;
+				ry = ly + stepY * ((q - lx) / stepX);
+				if ((ry > tileY) && (ry < tileY + _tileHeight))
+				{
+					if (Result == null)
+					{
+						Result = new FlxPoint();
+					}
+					Result.x = rx;
+					Result.y = ry;
+					return Result;
+				}
+
+				//Else, figure out if it crosses the Y boundary
+				q = tileY;
+				if (deltaY < 0)
+				{
+					q += _tileHeight;
+				}
+				rx = lx + stepX * ((q - ly) / stepY);
+				ry = q;
+				if ((rx > tileX) && (rx < tileX + _tileWidth))
+				{
+					if (Result == null)
+					{
+						Result = new FlxPoint();
+					}
+					Result.x = rx;
+					Result.y = ry;
+					return Result;
+				}
+				return null;
+			}
+			i++;
+		}
+		return null;
 	}
 	
 	/**

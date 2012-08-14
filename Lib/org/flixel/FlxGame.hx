@@ -16,10 +16,16 @@ import nme.text.TextFormat;
 import nme.text.TextFormatAlign;
 import nme.Lib;
 import nme.ui.Mouse;
+import nme.ui.Multitouch;
+import org.flixel.plugin.pxText.PxBitmapFont;
+import org.flixel.system.input.TouchManager;
 
 #if (cpp || neko)
 import org.flixel.tileSheetManager.TileSheetManager;
+import nme.events.JoystickEvent;
 #end
+
+import nme.events.TouchEvent;
 
 #if flash
 import flash.text.AntiAliasType;
@@ -223,7 +229,12 @@ class FlxGame extends Sprite
 		_requestedState = null;
 		_requestedReset = true;
 		_created = false;
-		addEventListener(Event.ENTER_FRAME, create);
+		
+		#if iphone
+		Lib.current.stage.addEventListener(Event.RESIZE, create);
+		#else
+		addEventListener(Event.ADDED_TO_STAGE, create);
+		#end
 	}
 	
 	/**
@@ -429,6 +440,80 @@ class FlxGame extends Sprite
 	
 	/**
 	 * Internal event handler for input and focus.
+	 * @param	FlashEvent	Flash touch event.
+	 */
+	private function onTouchBegin(FlashEvent:TouchEvent):Void
+	{
+		FlxG.touchManager.handleTouchBegin(FlashEvent);
+	}
+	
+	/**
+	 * Internal event handler for input and focus.
+	 * @param	FlashEvent	Flash touch event.
+	 */
+	private function onTouchEnd(FlashEvent:TouchEvent):Void
+	{
+		FlxG.touchManager.handleTouchEnd(FlashEvent);
+	}
+	
+	/**
+	 * Internal event handler for input and focus.
+	 * @param	FlashEvent	Flash touch event.
+	 */
+	private function onTouchMove(FlashEvent:TouchEvent):Void
+	{
+		FlxG.touchManager.handleTouchMove(FlashEvent);
+	}
+	
+#if (cpp || neko)
+	/**
+	 * Internal event handler for input and focus.
+	 * @param	FlashEvent	NME joystick event.
+	 */
+	private function onJoyAxisMove(FlashEvent:JoystickEvent):Void
+	{
+		FlxG.joystickManager.handleAxisMove(FlashEvent);
+	}
+	
+	/**
+	 * Internal event handler for input and focus.
+	 * @param	FlashEvent	NME joystick event.
+	 */
+	private function onJoyBallMove(FlashEvent:JoystickEvent):Void
+	{
+		FlxG.joystickManager.handleBallMove(FlashEvent);
+	}
+	
+	/**
+	 * Internal event handler for input and focus.
+	 * @param	FlashEvent	NME joystick event.
+	 */
+	private function onJoyButtonDown(FlashEvent:JoystickEvent):Void
+	{
+		FlxG.joystickManager.handleButtonDown(FlashEvent);
+	}
+
+	/**
+	 * Internal event handler for input and focus.
+	 * @param	FlashEvent	NME joystick event.
+	 */
+	private function onJoyButtonUp(FlashEvent:JoystickEvent):Void
+	{
+		FlxG.joystickManager.handleButtonUp(FlashEvent);
+	}
+
+	/**
+	 * Internal event handler for input and focus.
+	 * @param	FlashEvent	NME joystick event.
+	 */
+	private function onJoyHatMove(FlashEvent:JoystickEvent):Void
+	{
+		FlxG.joystickManager.handleHatMove(FlashEvent);
+	}
+#end
+	
+	/**
+	 * Internal event handler for input and focus.
 	 * @param	FlashEvent	Flash event.
 	 */
 	private function onFocus(?FlashEvent:Event = null):Void
@@ -518,6 +603,7 @@ class FlxGame extends Sprite
 	{ 
 		//Basic reset stuff
 		#if (cpp || neko)
+		PxBitmapFont.clearStorage();
 		TileSheetManager.clear();
 		#end
 		FlxG.clearBitmapCache();
@@ -701,6 +787,12 @@ class FlxGame extends Sprite
 		FlxG.updateSounds();
 		FlxG.updatePlugins();
 		_state.update();
+		
+		if (FlxG.tweener.active && FlxG.tweener.hasTween) 
+		{
+			FlxG.tweener.updateTweens();
+		}
+		
 		FlxG.updateCameras();
 		
 		if (_debuggerUp)
@@ -746,18 +838,38 @@ class FlxGame extends Sprite
 		{
 			return;
 		}
-		removeEventListener(Event.ENTER_FRAME, create);
+		
+		#if iphone
+		Lib.current.stage.removeEventListener(Event.RESIZE, create);
+		#else
+		removeEventListener(Event.ADDED_TO_STAGE, create);
+		#end
+		
 		_total = Lib.getTimer();
 		//Set up the view window and double buffering
 		//stage.scaleMode = StageScaleMode.NO_SCALE;
 		stage.align = StageAlign.TOP_LEFT;
 		stage.frameRate = _flashFramerate;
 		
+		FlxG.supportsTouchEvents = Multitouch.supportsTouchEvents;
+		if (FlxG.supportsTouchEvents)
+		{
+			FlxG.maxTouchPoints = Multitouch.maxTouchPoints;
+		}
+		FlxG.touchManager = new TouchManager();
+		
 		//Add basic input event listeners and mouse container
 		#if flash
 		Lib.current.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 		Lib.current.stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 		Lib.current.stage.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
+		
+		if (FlxG.supportsTouchEvents)
+		{
+			Lib.current.stage.addEventListener(TouchEvent.TOUCH_BEGIN, onTouchBegin);
+			Lib.current.stage.addEventListener(TouchEvent.TOUCH_END, onTouchEnd);
+			Lib.current.stage.addEventListener(TouchEvent.TOUCH_MOVE, onTouchMove);
+		}
 		#else
 		clickableArea = new Sprite();
 		clickableArea.graphics.beginFill(0xff0000);
@@ -768,6 +880,21 @@ class FlxGame extends Sprite
 		clickableArea.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 		clickableArea.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 		clickableArea.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
+		
+		if (FlxG.supportsTouchEvents)
+		{
+			clickableArea.addEventListener(TouchEvent.TOUCH_BEGIN , onTouchBegin);
+			clickableArea.addEventListener(TouchEvent.TOUCH_END, onTouchEnd);
+			clickableArea.addEventListener(TouchEvent.TOUCH_MOVE, onTouchMove);
+		}
+		#end
+		
+		#if (cpp || neko)
+		Lib.current.stage.addEventListener(JoystickEvent.AXIS_MOVE, onJoyAxisMove);
+		Lib.current.stage.addEventListener(JoystickEvent.BALL_MOVE, onJoyBallMove);
+		Lib.current.stage.addEventListener(JoystickEvent.BUTTON_DOWN, onJoyButtonDown);
+		Lib.current.stage.addEventListener(JoystickEvent.BUTTON_UP, onJoyButtonUp);
+		Lib.current.stage.addEventListener(JoystickEvent.HAT_MOVE, onJoyHatMove);
 		#end
 		
 		Lib.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
@@ -900,20 +1027,21 @@ class FlxGame extends Sprite
 		var halfHeight:Int = Math.floor(screenHeight / 2);
 		var helper:Int = Math.floor(FlxU.min(halfWidth, halfHeight) / 3);
 		gfx.moveTo(halfWidth - helper, halfHeight - helper);
-		gfx.beginFill(0xffffff,0.65);
+		gfx.beginFill(0xffffff, 0.65);
 		gfx.lineTo(halfWidth + helper, halfHeight);
 		gfx.lineTo(halfWidth - helper, halfHeight + helper);
 		gfx.lineTo(halfWidth - helper, halfHeight - helper);
 		gfx.endFill();
 		
-		var logo:Bitmap = new Bitmap(Assets.getBitmapData(FlxAssets.imgLogo));
-		logo.scaleX = Math.floor(helper/10);
-		if (logo.scaleX < 1)
+		var logo:Sprite = new Sprite();
+		FlxAssets.drawLogo(logo.graphics);
+		logo.scaleX = helper / 1000;
+		if (logo.scaleX < 0.2)
 		{
-			logo.scaleX = 1;
+			logo.scaleX = 0.2;
 		}
 		logo.scaleY = logo.scaleX;
-		logo.x -= logo.scaleX;
+		logo.x = logo.y = 5;
 		logo.alpha = 0.35;
 		_focus.addChild(logo);
 		

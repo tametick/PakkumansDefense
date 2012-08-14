@@ -2,9 +2,11 @@ package org.flixel;
 
 import nme.display.Bitmap;
 import nme.display.BitmapData;
+import nme.display.BitmapInt32;
 import nme.events.MouseEvent;
 import nme.media.Sound;
 import nme.media.Sound;
+import org.flixel.tileSheetManager.TileSheetManager;
 
 import org.flixel.FlxSprite;
 
@@ -107,7 +109,7 @@ class FlxButton extends FlxSprite
 		if(Label != null)
 		{
 			label = new FlxText(0, 0, 80, Label);
-		//	label.setFormat(null, 8, 0x333333, "center");
+			label.setFormat(null, 8, 0x333333, "center");
 			labelOffset = new FlxPoint( -1, 3);
 		}
 		loadGraphic(FlxAssets.imgDefaultButton, true, false, 80, 20);
@@ -131,11 +133,7 @@ class FlxButton extends FlxSprite
 	override public function loadGraphic(Graphic:Dynamic, ?Animated:Bool = false, ?Reverse:Bool = false, Width:Int = 0, ?Height:Int = 0, ?Unique:Bool = false):FlxSprite 
 	{
 		var tempSprite:FlxSprite = super.loadGraphic(Graphic, Animated, Reverse, FlxU.fromIntToUInt(Width), FlxU.fromIntToUInt(Height), Unique);
-		//tempSprite.updateTileSheet();
-		if (label != null)
-		{
-			label.setFormat(null, 8, 0x333333, "center");
-		}
+		swapTileSheets();
 		return tempSprite;
 	}
 	
@@ -236,7 +234,7 @@ class FlxButton extends FlxSprite
 	{
 		//Figure out if the button is highlighted or pressed or what
 		// (ignore checkbox behavior for now).
-		if(FlxG.mouse.visible)
+		if (FlxG.mouse.visible)
 		{
 			if (cameras == null)
 			{
@@ -265,7 +263,7 @@ class FlxButton extends FlxSprite
 							soundDown.play(true);
 						}
 					}
-					if(status == NORMAL)
+					if (status == NORMAL)
 					{
 						status = HIGHLIGHT;
 						if (onOver != null)
@@ -279,7 +277,7 @@ class FlxButton extends FlxSprite
 					}
 				}
 			}
-			if(offAll)
+			if (offAll)
 			{
 				if(status != NORMAL)
 				{
@@ -334,6 +332,46 @@ class FlxButton extends FlxSprite
 		}
 	}
 	
+	#if flash 
+	override public function makeGraphic(Width:UInt, Height:UInt, ?Color:UInt = 0xffffffff, ?Unique:Bool = false, ?Key:String = null):FlxSprite
+	#else
+	override public function makeGraphic(Width:Int, Height:Int, ?Color:BitmapInt32, ?Unique:Bool = false, ?Key:String = null):FlxSprite
+	#end
+	{
+		#if (cpp || neko)
+		if (Color == null)
+		{
+			#if cpp
+			Color = 0xffffffff;
+			#elseif neko
+			Color = { rgb: 0xffffff, a: 0xff };
+			#end
+		}
+		#end
+		
+		var result:FlxSprite = super.makeGraphic(Width, Height, Color, Unique, Key);
+		swapTileSheets();
+		return result;
+	}
+	
+	/**
+	 * Helper function for changing draw order of button's background and label.
+	 */
+	private function swapTileSheets():Void
+	{
+		#if (cpp || neko)
+		if (label != null)
+		{
+			var labelIndex:Int = label.getTileSheetIndex();
+			var bgIndex:Int = this.getTileSheetIndex();
+			if (bgIndex > labelIndex)
+			{
+				TileSheetManager.swapTileSheets(labelIndex, bgIndex);
+			}
+		}
+		#end
+	}
+	
 	/**
 	 * Updates the size of the text field to match the button.
 	 */
@@ -342,7 +380,8 @@ class FlxButton extends FlxSprite
 		super.resetHelpers();
 		if (label != null)
 		{
-			label.width = width;
+			label.width = label.frameWidth = Std.int(width);
+			label.size = label.size;
 		}
 	}
 	
