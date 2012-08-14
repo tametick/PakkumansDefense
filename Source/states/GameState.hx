@@ -71,7 +71,7 @@ class GameState extends BasicState {
 	static var help1:FlxGroup;
 	static var help2:FlxGroup;
 	
-	public var ctrls:CtrlMode;
+	public static var ctrls:CtrlMode;
 	 
 	public function setHighlighted(direction:Command) {
 		switch (direction) {
@@ -174,7 +174,6 @@ class GameState extends BasicState {
 			hud.height *= 2;
 			
 			
-			
 			ctrls = CtrlMode.SWIPE;
 			var dim1, dim2;
 			switch(ctrls) {
@@ -184,7 +183,6 @@ class GameState extends BasicState {
 				case CtrlMode.GAMEPAD,CtrlMode.GAMEPAD_L:
 					dim1 = 40;
 					dim2 = 80;	
-				
 			}
 			
 			buttonS = drawTriangle(0, 0, dim2, 0, dim1, dim1);

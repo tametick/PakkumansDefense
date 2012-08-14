@@ -51,11 +51,9 @@ class Player extends WarpSprite {
 	public function new(level:Level, start:FlxPoint) {
 		super(level);
 		
-		if (cast(FlxG.state, GameState).ctrls == CtrlMode.SWIPE){
-		
+		if(GameState.ctrls == CtrlMode.SWIPE){
 			Multitouch.inputMode = MultitouchInputMode.GESTURE;
 			Lib.current.addEventListener(TransformGestureEvent.GESTURE_SWIPE , swipe);
-					
 		}
 		
 		loadGraphic(Library.getFilename(Image.PAKKU), true, true, 5, 5);
@@ -81,7 +79,7 @@ class Player extends WarpSprite {
 		
 		var clkMap;
 		if (clickMap == null) { 
-			switch(cast(FlxG.state,GameState).ctrls) {
+			switch(GameState.ctrls) {
 				default:
 					clkMap = Image.CLICK_MAP;
 				case CtrlMode.GAMEPAD:
@@ -122,18 +120,16 @@ class Player extends WarpSprite {
 			case 0xffffff:
 				return TOWER;
 			default:
-				if(cast(FlxG.state,GameState).ctrls==CtrlMode.OVERLAY)
-				if ( FlxG.mouse.screenX < 0) {
-					return LEFT;
-				}
-				if ( FlxG.mouse.screenY < 0) {
-					return UP;
-				}
-				if ( FlxG.mouse.screenX > 160) {
-					return RIGHT;
-				}
-				if ( FlxG.mouse.screenY > 106) {
-					return DOWN;			
+				if(GameState.ctrls == CtrlMode.OVERLAY) {
+					if ( FlxG.mouse.screenX < 0) {
+						return LEFT;
+					} else if ( FlxG.mouse.screenY < 0) {
+						return UP;
+					} else if ( FlxG.mouse.screenX > 160) {
+						return RIGHT;
+					} else if ( FlxG.mouse.screenY > 106) {
+						return DOWN;
+					}
 				}
 		}
 		return null;
@@ -160,8 +156,7 @@ class Player extends WarpSprite {
 		
 		
 		var s = cast(FlxG.state, GameState);
-		
-		if(s.ctrls!=CtrlMode.SWIPE){
+		if(GameState.ctrls!=CtrlMode.SWIPE){
 			if(FlxG.mouse.justPressed()) {
 				 touch = getCommand();
 				 if(touch!=null){

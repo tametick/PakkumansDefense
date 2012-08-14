@@ -30,7 +30,6 @@ class Level extends FlxTilemap {
 		super();
 		
 		freePos = [];
-		cast(FlxG.state, GameState).ctrls = CtrlMode.SWIPE;
 		
 		var w = Library.levelW;
 		var h = Library.levelH;
