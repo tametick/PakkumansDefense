@@ -327,18 +327,19 @@ class FlxButtonPlus extends FlxGroup
 					{
 						_status = PRESSED;
 					}
-					
+					/*
 					if (_status == NORMAL)
 					{
 						_status = HIGHLIGHT;
 					}
+					*/
 				}
 			}
-			
+			/*
 			if (offAll)
 			{
 				_status = NORMAL;
-			}
+			}*/
 		}
 		
 		if (_status != prevStatus)

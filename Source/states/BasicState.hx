@@ -39,8 +39,17 @@ class BasicState extends FlxState {
 			var y = mousePoint.y * FlxG.camera.getScale().y;
 			if (x > settings.x && x < settings.x + settings.width && y > settings.y && y < settings.y + settings.height) {
 				FlxG.mouse.reset();
-				BuskerJam.returnToState = Type.getClass(this);
-				FlxG.switchState(new SettingsState());
+				if (Std.is(this, SettingsState)) {
+					var s = BuskerJam.returnToState;
+					if (s == null) {
+						s = MenuState;
+					}
+					BuskerJam.returnToState = null;
+					FlxG.switchState(Type.createInstance(s, []));
+				} else {
+					BuskerJam.returnToState = Type.getClass(this);
+					FlxG.switchState(new SettingsState());
+				}
 			}	
 		}
 	}

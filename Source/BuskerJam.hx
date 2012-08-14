@@ -3,6 +3,7 @@ import nme.display.Bitmap;
 import nme.events.Event;
 import nme.Lib;
 import states.BasicState;
+import states.SettingsState;
 
 import flash.events.MouseEvent;
 import org.flixel.FlxGame;
@@ -26,7 +27,8 @@ class BuskerJam extends FlxGame {
 			super(240, 160, GameState, 2);
 			forceDebugger = true;
 		} else {
-			super(240, 160, MenuState, 2);
+			//super(240, 160, MenuState, 2);
+			super(240, 160, SettingsState, 2);
 		}
 	}
 	

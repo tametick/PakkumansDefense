@@ -51,7 +51,7 @@ class Player extends WarpSprite {
 	public function new(level:Level, start:FlxPoint) {
 		super(level);
 		
-		if(GameState.ctrls == CtrlMode.SWIPE){
+		if(GameState.controlScheme == CtrlMode.SWIPE){
 			Multitouch.inputMode = MultitouchInputMode.GESTURE;
 			Lib.current.addEventListener(TransformGestureEvent.GESTURE_SWIPE , swipe);
 		}
@@ -79,7 +79,7 @@ class Player extends WarpSprite {
 		
 		var clkMap;
 		if (clickMap == null) { 
-			switch(GameState.ctrls) {
+			switch(GameState.controlScheme) {
 				default:
 					clkMap = Image.CLICK_MAP;
 				case CtrlMode.GAMEPAD:
@@ -120,7 +120,7 @@ class Player extends WarpSprite {
 			case 0xffffff:
 				return TOWER;
 			default:
-				if(GameState.ctrls == CtrlMode.OVERLAY) {
+				if(GameState.controlScheme == CtrlMode.OVERLAY) {
 					if ( FlxG.mouse.screenX < 0) {
 						return LEFT;
 					} else if ( FlxG.mouse.screenY < 0) {
@@ -156,7 +156,7 @@ class Player extends WarpSprite {
 		
 		
 		var s = cast(FlxG.state, GameState);
-		if(GameState.ctrls!=CtrlMode.SWIPE){
+		if(GameState.controlScheme!=CtrlMode.SWIPE){
 			if(FlxG.mouse.justPressed()) {
 				 touch = getCommand();
 				 if(touch!=null){
