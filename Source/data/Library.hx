@@ -13,7 +13,7 @@ class Library {
 	
 	public static inline var towerCost = 20;
 	
-	public static inline var debug = false;
+	public static inline var debug = false; 
 	
 	static var assets:Hash<Dynamic> = new Hash<Dynamic>();
 	
@@ -77,6 +77,10 @@ enum Image {
 	TOWER;
 	BUTTON;
 	BUTTON_ACTIVE;
+	TICK;
+	TICK_SELECTED;
+	RADIO;
+	RADIO_SELECTED;
 	CLICK_MAP;
 	CLICK_MAP_PAD;
 	CLICK_MAP_PAD_L;
