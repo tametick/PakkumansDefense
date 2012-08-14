@@ -155,7 +155,22 @@ class GameState extends BasicState {
 		Lib.stage.quality = StageQuality.LOW;
 		return bmp;
 	}
-	
+	/*
+	function drawRectangle(v1x:Float, v1y:Float, v2x:Float, v2y:Float, v3x:Float, v3y:Float,v4x:Float, v4y:Float, ?alpha = 0.2, ?color = 0xffffff):Bitmap {
+		Lib.stage.quality = StageQuality.BEST;
+		var shape = new Shape();
+		//shape.graphics.lineStyle(1, color, alpha, false, null, null,JointStyle.ROUND);
+		shape.graphics.beginFill(color, alpha);
+		var rectangle = Vector.ofArray([v1x, v1y, v2x, v2y, v3x, v3y, v4x, v4y]);
+		shape.graphics.drawRect(rectangle);
+		shape.graphics.endFill();
+		
+		var bmp = new Bitmap(new BitmapData(160, 160, true, 0x00000000),PixelSnapping.AUTO,true);
+		bmp.bitmapData.draw(shape);
+		Lib.stage.quality = StageQuality.LOW;
+		return bmp;
+	}
+	*/
 	override public function create():Void {
 		super.create();
 		
@@ -189,7 +204,6 @@ class GameState extends BasicState {
 			buttonW = drawTriangle(0,dim1,dim1,0,dim1,dim2);
 			
 			buttonE = drawTriangle(0,0,dim1,dim1,0,dim2);
-			
 			
 						
 			if (controlScheme == CtrlMode.SWIPE) {
@@ -408,6 +422,8 @@ class GameState extends BasicState {
 		}
 		
 		FlxG.camera.setZoom(3);
+		
+	//	level.player.powerupIndicator=drawRectangle(0,0,5,0,5,2,0,2);
 	}
 	
 	function newLevel():Void {
@@ -521,6 +537,7 @@ class GameState extends BasicState {
 			}
 			
 		//check if active powerups need to stop being active
+		
 		for (p in level.activePowerups.keys()) {
 			
 			var t = level.activePowerups.get(p);

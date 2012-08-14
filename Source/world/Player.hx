@@ -3,13 +3,16 @@ package world;
 import air.update.events.StatusFileUpdateErrorEvent;
 import com.eclecticdesignstudio.motion.Actuate;
 import data.Library;
+import nme.display.Bitmap;
 import nme.Lib;
 import nme.ui.Multitouch;
 import nme.ui.MultitouchInputMode;
 import org.flixel.FlxG;
 import org.flixel.FlxObject;
 import org.flixel.FlxPoint;
+import org.flixel.FlxRect;
 import org.flixel.FlxSprite;
+import org.flixel.plugin.photonstorm.FlxBar;
 import states.GameState;
 import world.Splosion;
 import utils.Colors;
@@ -36,6 +39,7 @@ class Player extends WarpSprite {
 	var isMoving:Bool;
 	var facingNext:Int;
 	var bloodSplosion:Splosion;
+	var powerupIndicator:Bitmap; 
 	
 	override public function destroy() {
 		super.destroy();
@@ -46,6 +50,7 @@ class Player extends WarpSprite {
 		if(bloodSplosion!=null)
 			bloodSplosion.destroy();
 		bloodSplosion = null;
+		
 	}
 
 	public function new(level:Level, start:FlxPoint) {
@@ -89,6 +94,10 @@ class Player extends WarpSprite {
 			}
 			clickMap = Library.getImage(clkMap);
 		}
+		
+		
+	//	powerupIndicator = new FlxBar(0, 0, FlxBar.FILL_LEFT_TO_RIGHT, 64, 4, level, "activepowerups[0]");
+	//	powerupIndicator.trackParent(0, -5);
 	}
 	
 	public function explode() {
@@ -138,6 +147,7 @@ class Player extends WarpSprite {
 	
 	override public function update() {
 		super.update();
+		
 		if (cast(FlxG.state, GameState).help < 3)
 			return;
 		
