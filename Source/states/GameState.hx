@@ -71,7 +71,7 @@ class GameState extends BasicState {
 	static var help1:FlxGroup;
 	static var help2:FlxGroup;
 	
-	public static var ctrls:CtrlMode;
+	public static var controlScheme:CtrlMode; 
 	 
 	public function setHighlighted(direction:Command) {
 		switch (direction) {
@@ -174,9 +174,9 @@ class GameState extends BasicState {
 			hud.height *= 2;
 			
 			
-			ctrls = CtrlMode.SWIPE;
+			controlScheme = CtrlMode.SWIPE;
 			var dim1, dim2;
-			switch(ctrls) {
+			switch(controlScheme) {
 				default:
 					dim1 = 80;
 					dim2 = 160;	
@@ -202,7 +202,7 @@ class GameState extends BasicState {
 			buttonW2.visible = false;
 			buttonE2.visible = false;
 			
-			if (ctrls == CtrlMode.SWIPE) {
+			if (controlScheme == CtrlMode.SWIPE) {
 				buttonS.visible = false;
 				buttonN.visible = false;
 				buttonW.visible = false;
@@ -218,7 +218,7 @@ class GameState extends BasicState {
 			var spacer2 = 2 * dim1 + dim2;
 			var spacer1 = dim1 + dim2;
 			
-			switch(ctrls) {
+			switch(controlScheme) {
 				default:
 					buttonW.y = buttonE.y = 80;
 					buttonE.x = 400;
@@ -287,7 +287,7 @@ class GameState extends BasicState {
 			#else
 			var instructions;
 			var instructions1;
-			switch(ctrls) {
+			switch(controlScheme) {
 				default:
 					instructions = "Tap edges to change direction";
 					instructions1 = "Tap center to build towers";
