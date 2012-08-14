@@ -1,12 +1,42 @@
 package ui;
+import data.Library;
+import org.flixel.FlxSprite;
 import org.flixel.plugin.photonstorm.FlxButtonPlus;
 
 class Radio extends FlxButtonPlus{
-
-	public function new(x:Int, y:Int, callback:Dynamic, ?params:Array<Dynamic> = null, ?label:String = null, ?width:Int = 100, ?height:Int = 20) {
-		super(x, y, callback, params, label, width, height);
+	var cb:Dynamic;
+	var ticked:Bool;
+	
+	public function new(x:Float, y:Float, cb:Dynamic, ?width:Int = 16, ?height:Int = 16) {
+		super(Std.int(x), Std.int(y), null, null, null, width, height);
+		this.cb = cb;
+		setOnClickCallback(click);
 		
+		var inactive = new FlxSprite(0,0,Library.getFilename(Image.RADIO));
+		var active = new FlxSprite(0, 0, Library.getFilename(Image.RADIO_SELECTED));
 		
+		loadGraphic(inactive, active);
+		
+		setTicked(true);
+	}
+	
+	public function setTicked(t:Bool) {
+		if (ticked=t) {
+			_status = FlxButtonPlus.HIGHLIGHT;
+			buttonNormal.visible = false;
+			buttonHighlight.visible = true;
+		} else {
+			_status = FlxButtonPlus.NORMAL;
+			buttonNormal.visible = true;
+			buttonHighlight.visible = false;
+		}
+	}
+	
+	function click() {
+		setTicked(!ticked);
+		if(cb!=null) {
+			Reflect.callMethod(this, cb, []);
+		}
 	}
 	
 }

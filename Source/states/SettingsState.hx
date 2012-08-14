@@ -4,6 +4,7 @@ import org.flixel.FlxG;
 import org.flixel.FlxGroup;
 import org.flixel.FlxSprite;
 import org.flixel.FlxText;
+import ui.Radio;
 import ui.Tick;
 import utils.Colors;
 
@@ -32,17 +33,47 @@ class SettingsState extends BasicState {
 		
 		
 		var x = 100;
-		var music = newText(x, y += title.height + Library.tileSize, FlxG.width, "Music", Colors.WHITE);
+		#if keyboard
+		x -= 25;
+		#end
+		
+		var music = newText(x, y += title.height + Library.tileSize, FlxG.width, "Music", Colors.YELLOW);
 		music.setSize(16);
 		labels.add(music);
 		var musicTick = new Tick(x - 24, y, null);
 		buttons.add(musicTick);
 		
-		var sounds = newText(x, y += music.height, FlxG.width, "Sounds", Colors.WHITE);
+		var sounds = newText(x, y += music.height, FlxG.width, "Sounds", Colors.YELLOW);
 		sounds.setSize(16);
 		labels.add(sounds);
 		var soundTick = new Tick(x - 24, y, null);
 		buttons.add(soundTick);
+		
+		var ctrlOverlay = newText(x, y +=  music.height, FlxG.width, "Controller overlay", Colors.BLUEGRAY);
+		ctrlOverlay.setSize(16);
+		labels.add(ctrlOverlay );
+		var overlayRadio = new Radio(x - 24, y, null);
+		buttons.add(overlayRadio);
+		
+		var ctrlOverlayBlend = newText(x+32, y += music.height, FlxG.width, "Blend overlay", Colors.YELLOW);
+		ctrlOverlayBlend.setSize(16);
+		labels.add(ctrlOverlayBlend);
+		var overlayTick = new Tick(x +32 - 24, y, null);
+		buttons.add(overlayTick);
+				
+		var ctrlDPad = newText(x, y += music.height, FlxG.width, "Virtual D-Pad", Colors.BLUEGRAY);
+		ctrlDPad.setSize(16);
+		labels.add(ctrlDPad );
+		var dpadRadio= new Radio(x - 24, y, null);
+		buttons.add(dpadRadio);
+		
+		var ctrlDPasLeft = newText(x+32, y += music.height, FlxG.width, "Left-handed", Colors.YELLOW);
+		ctrlDPasLeft.setSize(16);
+		labels.add(ctrlDPasLeft);
+		var dpadTick = new Tick(x +32 - 24, y, null);
+		buttons.add(dpadTick);
+
+		
 		
 		add(labels);
 		add(buttons);

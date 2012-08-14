@@ -4,7 +4,7 @@ import org.flixel.FlxSprite;
 import org.flixel.plugin.photonstorm.FlxButtonPlus;
 
 class Tick extends FlxButtonPlus {
-	var cb:Dynamic;
+	var cb:Dynamic; 
 	var ticked:Bool;
 	
 	public function new(x:Float, y:Float, cb:Dynamic, ?width:Int = 16, ?height:Int = 16) {
