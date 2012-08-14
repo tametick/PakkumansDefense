@@ -18,16 +18,16 @@ class Library {
 	
 	public static var music= true;
 	public static var sounds = true;
-	public static function toggleMusic() {
-		music = !music;
+	public static function setMusic(active:Bool) {
+		music = active;
 		if (music) {
 			FlxG.music.volume = 1.0;
 		} else {
 			FlxG.music.volume = 0;
 		}
 	}
-	public static function toggleSounds() {
-		sounds != sounds;
+	public static function setSounds(active:Bool) {
+		sounds = active;
 	}
 	
 	static var assets:Hash<Dynamic> = new Hash<Dynamic>();

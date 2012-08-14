@@ -1,5 +1,6 @@
 package ui;
 import data.Library;
+import utils.Utils;
 import org.flixel.FlxSprite;
 import org.flixel.plugin.photonstorm.FlxButtonPlus;
 
@@ -17,10 +18,10 @@ class Radio extends FlxButtonPlus{
 		
 		loadGraphic(inactive, active);
 		
-		setTicked(true);
+		setTicked(true,true);
 	}
 	
-	public function setTicked(t:Bool) {
+	public function setTicked(t:Bool, ?noSound:Bool=false) {
 		if (ticked=t) {
 			_status = FlxButtonPlus.HIGHLIGHT;
 			buttonNormal.visible = false;
@@ -29,6 +30,10 @@ class Radio extends FlxButtonPlus{
 			_status = FlxButtonPlus.NORMAL;
 			buttonNormal.visible = true;
 			buttonHighlight.visible = false;
+		}
+		
+		if(!noSound) {
+			Utils.play(Library.getSound(CLICK));
 		}
 	}
 	

@@ -40,13 +40,13 @@ class SettingsState extends BasicState {
 		var music = newText(x, y += title.height + Library.tileSize, FlxG.width, "Music", Colors.YELLOW);
 		music.setSize(16);
 		labels.add(music);
-		var musicTick = new Tick(x - 24, y, null);
+		var musicTick = new Tick(x - 24, y, function() { Library.setMusic(!Library.music); } );
 		buttons.add(musicTick);
 		
 		var sounds = newText(x, y += music.height, FlxG.width, "Sounds", Colors.YELLOW);
 		sounds.setSize(16);
 		labels.add(sounds);
-		var soundTick = new Tick(x - 24, y, null);
+		var soundTick = new Tick(x - 24, y, function() { Library.setSounds(!Library.sounds); });
 		buttons.add(soundTick);
 		
 		var ctrlOverlay = newText(x, y +=  music.height, FlxG.width, "Controller overlay", Colors.BLUEGRAY);
