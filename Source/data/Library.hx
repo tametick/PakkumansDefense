@@ -5,6 +5,7 @@ import nme.media.Sound;
 import nme.display.Bitmap;
 import nme.display.BitmapData;
 import nme.text.Font;
+import org.flixel.FlxG;
 
 class Library {
 	public static inline var tileSize = 8;
@@ -17,6 +18,17 @@ class Library {
 	
 	public static var music= true;
 	public static var sounds = true;
+	public static function toggleMusic() {
+		music = !music;
+		if (music) {
+			FlxG.music.volume = 1.0;
+		} else {
+			FlxG.music.volume = 0;
+		}
+	}
+	public static function toggleSounds() {
+		sounds != sounds;
+	}
 	
 	static var assets:Hash<Dynamic> = new Hash<Dynamic>();
 	
