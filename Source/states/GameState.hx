@@ -45,10 +45,7 @@ class GameState extends BasicState {
 	static var buttonN:Bitmap;
 	static var buttonE:Bitmap;
 	static var buttonW:Bitmap;
-	static var buttonS2:Bitmap;
-	static var buttonN2:Bitmap;
-	static var buttonE2:Bitmap;
-	static var buttonW2:Bitmap;
+
 	
 	static var buttonT:Bitmap;
 	static var buttonTData:BitmapData;
@@ -76,20 +73,20 @@ class GameState extends BasicState {
 	public function setHighlighted(direction:Command) {
 		switch (direction) {
 			case LEFT:
-				buttonW.visible = false;
-				buttonW2.visible = true;
+				buttonW.alpha = 2;
+				
 				FlxG.play(Library.getSound(CLICK));
 			case RIGHT:
-				buttonE.visible = false;
-				buttonE2.visible = true;
+				buttonE.alpha = 2;
+				
 				FlxG.play(Library.getSound(CLICK));
 			case UP:
-				buttonN.visible = false;
-				buttonN2.visible = true;
+				buttonN.alpha = 2;
+				
 				FlxG.play(Library.getSound(CLICK));
 			case DOWN:
-				buttonS.visible = false;
-				buttonS2.visible = true;
+				buttonS.alpha = 2;
+				
 				FlxG.play(Library.getSound(CLICK));
 			case TOWER:
 				if (level.player.coins < Library.towerCost) {
@@ -103,17 +100,17 @@ class GameState extends BasicState {
 	public function setUnhighlighted(direction:Command) {
 		switch (direction) {
 			case LEFT:
-				buttonW.visible = true;
-				buttonW2.visible = false;
+				buttonW.alpha = 1;
+				
 			case RIGHT:
-				buttonE.visible = true;
-				buttonE2.visible = false;
+				buttonE.alpha = 1;
+				
 			case UP:
-				buttonN.visible = true;
-				buttonN2.visible = false;
+				buttonN.alpha = 1;
+				
 			case DOWN:
-				buttonS.visible = true;
-				buttonS2.visible = false;
+				buttonS.alpha = 1;
+				
 			case TOWER:
 				buttonT.bitmapData = buttonTData;
 		}
@@ -174,7 +171,7 @@ class GameState extends BasicState {
 			hud.height *= 2;
 			
 			
-			ctrls = CtrlMode.SWIPE;
+			ctrls = CtrlMode.OVERLAY;
 			var dim1, dim2;
 			switch(ctrls) {
 				default:
@@ -186,22 +183,15 @@ class GameState extends BasicState {
 			}
 			
 			buttonS = drawTriangle(0, 0, dim2, 0, dim1, dim1);
-			buttonS2 = drawTriangle(0, 0, dim2, 0, dim1, dim1, 0.6);
-				
+							
 			buttonN = drawTriangle(0,dim1,dim1,0,dim2,dim1);
-			buttonN2 = drawTriangle(0,dim1,dim1,0,dim2,dim1, 0.6);
-				
+							
 			buttonW = drawTriangle(0,dim1,dim1,0,dim1,dim2);
-			buttonW2 = drawTriangle(0,dim1,dim1,0,dim1,dim2,0.6);
-				
+			
 			buttonE = drawTriangle(0,0,dim1,dim1,0,dim2);
-			buttonE2 = drawTriangle(0,0,dim1,dim1,0,dim2,0.6);
 			
-			buttonS2.visible = false;
-			buttonN2.visible = false;
-			buttonW2.visible = false;
-			buttonE2.visible = false;
 			
+						
 			if (ctrls == CtrlMode.SWIPE) {
 				buttonS.visible = false;
 				buttonN.visible = false;
@@ -247,14 +237,7 @@ class GameState extends BasicState {
 
 			
 			
-			buttonS2.x = buttonS.x;
-			buttonS2.y = buttonS.y;
-			buttonN2.x = buttonN.x;
-			buttonN2.y = buttonN.y;
-			buttonW2.x = buttonW.x;
-			buttonW2.y = buttonW.y;
-			buttonE2.x = buttonE.x;
-			buttonE2.y = buttonE.y;
+			
 		}
 		
 		var index = FlxG._game.getChildIndex(FlxG._game._mouse);
@@ -265,11 +248,6 @@ class GameState extends BasicState {
 		FlxG._game.addChild(buttonW);
 		FlxG._game.addChild(buttonE);
 		FlxG._game.addChild(buttonT);
-		
-		FlxG._game.addChild(buttonS2);
-		FlxG._game.addChild(buttonN2);
-		FlxG._game.addChild(buttonW2);
-		FlxG._game.addChild(buttonE2);
 		#end
 		
 		FlxG.playMusic(Library.getMusic(THEME));
@@ -386,6 +364,7 @@ class GameState extends BasicState {
 		#if keyboard
 		FlxG.mouse.show();
 		#end
+	
 		FlxG.bgColor = Colors.BLACK;
 		
 		//cursor = new Cursor();
