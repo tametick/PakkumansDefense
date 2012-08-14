@@ -171,7 +171,7 @@ class GameState extends BasicState {
 			hud.height *= 2;
 			
 			
-			ctrls = CtrlMode.OVERLAY;
+			controlScheme = CtrlMode.OVERLAY;
 			var dim1, dim2;
 			switch(controlScheme) {
 				default:
