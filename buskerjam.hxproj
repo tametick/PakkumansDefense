@@ -25,7 +25,7 @@
     <option flashStrict="True" />
     <option mainClass="ApplicationMain" />
     <option enabledebug="True" />
-    <option additional="--connect 6000&#xA;-swf-version 11.2" />
+    <option additional="-swf-version 11.2" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>

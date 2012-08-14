@@ -6,7 +6,7 @@ set FLEX_SDK=C:\AdobeAirSDK
 
 :: Path to Android SDK
 rem set ANDROID_SDK=C:\Program Files (x86)\FlashDevelop\Tools\android
-set ANDROID_SDK=C:\Development\Android SDK
+set ANDROID_SDK=C:\Program Files (x86)\Android\android-sdk
 
 
 :validation
