@@ -196,7 +196,7 @@ class Player extends WarpSprite {
 				spawnTower();
 				
 			} else {
-				FlxG.play(Library.getSound(Sound.ERROR));
+				Utils.play(Library.getSound(Sound.ERROR));
 			}
 			touch = null;
 		}
@@ -272,7 +272,7 @@ class Player extends WarpSprite {
 				
 				if (!(j == tileX && i== tileY)) {
 					if (!level.isFree(j, i) && !towerThere) {
-						FlxG.play(Library.getSound(Sound.CASH_REGISTER));
+						Utils.play(Library.getSound(Sound.CASH_REGISTER));
 						level.player.coins -= Library.towerCost;				
 						cast(FlxG.state, GameState).coinCounter.text="$: " + level.player.coins;
 						level.buildTower(fakeMouse);

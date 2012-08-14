@@ -1,6 +1,8 @@
 package utils;
 
 import data.Library;
+import nme.media.Sound;
+import org.flixel.FlxG;
 import org.flixel.FlxPoint;
 
 class Utils {
@@ -15,6 +17,20 @@ class Utils {
 			}
 		}
 		return null;
+	}
+	
+	public static function play(snd:nme.media.Sound) {
+		if(Library.sounds) {
+			FlxG.play(snd);
+		}
+	}
+	public static function playMusic(mus:nme.media.Sound) {
+		var vol = 0.0;
+		if(Library.music) {
+			vol = 1;
+		}
+		
+		FlxG.playMusic(mus,vol);
 	}
 	
 	public static function dist(a:Float, b:Float) {

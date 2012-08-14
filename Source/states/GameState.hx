@@ -75,25 +75,25 @@ class GameState extends BasicState {
 			case LEFT:
 				buttonW.alpha = 2;
 				
-				FlxG.play(Library.getSound(CLICK));
+				Utils.play(Library.getSound(CLICK));
 			case RIGHT:
 				buttonE.alpha = 2;
 				
-				FlxG.play(Library.getSound(CLICK));
+				Utils.play(Library.getSound(CLICK));
 			case UP:
 				buttonN.alpha = 2;
 				
-				FlxG.play(Library.getSound(CLICK));
+				Utils.play(Library.getSound(CLICK));
 			case DOWN:
 				buttonS.alpha = 2;
 				
-				FlxG.play(Library.getSound(CLICK));
+				Utils.play(Library.getSound(CLICK));
 			case TOWER:
 				if (level.player.coins < Library.towerCost) {
 					buttonT.bitmapData = buttonT2DataR;
 				} else {
 					buttonT.bitmapData = buttonT2Data;
-					FlxG.play(Library.getSound(CLICK));
+					Utils.play(Library.getSound(CLICK));
 				}
 		}
 	}
@@ -250,7 +250,7 @@ class GameState extends BasicState {
 		FlxG._game.addChild(buttonT);
 		#end
 		
-		FlxG.playMusic(Library.getMusic(THEME));
+		Utils.playMusic(Library.getMusic(THEME));
 		help = 1;
 		if (help1 == null) {				
 			help1 = new FlxGroup();
@@ -541,7 +541,7 @@ class GameState extends BasicState {
 		if (level.activePowerups.exists(Type.enumConstructor(PowerupType.CASHFORKILLS))) {
 			level.player.coins++;
 		}
-		FlxG.play(Library.getSound(Sound.GHOST_HIT));
+		Utils.play(Library.getSound(Sound.GHOST_HIT));
 		b.kill();
 		level.ghosts.remove(g, true);
 		cast(g, Ghost).explode();
@@ -558,7 +558,7 @@ class GameState extends BasicState {
 		if (!active)
 			return;
 		active = false;
-		FlxG.play(Library.getSound(Sound.DEATH));
+		Utils.play(Library.getSound(Sound.DEATH));
 		level.player.explode();
 		
 		HighScoreState.mostRecentScore = new Score(levelNumber,level.player.coins,level.player.kills,level.towers.length);
@@ -573,7 +573,7 @@ class GameState extends BasicState {
 	}
 	
 	function pickUpCoin(p:FlxObject, c:FlxObject) {	
-		FlxG.play(Library.getSound(cast(c,Coin).snd));
+		Utils.play(Library.getSound(cast(c,Coin).snd));
 		
 		level.freePos.insert(0,new FlxPoint(Std.int(c.x/Library.tileSize),Std.int(c.y/Library.tileSize)));
 		
@@ -597,14 +597,14 @@ class GameState extends BasicState {
 		}while (pl != pup && cnt <= 10);
 		if (pup != null) {
 			pu = level.spawnPowerup(pup);
-			FlxG.play(Library.getSound(Sound.POWERUP));
+			Utils.play(Library.getSound(Sound.POWERUP));
 			add(level.powerupEffect);
 			level.powerupEffect.explode(pu.x, pu.y);
 		}
 	}
 	
 	function pickUpPowerup(p:FlxObject, c:FlxObject) {	
-		FlxG.play(Library.getSound(Sound.CASH_REGISTER));
+		Utils.play(Library.getSound(Sound.CASH_REGISTER));
 		var cc:Powerup = cast(c, Powerup);
 		level.activePowerups.set(Type.enumConstructor(cc.type), cc.duration);
 		level.powerups.remove(cc, true);

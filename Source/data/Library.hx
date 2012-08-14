@@ -15,6 +15,9 @@ class Library {
 	
 	public static inline var debug = false; 
 	
+	public static var music= true;
+	public static var sounds = true;
+	
 	static var assets:Hash<Dynamic> = new Hash<Dynamic>();
 	
 	public static function getImage(i:Image):BitmapData {

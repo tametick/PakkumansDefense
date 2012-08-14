@@ -8,6 +8,7 @@ import org.flixel.FlxText;
 import data.Library;
 import org.flixel.plugin.photonstorm.FlxGridOverlay;
 import utils.Colors;
+import utils.Utils;
 
 class MenuState extends BasicState {
 	var bg:FlxSprite;
@@ -16,7 +17,7 @@ class MenuState extends BasicState {
 	override public function create():Void {
 		super.create();
 		
-		FlxG.playMusic(Library.getMusic(MENU));
+		Utils.playMusic(Library.getMusic(MENU));
 		
 		#if keyboard
 		FlxG.mouse.show();

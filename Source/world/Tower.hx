@@ -7,6 +7,7 @@ import org.flixel.FlxG;
 import org.flixel.FlxPoint;
 import org.flixel.plugin.photonstorm.FlxWeapon;
 import utils.Colors;
+import utils.Utils;
 import world.Level;
 
 class Tower extends WarpSprite {
@@ -42,7 +43,7 @@ class Tower extends WarpSprite {
 			counter = 0;
 			var target = level.getGhostInRange(this,range);
 			if (target != null) {
-				FlxG.play(Library.getSound(Sound.TOWER_SHOT));
+				Utils.play(Library.getSound(Sound.TOWER_SHOT));
 				var angle = Std.int(180 / Math.PI * Math.atan2(target.y - y, target.x - x));
 				weapon.fireFromAngle(angle);
 				
