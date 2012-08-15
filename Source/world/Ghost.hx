@@ -77,13 +77,15 @@ class Ghost extends WarpSprite {
 					ty = Std.int(level.player.y);
 				} else {
 					var tw = cast(level.towers.members[Utils.randomIntInRange(0, towers)],Tower);
-					tx = Utils.pixelToTile(tw.x);
-					ty = Utils.pixelToTile(tw.y);
-					
-					var p = level.lookAround(tx, ty);
-					
-					tx = Std.int(p.x*Library.tileSize);		
-					ty = Std.int(p.y*Library.tileSize);
+					if(tw!=null){
+						tx = Utils.pixelToTile(tw.x);
+						ty = Utils.pixelToTile(tw.y);
+						
+						var p = level.lookAround(tx, ty);
+						
+						tx = Std.int(p.x*Library.tileSize);		
+						ty = Std.int(p.y * Library.tileSize);
+					}
 				}
 					
 				

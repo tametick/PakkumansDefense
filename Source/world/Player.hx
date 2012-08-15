@@ -38,8 +38,7 @@ class Player extends WarpSprite {
 	
 	var isMoving:Bool;
 	var facingNext:Int;
-	var bloodSplosion:Splosion;
-	var powerupIndicator:Bitmap; 
+	var bloodSplosion:Splosion; 
 	
 	override public function destroy() {
 		super.destroy();

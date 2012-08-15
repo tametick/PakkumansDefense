@@ -29,6 +29,7 @@ import org.flixel.plugin.photonstorm.baseTypes.Bullet;
 import org.flixel.plugin.photonstorm.FlxGridOverlay;
 import org.flixel.system.input.Input;
 import ui.Cursor;
+import ui.PowerupIndicator;
 import utils.Colors;
 import utils.Utils;
 import world.Coin;
@@ -52,6 +53,7 @@ class GameState extends BasicState {
 	static var buttonT2Data:BitmapData;
 	static var buttonT2DataR:BitmapData;
 
+	static var powerupIndicator:Hash<PowerupIndicator>;
 	
 	var bg: FlxSprite;
 	var level:Level;
@@ -406,6 +408,14 @@ class GameState extends BasicState {
 			
 		}
 				
+		powerupIndicator = new Hash();
+		powerupIndicator.set(Type.enumConstructor(PowerupType.CASHFORKILLS), new PowerupIndicator(Image.CASH));
+		powerupIndicator.set(Type.enumConstructor(PowerupType.SHOTGUN), new PowerupIndicator(Image.SHOTGUN));
+		powerupIndicator.set(Type.enumConstructor(PowerupType.HASTE), new PowerupIndicator(Image.HASTE));
+		powerupIndicator.set(Type.enumConstructor(PowerupType.CONFUSION), new PowerupIndicator(Image.CONFUSION));
+		powerupIndicator.set(Type.enumConstructor(PowerupType.FREEZE), new PowerupIndicator(Image.FREEZE));			
+			
+			
 		Actuate.defaultEase = Linear.easeNone;
 		
 		Log.setColor(0xFFFFFF);
@@ -455,10 +465,9 @@ class GameState extends BasicState {
 		if (Library.debug) {
 			add(mouse);
 		}
-		
+			
 		FlxG.camera.setZoom(3);
 		
-	//	level.player.powerupIndicator=drawRectangle(0,0,5,0,5,2,0,2);
 	}
 	
 	function newLevel():Void {
@@ -524,6 +533,12 @@ class GameState extends BasicState {
 		add(level.bullets);
 		add(level.powerups);
 		add(level.powerupEffect);
+		
+		for (i in powerupIndicator) {
+					i.visible = false;
+					add(i);
+				}
+		
 			
 		if(towerCounter!=null) {
 			towerCounter.text = "Towers: 0";
@@ -568,19 +583,35 @@ class GameState extends BasicState {
 		//check if powerups need to be removed from field
 		for (p in level.powerups.members) {
 			var pu = cast(p, Powerup);
-			if (pu.life <= 0) pu.remove();
+				if (pu.life <= 0) {
+					pu.remove();
+				} else {
+					if (pu.life <= 3) {
+						pu.play("blink");
+					}
+				}
 			}
 			
 		//check if active powerups need to stop being active
-		
+		var j = 0;
 		for (p in level.activePowerups.keys()) {
 			
 			var t = level.activePowerups.get(p);
+			var pu = powerupIndicator.get(p);
 			t-= FlxG.elapsed;
-			if (t <= 0) level.activePowerups.remove(p);
-			else level.activePowerups.set(p,t);
+			if (t <= 0) { 
+				pu.visible = false;
+				level.activePowerups.remove(p);
+			} else {
+				if (t <= 3) {
+					pu.play("blink");
+				}
+				level.activePowerups.set(p, t);
+				pu.visible = true;
+				pu.y = j * 10;
+				j++;
 			}
-		
+		}
 		counter += FlxG.elapsed;
 		if (counter >= spawnRate) {
 			counter = 0;
@@ -658,6 +689,7 @@ class GameState extends BasicState {
 	function pickUpPowerup(p:FlxObject, c:FlxObject) {	
 		Utils.play(Library.getSound(Sound.CASH_REGISTER));
 		var cc:Powerup = cast(c, Powerup);
+		powerupIndicator.get(Type.enumConstructor(cc.type)).play("not blink");
 		level.activePowerups.set(Type.enumConstructor(cc.type), cc.duration);
 		level.powerups.remove(cc, true);
 		cc.remove();
@@ -697,6 +729,12 @@ class GameState extends BasicState {
 		FlxG._game.removeChild(buttonE);
 		FlxG._game.removeChild(buttonT);
 		#end
+		for (i in powerupIndicator.keys()) {
+			powerupIndicator.get(i).destroy();
+			powerupIndicator.remove(i); 
+		}
+		
+		powerupIndicator = null;
 	}
 	
 }
