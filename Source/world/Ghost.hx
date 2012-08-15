@@ -14,7 +14,8 @@ import utils.Utils;
 class Ghost extends WarpSprite {
 	var shade:UInt;
 	var type:GhostType;
-	var bloodSplosion:Splosion;
+	public var bloodSplosion:Splosion;
+
 	
 	public function new(level:Level, start:FlxPoint, type:String) {
 		super(level);
@@ -30,6 +31,9 @@ class Ghost extends WarpSprite {
 		
 		counter = 0;
 		bloodSplosion = new Splosion(Reflect.field(Colors, type));
+		
+		var puName = Type.enumConstructor(PowerupType.CONFUSION);
+		
 	}
 	
 	public function explode() {
@@ -71,11 +75,13 @@ class Ghost extends WarpSprite {
 				var tx :Int= 0;
 				var ty :Int= 0;
 				puName = Type.enumConstructor(PowerupType.CONFUSION);
-				var towers = level.towers.length - 1;
+				var towers = level.towers.length;
 				if (!level.activePowerups.exists(puName)||towers==0) {
 					tx = Std.int(level.player.x);
 					ty = Std.int(level.player.y);
 				} else {
+					bloodSplosion.explode(x, y);
+					
 					var tw = cast(level.towers.members[Utils.randomIntInRange(0, towers)],Tower);
 					if(tw!=null){
 						tx = Utils.pixelToTile(tw.x);

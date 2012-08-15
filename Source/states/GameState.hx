@@ -448,6 +448,8 @@ class GameState extends BasicState {
 		newLevel();
 		level.player.setClickMap();
 		//add(cursor);
+		powerupInfo = newText(0, 0, Std.int(FlxG.width - level.width - 8), "a",Colors.LGREEN);
+		powerupInfo.visible = false;
 		
 		levelCounter = newText(0, -1, Std.int(FlxG.width - level.width - 8), "Level "+levelNumber,Colors.LGREEN);
 		levelCounter.scrollFactor.x = 0;
@@ -723,16 +725,36 @@ class GameState extends BasicState {
 		Utils.play(Library.getSound(Sound.CASH_REGISTER));
 		var cc:Powerup = cast(c, Powerup);
 		
+		powerupInfo.visible = true;
+		powerupInfo.text = cc.text;
+		powerupInfo.x = cc.x;
+		powerupInfo.y = cc.y;
+		powerupInfo.setColor(cc.getColor());
+		Actuate.tween(powerupInfo, 1, { x: 0, y: 0 });
+		Actuate.timer(1).onComplete(hideTheInfoText, [false] );
+		
 		if (cc.type == PowerupType.INSTATOWER) {
 			level.player.coins+= Library.towerCost;							
 			level.player.spawnTower();
 		} else {
 			powerupIndicator.get(Type.enumConstructor(cc.type)).play("not blink");
 			level.activePowerups.set(Type.enumConstructor(cc.type), cc.duration);
+			
+			if (cc.type == PowerupType.CONFUSION) {
+				for (i in level.ghosts.members) {
+					var g = cast(i, Ghost);
+					g.stopFollowingPath(false, true);
+				}
+				
+			}
 		}
 		level.powerups.remove(cc, true);
 		cc.remove();
 	}
+	
+	function hideTheInfoText(visible:Bool)
+	{powerupInfo.visible = visible;
+		}
 	
 	override public function destroy() {
 		deadGhosts.destroy();
