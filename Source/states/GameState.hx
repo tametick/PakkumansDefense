@@ -141,7 +141,7 @@ class GameState extends BasicState {
 	
 	var cursor:FlxSprite;
 	
-	function drawTriangle(v1x:Float, v1y:Float, v2x:Float, v2y:Float, v3x:Float, v3y:Float, ?alpha = 0.2, ?color = 0xffffff):Bitmap {
+	static function drawTriangle(v1x:Float, v1y:Float, v2x:Float, v2y:Float, v3x:Float, v3y:Float, ?alpha = 0.2, ?color = 0xffffff):Bitmap {
 		Lib.stage.quality = StageQuality.BEST;
 		var shape = new Shape();
 		//shape.graphics.lineStyle(1, color, alpha, false, null, null,JointStyle.ROUND);
@@ -172,7 +172,7 @@ class GameState extends BasicState {
 	}
 	*/
 	
-	public function initController(scheme:CtrlMode) {
+	public static function initController(scheme:CtrlMode) {
 		controlScheme = scheme;
 		
 		var dim1, dim2;
@@ -187,19 +187,27 @@ class GameState extends BasicState {
 		
 		// clean up old controller
 		if (buttonS != null) {
-			buttonS.parent.removeChild(buttonS);
+			if(buttonS.parent != null && buttonS.parent.contains(buttonS)){
+				buttonS.parent.removeChild(buttonS);
+			}
 			buttonS.bitmapData.dispose();
 			buttonS.bitmapData = null;
 			
-			buttonN.parent.removeChild(buttonN);
+			if (buttonN.parent != null && buttonN.parent.contains(buttonN)) {
+				buttonN.parent.removeChild(buttonN);
+			}
 			buttonN.bitmapData.dispose();
 			buttonN.bitmapData = null;
 			
-			buttonW.parent.removeChild(buttonW);
+			if (buttonW.parent != null && buttonW.parent.contains(buttonW)) {
+				buttonW.parent.removeChild(buttonW);
+			}
 			buttonW.bitmapData.dispose();
 			buttonW.bitmapData = null;
 			
-			buttonE.parent.removeChild(buttonE);
+			if(buttonE.parent != null && buttonE.parent.contains(buttonE)){
+				buttonE.parent.removeChild(buttonE);
+			}
 			buttonE.bitmapData.dispose();
 			buttonE.bitmapData = null;
 		}

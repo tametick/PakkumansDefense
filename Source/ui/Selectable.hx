@@ -7,7 +7,7 @@ import org.flixel.plugin.photonstorm.FlxButtonPlus;
 class Selectable extends FlxButtonPlus {
 
 	var cb:Dynamic; 
-	var ticked:Bool;
+	public var ticked:Bool;
 	
 	public var owner(default, setOwner):Selectable;
 	function setOwner(o:Selectable):Selectable {
