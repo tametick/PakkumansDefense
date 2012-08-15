@@ -62,7 +62,10 @@ class Powerup extends WarpSprite {
 				#end
 			}
 		
-		loadGraphic(Library.getFilename(img));
+		loadGraphic(Library.getFilename(img),true, 8, 8);
+		addAnimation("not blink", [0, 0], 0);
+		addAnimation("blink", [0, 1], 3);
+		
 		setColor(clr);
 		if(start!=null){
 			setPosition(start);
