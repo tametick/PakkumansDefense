@@ -68,8 +68,8 @@ class GameState extends BasicState {
 	static var help1:FlxGroup;
 	static var help2:FlxGroup;
 	
-	public static var controlScheme:CtrlMode; 
-	 
+	public static var controlScheme:CtrlMode;
+	
 	public function setHighlighted(direction:Command) {
 		switch (direction) {
 			case LEFT:
@@ -171,6 +171,88 @@ class GameState extends BasicState {
 		return bmp;
 	}
 	*/
+	
+	public function initController(scheme:CtrlMode) {
+		controlScheme = scheme;
+		
+		var dim1, dim2;
+		switch(controlScheme) {
+			default:
+				dim1 = 80;
+				dim2 = 160;	
+			case CtrlMode.GAMEPAD,CtrlMode.GAMEPAD_L:
+				dim1 = 40;
+				dim2 = 80;	
+		}
+		
+		// clean up old controller
+		if (buttonS != null) {
+			buttonS.parent.removeChild(buttonS);
+			buttonS.bitmapData.dispose();
+			buttonS.bitmapData = null;
+			
+			buttonN.parent.removeChild(buttonN);
+			buttonN.bitmapData.dispose();
+			buttonN.bitmapData = null;
+			
+			buttonW.parent.removeChild(buttonW);
+			buttonW.bitmapData.dispose();
+			buttonW.bitmapData = null;
+			
+			buttonE.parent.removeChild(buttonE);
+			buttonE.bitmapData.dispose();
+			buttonE.bitmapData = null;
+		}
+		
+		buttonS = drawTriangle(0, 0, dim2, 0, dim1, dim1);	
+		buttonN = drawTriangle(0,dim1,dim1,0,dim2,dim1);
+		buttonW = drawTriangle(0,dim1,dim1,0,dim1,dim2);
+		buttonE = drawTriangle(0,0,dim1,dim1,0,dim2);
+					
+		if (controlScheme == CtrlMode.SWIPE) {
+			buttonS.visible = false;
+			buttonN.visible = false;
+			buttonW.visible = false;
+			buttonE.visible = false;
+		}
+
+		if(buttonT==null){
+			buttonT = new Bitmap(buttonTData = Library.getImage(Image.BUTTONS_OVERLAY_T), PixelSnapping.AUTO, true);
+			buttonT2Data = Library.getImage(Image.BUTTONS_OVERLAY_T2);
+			buttonT2DataR = Library.getImage(Image.BUTTONS_OVERLAY_T2R);
+		}
+		
+		var spacer2 = 2 * dim1 + dim2;
+		var spacer1 = dim1 + dim2;
+		
+		switch(controlScheme) {
+			default:
+				buttonW.y = buttonE.y = 80;
+				buttonE.x = 400;
+				buttonS.x = buttonN.x = 160;
+				buttonS.y = 240;
+				buttonT.x = 180;
+				buttonT.y = 100;		
+			case CtrlMode.GAMEPAD:
+				buttonN.y = 320-spacer2;
+				buttonW.y = buttonE.y = 320-spacer1;
+				buttonE.x = spacer1;
+				buttonS.x = buttonN.x = dim1;
+				buttonS.y = 320-dim1;
+				buttonT.x = 480-120;
+				buttonT.y = 320 - (spacer2 + 120) / 2;
+			case CtrlMode.GAMEPAD_L:
+				buttonN.y = 320-spacer2;
+				buttonW.y = buttonE.y = 320-spacer1;
+				buttonE.x = 480 - dim1;
+				buttonW.x = 480 - spacer2;
+				buttonS.x = buttonN.x = 480-spacer1;
+				buttonS.y = 320-dim1;
+				buttonT.x = 0;
+				buttonT.y = 320-(spacer2+120)/2;
+		}
+	}
+	
 	override public function create():Void {
 		super.create();
 		
@@ -190,71 +272,7 @@ class GameState extends BasicState {
 			hud.width *= 2;
 			hud.height *= 2;
 			
-			var dim1, dim2;
-			switch(controlScheme) {
-				default:
-					dim1 = 80;
-					dim2 = 160;	
-				case CtrlMode.GAMEPAD,CtrlMode.GAMEPAD_L:
-					dim1 = 40;
-					dim2 = 80;	
-			}
-			
-			buttonS = drawTriangle(0, 0, dim2, 0, dim1, dim1);
-							
-			buttonN = drawTriangle(0,dim1,dim1,0,dim2,dim1);
-							
-			buttonW = drawTriangle(0,dim1,dim1,0,dim1,dim2);
-			
-			buttonE = drawTriangle(0,0,dim1,dim1,0,dim2);
-			
-						
-			if (controlScheme == CtrlMode.SWIPE) {
-				buttonS.visible = false;
-				buttonN.visible = false;
-				buttonW.visible = false;
-				buttonE.visible = false;
-				}
-				
-			
-			
-			buttonT = new Bitmap(buttonTData = Library.getImage(Image.BUTTONS_OVERLAY_T), PixelSnapping.AUTO, true);
-			buttonT2Data = Library.getImage(Image.BUTTONS_OVERLAY_T2);
-			buttonT2DataR = Library.getImage(Image.BUTTONS_OVERLAY_T2R);
-			
-			var spacer2 = 2 * dim1 + dim2;
-			var spacer1 = dim1 + dim2;
-			
-			switch(controlScheme) {
-				default:
-					buttonW.y = buttonE.y = 80;
-					buttonE.x = 400;
-					buttonS.x = buttonN.x = 160;
-					buttonS.y = 240;
-					buttonT.x = 180;
-					buttonT.y = 100;		
-				case CtrlMode.GAMEPAD:
-					buttonN.y = 320-spacer2;
-					buttonW.y = buttonE.y = 320-spacer1;
-					buttonE.x = spacer1;
-					buttonS.x = buttonN.x = dim1;
-					buttonS.y = 320-dim1;
-					buttonT.x = 480-120;
-					buttonT.y = 320 - (spacer2 + 120) / 2;
-				case CtrlMode.GAMEPAD_L:
-					buttonN.y = 320-spacer2;
-					buttonW.y = buttonE.y = 320-spacer1;
-					buttonE.x = 480 - dim1;
-					buttonW.x = 480 - spacer2;
-					buttonS.x = buttonN.x = 480-spacer1;
-					buttonS.y = 320-dim1;
-					buttonT.x = 0;
-					buttonT.y = 320-(spacer2+120)/2;
-			}
-
-			
-			
-			
+			initController(controlScheme);
 		}
 		
 		var index = FlxG._game.getChildIndex(FlxG._game._mouse);
