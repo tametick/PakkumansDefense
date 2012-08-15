@@ -588,6 +588,11 @@ class GameState extends BasicState {
 			} else {
 				timeCounter.setColor(Colors.ORANGE);
 			}
+			if (sec != level.player.lastbeep) {
+				level.player.lastbeep = sec;
+				Utils.play(Library.getSound(TIMER));
+			}
+			
 		}
 		if (help < 3) {
 			if (FlxG.mouse.justPressed() || FlxG.keys.justReleased("SPACE") || FlxG.keys.justReleased("ENTER") ) {

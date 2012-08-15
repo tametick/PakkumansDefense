@@ -122,7 +122,8 @@ class Level extends FlxTilemap {
 			player.level = this;
 		}
 		
-		player.time = 120;
+		player.time = 20;
+		player.lastbeep = -1;
 		
 		ghosts = new FlxGroup();
 		towers = new FlxGroup();

@@ -26,7 +26,7 @@ class Player extends WarpSprite {
 	public var kills:Int;
 	public var arrow:FlxSprite;
 	public var time:Float;
-	
+	public var lastbeep:Int;
 	static var clickMap:BitmapData;
 	
 	private var thinking:Bool;
