@@ -6,6 +6,7 @@ import nme.display.Bitmap;
 import nme.display.BitmapData;
 import nme.text.Font;
 import org.flixel.FlxG;
+import org.flixel.FlxSave;
 
 class Library {
 	public static inline var tileSize = 8;
@@ -23,7 +24,10 @@ class Library {
 			return;
 		}
 		
-		music = active;
+		var settings = new FlxSave();
+		settings.bind("Settings");
+		settings.data.music = music = active;
+		
 		if (music) {
 			FlxG.music.volume = 1.0;
 		} else {
@@ -31,7 +35,9 @@ class Library {
 		}
 	}
 	public static function setSounds(active:Bool) {
-		sounds = active;
+		var settings = new FlxSave();
+		settings.bind("Settings");
+		settings.data.sounds = sounds = active;
 	}
 	
 	static var assets:Hash<Dynamic> = new Hash<Dynamic>();

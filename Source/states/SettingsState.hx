@@ -36,10 +36,10 @@ class SettingsState extends BasicState {
 			settings.data.blend = false;
 		}
 		
-		
 		if (GameState.controlScheme == null) {
 			GameState.controlScheme = Type.createEnum(CtrlMode,settings.data.controlScheme);
 		}
+		
 		
 		#if keyboard
 		FlxG.mouse.show();

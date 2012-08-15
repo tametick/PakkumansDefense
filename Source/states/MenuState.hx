@@ -2,6 +2,7 @@ package states;
 
 import com.eclecticdesignstudio.motion.Actuate;
 import org.flixel.FlxG;
+import org.flixel.FlxSave;
 import org.flixel.FlxSprite;
 import org.flixel.FlxState;
 import org.flixel.FlxText;
@@ -16,6 +17,18 @@ class MenuState extends BasicState {
 
 	override public function create():Void {
 		super.create();
+		
+		var settings = new FlxSave();
+		settings.bind("Settings");
+		if (settings.data.music == null) {
+			settings.data.music = true;
+		}
+		if (settings.data.sounds == null) {
+			settings.data.sounds= true;
+		}
+		Library.music = settings.data.music;
+		Library.sounds = settings.data.sounds;
+		
 		
 		Utils.playMusic(Library.getMusic(MENU));
 		
