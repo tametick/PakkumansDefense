@@ -32,6 +32,10 @@ class SettingsState extends BasicState {
 			settings.data.controlScheme = Type.enumConstructor(CtrlMode.OVERLAY);
 		}
 		
+		if (settings.data.blend==null) {
+			settings.data.blend = false;
+		}
+		
 		
 		if (GameState.controlScheme == null) {
 			GameState.controlScheme = Type.createEnum(CtrlMode,settings.data.controlScheme);
@@ -84,7 +88,9 @@ class SettingsState extends BasicState {
 		ctrlOverlayBlend.setSize(16);
 		labels.add(ctrlOverlayBlend);
 		
-		overlayTick = new Tick(x +32 - 24, y, blendOverlayCB, false);
+		overlayTick = new Tick(x +32 - 24, y, blendOverlayCB, settings.data.blend);
+		blendOverlayCB(overlayTick.ticked);
+		
 		buttons.add(overlayTick);
 				
 		var ctrlDPad = newText(x, y += music.height, FlxG.width, "Virtual game-pad", Colors.BLUEGRAY);

@@ -260,7 +260,13 @@ class GameState extends BasicState {
 		}
 	}
 	
-	public static function setControllerVisiblity(val:Bool, ?alsoTower:Bool=false) {
+	public static function setControllerVisiblity(val:Bool, ?alsoTower:Bool = false) {
+		if(settings ==null) {
+			settings = new FlxSave();
+			settings.bind("Settings");
+		}
+		
+		settings.data.blend = !val;
 		buttonS.visible = val;
 		buttonN.visible = val;
 		buttonW.visible = val;
@@ -270,13 +276,15 @@ class GameState extends BasicState {
 		}
 	}
 	
-	var settings:FlxSave;
+	static var settings:FlxSave;
 	
 	override public function create():Void {
 		super.create();
 		
-		settings = new FlxSave();
-		settings.bind("Settings");
+		if(settings ==null) {
+			settings = new FlxSave();
+			settings.bind("Settings");
+		}
 		
 		var sc = Type.createEnum(CtrlMode,settings.data.controlScheme);
 		if (sc == null) {
@@ -285,6 +293,10 @@ class GameState extends BasicState {
 		} else {
 			if(GameState.controlScheme!=sc)
 				initController(sc);
+		}
+
+		if (settings.data.blend != null) {
+			setControllerVisiblity(!settings.data.blend,true);
 		}
 		
 		
