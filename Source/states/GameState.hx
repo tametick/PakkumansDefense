@@ -696,8 +696,14 @@ class GameState extends BasicState {
 	function pickUpPowerup(p:FlxObject, c:FlxObject) {	
 		Utils.play(Library.getSound(Sound.CASH_REGISTER));
 		var cc:Powerup = cast(c, Powerup);
-		powerupIndicator.get(Type.enumConstructor(cc.type)).play("not blink");
-		level.activePowerups.set(Type.enumConstructor(cc.type), cc.duration);
+		
+		if (cc.type == PowerupType.INSTATOWER) {
+			level.player.coins+= Library.towerCost;							
+			level.player.spawnTower();
+		} else {
+			powerupIndicator.get(Type.enumConstructor(cc.type)).play("not blink");
+			level.activePowerups.set(Type.enumConstructor(cc.type), cc.duration);
+		}
 		level.powerups.remove(cc, true);
 		cc.remove();
 	}

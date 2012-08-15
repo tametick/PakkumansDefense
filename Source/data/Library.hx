@@ -110,6 +110,7 @@ enum Image {
 	HASTE;
 	SETTINGS;
 	CONFUSION;
+	INSTATOWER;
 }
 
 enum Sound {
