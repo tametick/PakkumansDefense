@@ -180,13 +180,16 @@ class GameState extends BasicState {
 		mouse = new FlxText(0, 0, 40);
 		mouse.scrollFactor.x = mouse.scrollFactor.y = 0;
 		
+		
+		if (controlScheme == null) {
+			controlScheme = CtrlMode.OVERLAY;
+		}
+		
 		if (hud == null) {
 			hud = new Bitmap(Library.getImage(Image.HUD_OVERLAY));
 			hud.width *= 2;
 			hud.height *= 2;
 			
-			
-			controlScheme = CtrlMode.OVERLAY;
 			var dim1, dim2;
 			switch(controlScheme) {
 				default:

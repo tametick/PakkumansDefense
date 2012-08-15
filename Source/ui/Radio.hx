@@ -8,7 +8,7 @@ class Radio extends FlxButtonPlus{
 	var cb:Dynamic;
 	var ticked:Bool;
 	
-	public function new(x:Float, y:Float, cb:Dynamic, ?width:Int = 16, ?height:Int = 16) {
+	public function new(x:Float, y:Float, cb:Dynamic, defaultvalue:Bool, ?width:Int = 16, ?height:Int = 16) {
 		super(Std.int(x), Std.int(y), null, null, null, width, height);
 		this.cb = cb;
 		setOnClickCallback(click);
@@ -18,7 +18,7 @@ class Radio extends FlxButtonPlus{
 		
 		loadGraphic(inactive, active);
 		
-		setTicked(true,true);
+		setTicked(defaultvalue,true);
 	}
 	
 	public function setTicked(t:Bool, ?noSound:Bool=false) {
