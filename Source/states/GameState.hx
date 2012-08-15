@@ -417,6 +417,7 @@ class GameState extends BasicState {
 		
 		//cursor = new Cursor();
 		newLevel();
+		level.player.setClickMap();
 		//add(cursor);
 		
 		levelCounter = newText(0, -1, Std.int(FlxG.width - level.width - 8), "Level "+levelNumber,Colors.LGREEN);

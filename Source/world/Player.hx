@@ -80,24 +80,23 @@ class Player extends WarpSprite {
 		start = null;
 		bloodSplosion = new Splosion(Colors.YELLOW);
 		
-		coins = 20;
-		
-		var clkMap;
-		if (clickMap == null) { 
-			switch(GameState.controlScheme) {
-				default:
-					clkMap = Image.CLICK_MAP;
-				case CtrlMode.GAMEPAD:
-					clkMap = Image.CLICK_MAP_PAD;
-				case CtrlMode.GAMEPAD_L:
-					clkMap = Image.CLICK_MAP_PAD_L;
-			}
-			clickMap = Library.getImage(clkMap);
-		}
-		
+		coins = 20;		
 		
 	//	powerupIndicator = new FlxBar(0, 0, FlxBar.FILL_LEFT_TO_RIGHT, 64, 4, level, "activepowerups[0]");
 	//	powerupIndicator.trackParent(0, -5);
+	}
+	
+	public function setClickMap() {		
+		var clkMap;
+		switch(GameState.controlScheme) {
+			default:
+				clkMap = Image.CLICK_MAP;
+			case CtrlMode.GAMEPAD:
+				clkMap = Image.CLICK_MAP_PAD;
+			case CtrlMode.GAMEPAD_L:
+				clkMap = Image.CLICK_MAP_PAD_L;
+		}
+		clickMap = Library.getImage(clkMap);
 	}
 	
 	public function explode() {
