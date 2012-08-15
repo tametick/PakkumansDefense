@@ -19,6 +19,10 @@ class Library {
 	public static var music= true;
 	public static var sounds = true;
 	public static function setMusic(active:Bool) {
+		if (FlxG.music == null) {
+			return;
+		}
+		
 		music = active;
 		if (music) {
 			FlxG.music.volume = 1.0;
@@ -118,6 +122,7 @@ enum Sound {
 	POWERUP;
 	ERROR;
 	FRUIT;
+	TIMER;
 }
 
 enum Music {
