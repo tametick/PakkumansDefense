@@ -19,8 +19,26 @@ class Radio extends Selectable {
 	}
 	
 	override public function setTicked(t:Bool, ?noSound:Bool = false) {
+		// you can't be unselected directly
+		if (!t && !noSound) {
+			return;
+		}
 		super.setTicked(t, noSound);
 		
-		//...
+		if (group == null) {
+			return;
+		}
+		
+		// if selected, unselect all others silently
+		if(t) {
+			for (radio in group) {
+				if (radio == this) {
+					continue;
+				}
+				if (radio.ticked) {
+					radio.setTicked(false, true);
+				}
+			}
+		}
 	}
 }
