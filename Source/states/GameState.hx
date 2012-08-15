@@ -747,7 +747,8 @@ class GameState extends BasicState {
 			
 			if (cc.type == PowerupType.CONFUSION) {
 				for (i in level.ghosts.members) {
-					cast(i,Ghost).stopFollowingPath(false, true);
+					var g = cast(i, Ghost);
+					g.stopFollowingPath(false, true);
 				}
 				
 			}
