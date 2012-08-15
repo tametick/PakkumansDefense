@@ -25,9 +25,6 @@ class SettingsState extends BasicState {
 	override public function create() {
 		super.create();
 		
-		
-		trace(GameState.controlScheme);
-		
 		if (GameState.controlScheme == null) {
 			settings.data.controlScheme = Type.enumConstructor(CtrlMode.OVERLAY);
 		}
@@ -85,7 +82,9 @@ class SettingsState extends BasicState {
 		labels.add(ctrlOverlayBlend);
 		
 		overlayTick = new Tick(x +32 - 24, y, blendOverlayCB, settings.data.blend);
-		blendOverlayCB(overlayTick.ticked);
+		if(GameState.controlScheme==OVERLAY){
+			blendOverlayCB(overlayTick.ticked);
+		}
 		
 		buttons.add(overlayTick);
 				

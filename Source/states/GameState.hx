@@ -76,7 +76,8 @@ class GameState extends BasicState {
 			SettingsState.settings.data.controlScheme = Type.enumConstructor(CtrlMode.OVERLAY);
 		}
 		
-		return  Type.createEnum(CtrlMode,SettingsState.settings.data.controlScheme);
+		var scheme = Type.createEnum(CtrlMode, SettingsState.settings.data.controlScheme);
+		return scheme;
 	}
 	
 	public function setHighlighted(direction:Command) {
