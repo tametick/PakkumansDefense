@@ -2,6 +2,7 @@ package states;
 import data.Library;
 import org.flixel.FlxG;
 import org.flixel.FlxGroup;
+import org.flixel.FlxSave;
 import org.flixel.FlxSprite;
 import org.flixel.FlxText;
 import ui.Radio;
@@ -19,11 +20,21 @@ class SettingsState extends BasicState {
 	var dpadRadio:Radio;
 	var dpadTick:Tick;
 	
+	var settings:FlxSave;
+	
 	override public function create() {
 		super.create();
 		
+		settings = new FlxSave();
+		settings.bind("Settings");
+		
+		if (settings.data.controlScheme == null) {
+			settings.data.controlScheme = Type.enumConstructor(CtrlMode.OVERLAY);
+		}
+		
+		
 		if (GameState.controlScheme == null) {
-			GameState.controlScheme = CtrlMode.OVERLAY;
+			GameState.controlScheme = Type.createEnum(CtrlMode,settings.data.controlScheme);
 		}
 		
 		#if keyboard
@@ -106,6 +117,7 @@ class SettingsState extends BasicState {
 	function overlayCB(val:Bool) { 
 		if(val) {
 			GameState.initController(CtrlMode.OVERLAY);
+			settings.data.controlScheme = Type.enumConstructor( CtrlMode.OVERLAY);
 		}
 		
 	}
@@ -122,8 +134,10 @@ class SettingsState extends BasicState {
 	function dpadCBLeft(val:Bool) { 
 		if(val) {
 			GameState.initController(CtrlMode.GAMEPAD_L);
+			settings.data.controlScheme = Type.enumConstructor( CtrlMode.GAMEPAD_L);
 		} else {
 			GameState.initController(CtrlMode.GAMEPAD);
+			settings.data.controlScheme = Type.enumConstructor( CtrlMode.GAMEPAD);
 		}
 		
 		GameState.setControllerVisiblity(true, true);
