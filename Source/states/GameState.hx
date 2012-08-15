@@ -554,10 +554,17 @@ class GameState extends BasicState {
 	override public function update() {
 		super.update();
 		
-		var min = Std.int(level.player.time) % 60;		
-		timeCounter.text = Std.int((Std.int(level.player.time) / 60)) + ":" ;
+		var min = Std.int(level.player.time) % 60;	
+		var sec = Std.int(level.player.time);
+		var dec = level.player.time-sec;
+		timeCounter.text = (Std.int(sec / 60)) + ":" ;
 		if (min < 10) timeCounter.text += "0";
-		timeCounter.text+= min;
+		timeCounter.text += min;
+		if (dec < 0.5) {
+			timeCounter.setColor(Colors.RED);
+		} else {
+			timeCounter.setColor(Colors.ORANGE);
+		}
 		if (help < 3) {
 			if (FlxG.mouse.justPressed() || FlxG.keys.justReleased("SPACE") || FlxG.keys.justReleased("ENTER") ) {
 				if (help == 1) {
