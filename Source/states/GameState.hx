@@ -218,10 +218,7 @@ class GameState extends BasicState {
 		buttonE = drawTriangle(0,0,dim1,dim1,0,dim2);
 					
 		if (controlScheme == CtrlMode.SWIPE) {
-			buttonS.visible = false;
-			buttonN.visible = false;
-			buttonW.visible = false;
-			buttonE.visible = false;
+			setControllerVisiblity(false);
 		}
 
 		if(buttonT==null){
@@ -261,6 +258,16 @@ class GameState extends BasicState {
 		}
 	}
 	
+	public static function setControllerVisiblity(val:Bool, ?alsoTower:Bool=false) {
+		buttonS.visible = val;
+		buttonN.visible = val;
+		buttonW.visible = val;
+		buttonE.visible = val;
+		if (alsoTower) {
+			buttonT.visible = val;
+		}
+	}
+	
 	override public function create():Void {
 		super.create();
 		
@@ -272,15 +279,13 @@ class GameState extends BasicState {
 		
 		
 		if (controlScheme == null) {
-			controlScheme = CtrlMode.OVERLAY;
+			initController(CtrlMode.OVERLAY);
 		}
 		
 		if (hud == null) {
 			hud = new Bitmap(Library.getImage(Image.HUD_OVERLAY));
 			hud.width *= 2;
 			hud.height *= 2;
-			
-			initController(controlScheme);
 		}
 		
 		var index = FlxG._game.getChildIndex(FlxG._game._mouse);

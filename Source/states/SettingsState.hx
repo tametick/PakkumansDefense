@@ -26,9 +26,9 @@ class SettingsState extends BasicState {
 			GameState.controlScheme = CtrlMode.OVERLAY;
 		}
 		
-		//#if keyboard
+		#if keyboard
 		FlxG.mouse.show();
-		//#end
+		#end
 		
 		FlxG.fade(0, 0.5, true, null, true);
 		add(new FlxSprite(0, 0, Library.getFilename(Image.LEVEL_SELECT)));
@@ -111,14 +111,13 @@ class SettingsState extends BasicState {
 	}
 	function blendOverlayCB(val:Bool) { 
 		overlayCB(true);
-		if (val) {
-			
-		}
+		GameState.setControllerVisiblity(!val, true);
 	}
 	function dpadCB(val:Bool) { 
 		if (val) {
 			dpadCBLeft(dpadTick.ticked);
 		}
+		GameState.setControllerVisiblity(true, true);
 	}
 	function dpadCBLeft(val:Bool) { 
 		if(val) {
@@ -126,6 +125,8 @@ class SettingsState extends BasicState {
 		} else {
 			GameState.initController(CtrlMode.GAMEPAD);
 		}
+		
+		GameState.setControllerVisiblity(true, true);
 	}
 	#end
 	
