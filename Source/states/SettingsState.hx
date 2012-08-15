@@ -55,40 +55,56 @@ class SettingsState extends BasicState {
 		buttons.add(soundTick);
 		
 		
-		#if !keyboard		
+		#if !keyboard
+		var controlRadios = new List<Radio>();
+		
 		var ctrlOverlay = newText(x, y +=  music.height, FlxG.width, "Controller overlay", Colors.BLUEGRAY);
 		ctrlOverlay.setSize(16);
 		labels.add(ctrlOverlay );
-		var overlayRadio = new Radio(x - 24, y, null, GameState.controlScheme==CtrlMode.OVERLAY);
+		var overlayRadio = new Radio(controlRadios, x - 24, y, overlayCB, GameState.controlScheme==CtrlMode.OVERLAY);
 		buttons.add(overlayRadio);
 		
 		var ctrlOverlayBlend = newText(x+32, y += music.height, FlxG.width, "Blend overlay", Colors.YELLOW);
 		ctrlOverlayBlend.setSize(16);
 		labels.add(ctrlOverlayBlend);
 		
-		// todo
-		var overlayTick = new Tick(x +32 - 24, y, null, true);
-		// ..
-		
+		var overlayTick = new Tick(x +32 - 24, y, blendOverlayCB, true);
 		buttons.add(overlayTick);
 				
 		var ctrlDPad = newText(x, y += music.height, FlxG.width, "Virtual game-pad", Colors.BLUEGRAY);
 		ctrlDPad.setSize(16);
 		labels.add(ctrlDPad );
-		var dpadRadio= new Radio(x - 24, y, null, GameState.controlScheme==CtrlMode.GAMEPAD || GameState.controlScheme==CtrlMode.GAMEPAD_L);
+		var dpadRadio= new Radio(controlRadios, x - 24, y, dpadCB, GameState.controlScheme==CtrlMode.GAMEPAD || GameState.controlScheme==CtrlMode.GAMEPAD_L);
 		buttons.add(dpadRadio);
 		
 		var ctrlDPasLeft = newText(x+32, y += music.height, FlxG.width, "Left-handed", Colors.YELLOW);
 		ctrlDPasLeft.setSize(16);
 		labels.add(ctrlDPasLeft);
-		var dpadTick = new Tick(x +32 - 24, y, null, GameState.controlScheme==CtrlMode.GAMEPAD_L);
+		var dpadTick = new Tick(x +32 - 24, y, dpadCBLeft, GameState.controlScheme==CtrlMode.GAMEPAD_L);
 		buttons.add(dpadTick);
+		
+		
+		controlRadios.add(overlayRadio);
+		controlRadios.add(dpadRadio);
 		#end
 		
 		
 		add(labels);
 		add(buttons);
 	}
+	
+	
+	#if !keyboard
+	function overlayCB() { 
+	}
+	function blendOverlayCB() { 
+	}
+	function dpadCB() { 
+	}
+	function dpadCBLeft() { 
+	}
+	#end
+	
 	
 	override public function destroy() {
 		remove(labels);
