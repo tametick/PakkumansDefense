@@ -69,7 +69,8 @@ class GameState extends BasicState {
 	public var help:Int;
 	static var help1:FlxGroup;
 	static var help2:FlxGroup;
-	
+	var powerupInfo:FlxText;
+
 	public static var controlScheme(getCtrlScheme, never):CtrlMode;
 	static function getCtrlScheme():CtrlMode {		
 		if (SettingsState.settings.data.controlScheme == null) {
