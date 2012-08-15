@@ -122,7 +122,7 @@ class Level extends FlxTilemap {
 			player.level = this;
 		}
 		
-		player.time = 20;
+		player.time = Library.levelTime;
 		player.lastbeep = -1;
 		
 		ghosts = new FlxGroup();
