@@ -103,13 +103,21 @@ class SettingsState extends BasicState {
 	
 	
 	#if !keyboard
-	function overlayCB() { 
+	function overlayCB(val:Bool) { 
+		GameState.controlScheme=CtrlMode.OVERLAY;
 	}
-	function blendOverlayCB() { 
+	function blendOverlayCB(val:Bool) { 
+		
 	}
-	function dpadCB() { 
+	function dpadCB(val:Bool) { 
+		GameState.controlScheme=CtrlMode.GAMEPAD;
 	}
-	function dpadCBLeft() { 
+	function dpadCBLeft(val:Bool) { 
+		if(val) {
+			GameState.controlScheme = CtrlMode.GAMEPAD_L;
+		} else {
+			GameState.controlScheme=CtrlMode.GAMEPAD;
+		}
 	}
 	#end
 	

@@ -55,7 +55,7 @@ class Selectable extends FlxButtonPlus {
 	function click() {
 		setTicked(!ticked);
 		if(cb!=null) {
-			Reflect.callMethod(this, cb, []);
+			Reflect.callMethod(this, cb, [ticked]);
 		}
 	}
 }
