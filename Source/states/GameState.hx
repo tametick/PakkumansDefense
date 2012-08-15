@@ -286,7 +286,7 @@ class GameState extends BasicState {
 			settings.bind("Settings");
 		}
 		
-		var sc = Type.createEnum(CtrlMode,settings.data.controlScheme);
+		var sc = settings.data.controlScheme==null?null:Type.createEnum(CtrlMode,settings.data.controlScheme);
 		if (sc == null) {
 			settings.data.controlScheme = Type.enumConstructor(CtrlMode.OVERLAY);
 			initController(CtrlMode.OVERLAY);
