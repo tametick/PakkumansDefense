@@ -560,10 +560,12 @@ class GameState extends BasicState {
 		timeCounter.text = (Std.int(sec / 60)) + ":" ;
 		if (min < 10) timeCounter.text += "0";
 		timeCounter.text += min;
-		if (dec < 0.5) {
-			timeCounter.setColor(Colors.RED);
-		} else {
-			timeCounter.setColor(Colors.ORANGE);
+		if(level.player.time<10){
+			if (dec < 0.5) {
+				timeCounter.setColor(Colors.RED);
+			} else {
+				timeCounter.setColor(Colors.ORANGE);
+			}
 		}
 		if (help < 3) {
 			if (FlxG.mouse.justPressed() || FlxG.keys.justReleased("SPACE") || FlxG.keys.justReleased("ENTER") ) {

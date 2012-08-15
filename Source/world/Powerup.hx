@@ -16,7 +16,7 @@ class Powerup extends WarpSprite {
 		life = 6; 
 		#end
         type = Type.createEnum(PowerupType, FlxG.getRandom(Type.getEnumConstructs(PowerupType)));
-		type = PowerupType.INSTATOWER;
+	
 		var clr:Int, img:Image;
 		switch(type) {
 			case FREEZE: 
