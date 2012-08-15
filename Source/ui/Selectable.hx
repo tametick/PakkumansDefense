@@ -9,6 +9,12 @@ class Selectable extends FlxButtonPlus {
 	var cb:Dynamic; 
 	var ticked:Bool;
 	
+	public var owner(default, setOwner):Selectable;
+	function setOwner(o:Selectable):Selectable {
+		owner = o;
+		return o;
+	}
+	
 	public function new(x:Float, y:Float, cb:Dynamic, defaultvalue:Bool, ?width:Int = 16, ?height:Int = 16) {
 		super(Std.int(x), Std.int(y), null, null, null, width, height);
 		this.cb = cb;
@@ -36,6 +42,13 @@ class Selectable extends FlxButtonPlus {
 		
 		if(!noSound) {
 			Utils.play(Library.getSound(CLICK));
+			
+			// don't check the parent if setting silently (normally that's just init code)
+			if (owner != null) {
+				if (!owner.ticked) {
+					owner.setTicked(true, true);
+				}
+			}
 		}
 	}
 	

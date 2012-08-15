@@ -14,6 +14,11 @@ class SettingsState extends BasicState {
 	var buttons:FlxGroup;
 	var labels:FlxGroup;
 	
+	var overlayRadio:Radio;
+	var overlayTick:Tick;
+	var dpadRadio:Radio;
+	var dpadTick:Tick;
+	
 	override public function create() {
 		super.create();
 		
@@ -61,28 +66,31 @@ class SettingsState extends BasicState {
 		var ctrlOverlay = newText(x, y +=  music.height, FlxG.width, "Controller overlay", Colors.BLUEGRAY);
 		ctrlOverlay.setSize(16);
 		labels.add(ctrlOverlay );
-		var overlayRadio = new Radio(controlRadios, x - 24, y, overlayCB, GameState.controlScheme==CtrlMode.OVERLAY);
+		overlayRadio = new Radio(controlRadios, x - 24, y, overlayCB, GameState.controlScheme==CtrlMode.OVERLAY);
 		buttons.add(overlayRadio);
 		
 		var ctrlOverlayBlend = newText(x+32, y += music.height, FlxG.width, "Blend overlay", Colors.YELLOW);
 		ctrlOverlayBlend.setSize(16);
 		labels.add(ctrlOverlayBlend);
 		
-		var overlayTick = new Tick(x +32 - 24, y, blendOverlayCB, true);
+		overlayTick = new Tick(x +32 - 24, y, blendOverlayCB, false);
 		buttons.add(overlayTick);
 				
 		var ctrlDPad = newText(x, y += music.height, FlxG.width, "Virtual game-pad", Colors.BLUEGRAY);
 		ctrlDPad.setSize(16);
 		labels.add(ctrlDPad );
-		var dpadRadio= new Radio(controlRadios, x - 24, y, dpadCB, GameState.controlScheme==CtrlMode.GAMEPAD || GameState.controlScheme==CtrlMode.GAMEPAD_L);
+		dpadRadio= new Radio(controlRadios, x - 24, y, dpadCB, GameState.controlScheme==CtrlMode.GAMEPAD || GameState.controlScheme==CtrlMode.GAMEPAD_L);
 		buttons.add(dpadRadio);
 		
 		var ctrlDPasLeft = newText(x+32, y += music.height, FlxG.width, "Left-handed", Colors.YELLOW);
 		ctrlDPasLeft.setSize(16);
 		labels.add(ctrlDPasLeft);
-		var dpadTick = new Tick(x +32 - 24, y, dpadCBLeft, GameState.controlScheme==CtrlMode.GAMEPAD_L);
+		dpadTick = new Tick(x +32 - 24, y, dpadCBLeft, GameState.controlScheme==CtrlMode.GAMEPAD_L);
 		buttons.add(dpadTick);
 		
+		
+		dpadTick.owner = dpadRadio;
+		overlayTick.owner = overlayRadio;
 		
 		controlRadios.add(overlayRadio);
 		controlRadios.add(dpadRadio);
