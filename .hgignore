@@ -11,3 +11,5 @@ Assets/*.hash
 MobilePD/dist/*
 *.build
 *.orig
+*.tmp
+MobilePD/MobilePD.swf
