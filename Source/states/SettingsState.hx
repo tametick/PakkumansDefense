@@ -20,26 +20,22 @@ class SettingsState extends BasicState {
 	var dpadRadio:Radio;
 	var dpadTick:Tick;
 	
-	var settings:FlxSave;
+	public static var settings:FlxSave;
 	
 	override public function create() {
 		super.create();
 		
-		settings = new FlxSave();
-		settings.bind("Settings");
 		
-		if (settings.data.controlScheme == null) {
+		trace(GameState.controlScheme);
+		
+		if (GameState.controlScheme == null) {
 			settings.data.controlScheme = Type.enumConstructor(CtrlMode.OVERLAY);
 		}
 		
 		if (settings.data.blend==null) {
 			settings.data.blend = false;
 		}
-		
-		if (GameState.controlScheme == null) {
-			GameState.controlScheme = Type.createEnum(CtrlMode,settings.data.controlScheme);
-		}
-		
+		settings.flush();
 		
 		#if keyboard
 		FlxG.mouse.show();
@@ -99,6 +95,7 @@ class SettingsState extends BasicState {
 		dpadRadio= new Radio(controlRadios, x - 24, y, dpadCB, GameState.controlScheme==CtrlMode.GAMEPAD || GameState.controlScheme==CtrlMode.GAMEPAD_L);
 		buttons.add(dpadRadio);
 		
+		
 		var ctrlDPasLeft = newText(x+32, y += music.height, FlxG.width, "Left-handed", Colors.YELLOW);
 		ctrlDPasLeft.setSize(16);
 		labels.add(ctrlDPasLeft);
@@ -124,8 +121,8 @@ class SettingsState extends BasicState {
 		if(val) {
 			GameState.initController(CtrlMode.OVERLAY);
 			settings.data.controlScheme = Type.enumConstructor( CtrlMode.OVERLAY);
+			settings.flush();
 		}
-		
 	}
 	function blendOverlayCB(val:Bool) { 
 		overlayCB(true);
@@ -145,8 +142,9 @@ class SettingsState extends BasicState {
 			GameState.initController(CtrlMode.GAMEPAD);
 			settings.data.controlScheme = Type.enumConstructor( CtrlMode.GAMEPAD);
 		}
-		
+		settings.flush();
 		GameState.setControllerVisiblity(true, true);
+		
 	}
 	#end
 	

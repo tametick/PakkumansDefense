@@ -70,7 +70,14 @@ class GameState extends BasicState {
 	static var help1:FlxGroup;
 	static var help2:FlxGroup;
 	
-	public static var controlScheme:CtrlMode;
+	public static var controlScheme(getCtrlScheme, never):CtrlMode;
+	static function getCtrlScheme():CtrlMode {		
+		if (SettingsState.settings.data.controlScheme == null) {
+			SettingsState.settings.data.controlScheme = Type.enumConstructor(CtrlMode.OVERLAY);
+		}
+		
+		return  Type.createEnum(CtrlMode,SettingsState.settings.data.controlScheme);
+	}
 	
 	public function setHighlighted(direction:Command) {
 		switch (direction) {
@@ -175,7 +182,8 @@ class GameState extends BasicState {
 	*/
 	
 	public static function initController(scheme:CtrlMode) {
-		controlScheme = scheme;
+		SettingsState.settings.data.controlScheme = Type.enumConstructor(scheme);
+		
 		
 		var dim1, dim2;
 		switch(controlScheme) {
@@ -260,13 +268,8 @@ class GameState extends BasicState {
 		}
 	}
 	
-	public static function setControllerVisiblity(val:Bool, ?alsoTower:Bool = false) {
-		if(settings ==null) {
-			settings = new FlxSave();
-			settings.bind("Settings");
-		}
-		
-		settings.data.blend = !val;
+	public static function setControllerVisiblity(val:Bool, ?alsoTower:Bool = false) {		
+		SettingsState.settings.data.blend = !val;
 		buttonS.visible = val;
 		buttonN.visible = val;
 		buttonW.visible = val;
@@ -276,27 +279,20 @@ class GameState extends BasicState {
 		}
 	}
 	
-	static var settings:FlxSave;
-	
 	override public function create():Void {
 		super.create();
 		
-		if(settings ==null) {
-			settings = new FlxSave();
-			settings.bind("Settings");
-		}
-		
-		var sc = settings.data.controlScheme==null?null:Type.createEnum(CtrlMode,settings.data.controlScheme);
+		var sc = SettingsState.settings.data.controlScheme==null?null:Type.createEnum(CtrlMode,SettingsState.settings.data.controlScheme);
 		if (sc == null) {
-			settings.data.controlScheme = Type.enumConstructor(CtrlMode.OVERLAY);
+			SettingsState.settings.data.controlScheme = Type.enumConstructor(CtrlMode.OVERLAY);
 			initController(CtrlMode.OVERLAY);
 		} else {
 			if(GameState.controlScheme!=sc)
 				initController(sc);
 		}
 
-		if (settings.data.blend != null) {
-			setControllerVisiblity(!settings.data.blend,true);
+		if (SettingsState.settings.data.blend != null) {
+			setControllerVisiblity(!SettingsState.settings.data.blend,true);
 		}
 		
 		

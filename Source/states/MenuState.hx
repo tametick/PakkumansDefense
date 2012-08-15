@@ -18,16 +18,16 @@ class MenuState extends BasicState {
 	override public function create():Void {
 		super.create();
 		
-		var settings = new FlxSave();
-		settings.bind("Settings");
-		if (settings.data.music == null) {
-			settings.data.music = true;
+		SettingsState.settings = new FlxSave();
+		SettingsState.settings.bind("Settings");
+		if (SettingsState.settings.data.music == null) {
+			SettingsState.settings.data.music = true;
 		}
-		if (settings.data.sounds == null) {
-			settings.data.sounds= true;
+		if (SettingsState.settings.data.sounds == null) {
+			SettingsState.settings.data.sounds= true;
 		}
-		Library.music = settings.data.music;
-		Library.sounds = settings.data.sounds;
+		Library.music = SettingsState.settings.data.music;
+		Library.sounds = SettingsState.settings.data.sounds;
 		
 		
 		Utils.playMusic(Library.getMusic(MENU));

@@ -7,6 +7,7 @@ import nme.display.BitmapData;
 import nme.text.Font;
 import org.flixel.FlxG;
 import org.flixel.FlxSave;
+import states.SettingsState;
 
 class Library {
 	public static inline var tileSize = 8;
@@ -24,9 +25,7 @@ class Library {
 			return;
 		}
 		
-		var settings = new FlxSave();
-		settings.bind("Settings");
-		settings.data.music = music = active;
+		SettingsState.settings.data.music = music = active;
 		
 		if (music) {
 			FlxG.music.volume = 1.0;
@@ -35,9 +34,7 @@ class Library {
 		}
 	}
 	public static function setSounds(active:Bool) {
-		var settings = new FlxSave();
-		settings.bind("Settings");
-		settings.data.sounds = sounds = active;
+		SettingsState.settings.data.sounds = sounds = active;
 	}
 	
 	static var assets:Hash<Dynamic> = new Hash<Dynamic>();
