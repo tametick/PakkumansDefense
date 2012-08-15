@@ -247,7 +247,7 @@ class Player extends WarpSprite {
 		}
 		
 	}
-	private function spawnTower() {
+	public function spawnTower() {
 		thinking = false;
 		
 		for ( ii in tileY - 1... tileY + 2) {

@@ -582,10 +582,12 @@ class GameState extends BasicState {
 		timeCounter.text = (Std.int(sec / 60)) + ":" ;
 		if (min < 10) timeCounter.text += "0";
 		timeCounter.text += min;
-		if (dec < 0.5) {
-			timeCounter.setColor(Colors.RED);
-		} else {
-			timeCounter.setColor(Colors.ORANGE);
+		if(level.player.time<10){
+			if (dec < 0.5) {
+				timeCounter.setColor(Colors.RED);
+			} else {
+				timeCounter.setColor(Colors.ORANGE);
+			}
 		}
 		if (help < 3) {
 			if (FlxG.mouse.justPressed() || FlxG.keys.justReleased("SPACE") || FlxG.keys.justReleased("ENTER") ) {
@@ -718,8 +720,14 @@ class GameState extends BasicState {
 	function pickUpPowerup(p:FlxObject, c:FlxObject) {	
 		Utils.play(Library.getSound(Sound.CASH_REGISTER));
 		var cc:Powerup = cast(c, Powerup);
-		powerupIndicator.get(Type.enumConstructor(cc.type)).play("not blink");
-		level.activePowerups.set(Type.enumConstructor(cc.type), cc.duration);
+		
+		if (cc.type == PowerupType.INSTATOWER) {
+			level.player.coins+= Library.towerCost;							
+			level.player.spawnTower();
+		} else {
+			powerupIndicator.get(Type.enumConstructor(cc.type)).play("not blink");
+			level.activePowerups.set(Type.enumConstructor(cc.type), cc.duration);
+		}
 		level.powerups.remove(cc, true);
 		cc.remove();
 	}
