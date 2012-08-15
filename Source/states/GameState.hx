@@ -270,19 +270,29 @@ class GameState extends BasicState {
 		}
 	}
 	
+	var settings:FlxSave;
+	
 	override public function create():Void {
 		super.create();
+		
+		settings = new FlxSave();
+		settings.bind("Settings");
+		
+		var sc = Type.createEnum(CtrlMode,settings.data.controlScheme);
+		if (sc == null) {
+			settings.data.controlScheme = Type.enumConstructor(CtrlMode.OVERLAY);
+			initController(CtrlMode.OVERLAY);
+		} else {
+			if(GameState.controlScheme!=sc)
+				initController(sc);
+		}
+		
 		
 		screenWidth = Std.int(FlxG.width * 2 / 3);
 		screenHeight = Std.int(FlxG.height * 2 / 3);
 		
 		mouse = new FlxText(0, 0, 40);
 		mouse.scrollFactor.x = mouse.scrollFactor.y = 0;
-		
-		
-		if (controlScheme == null) {
-			initController(CtrlMode.OVERLAY);
-		}
 		
 		if (hud == null) {
 			hud = new Bitmap(Library.getImage(Image.HUD_OVERLAY));
