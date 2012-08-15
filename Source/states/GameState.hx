@@ -744,6 +744,13 @@ class GameState extends BasicState {
 		} else {
 			powerupIndicator.get(Type.enumConstructor(cc.type)).play("not blink");
 			level.activePowerups.set(Type.enumConstructor(cc.type), cc.duration);
+			
+			if (cc.type == PowerupType.CONFUSION) {
+				for (i in level.ghosts.members) {
+					cast(i,Ghost).stopFollowingPath(false, true);
+				}
+				
+			}
 		}
 		level.powerups.remove(cc, true);
 		cc.remove();

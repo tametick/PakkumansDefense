@@ -71,7 +71,7 @@ class Ghost extends WarpSprite {
 				var tx :Int= 0;
 				var ty :Int= 0;
 				puName = Type.enumConstructor(PowerupType.CONFUSION);
-				var towers = level.towers.length - 1;
+				var towers = level.towers.length;
 				if (!level.activePowerups.exists(puName)||towers==0) {
 					tx = Std.int(level.player.x);
 					ty = Std.int(level.player.y);
