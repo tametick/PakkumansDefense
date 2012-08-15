@@ -70,6 +70,8 @@ class GameState extends BasicState {
 	static var help1:FlxGroup;
 	static var help2:FlxGroup;
 	
+	var powerupInfo:FlxText;
+	
 	public static var controlScheme:CtrlMode;
 	
 	public function setHighlighted(direction:Command) {
@@ -451,6 +453,8 @@ class GameState extends BasicState {
 		newLevel();
 		level.player.setClickMap();
 		//add(cursor);
+		powerupInfo = newText(0, 0, Std.int(FlxG.width - level.width - 8), "a",Colors.LGREEN);
+		powerupInfo.visible = false;
 		
 		levelCounter = newText(0, -1, Std.int(FlxG.width - level.width - 8), "Level "+levelNumber,Colors.LGREEN);
 		levelCounter.scrollFactor.x = 0;
@@ -726,6 +730,14 @@ class GameState extends BasicState {
 		Utils.play(Library.getSound(Sound.CASH_REGISTER));
 		var cc:Powerup = cast(c, Powerup);
 		
+		powerupInfo.visible = true;
+		powerupInfo.text = cc.text;
+		powerupInfo.x = cc.x;
+		powerupInfo.y = cc.y;
+		powerupInfo.setColor(cc.getColor());
+		Actuate.tween(powerupInfo, 1, { x: 0, y: 0 });
+		Actuate.timer(1).onComplete(hideTheInfoText, [false] );
+		
 		if (cc.type == PowerupType.INSTATOWER) {
 			level.player.coins+= Library.towerCost;							
 			level.player.spawnTower();
@@ -736,6 +748,10 @@ class GameState extends BasicState {
 		level.powerups.remove(cc, true);
 		cc.remove();
 	}
+	
+	function hideTheInfoText(visible:Bool)
+	{powerupInfo.visible = visible;
+		}
 	
 	override public function destroy() {
 		deadGhosts.destroy();
