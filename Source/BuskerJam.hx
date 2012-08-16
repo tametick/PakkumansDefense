@@ -24,10 +24,10 @@ class BuskerJam extends FlxGame {
 	
 	public function new() {
 		if(Library.debug) {
-			super(240, 160, GameState, 2);
+			super(240, 160, GameState, 2, 30, 20);
 			forceDebugger = true;
 		} else {
-			super(240, 160, MenuState, 2);
+			super(240, 160, MenuState, 2, 30, 20);
 		}
 	}
 	

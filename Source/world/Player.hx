@@ -320,7 +320,7 @@ class Player extends WarpSprite {
 		isMoving = true;
 		var duration = 0.2;
 		if (level.activePowerups.exists(Type.enumConstructor(PowerupType.HASTE))) {
-		 duration /= 2;
+			duration = 0.12;
 		}
 		var rawX = this.x + dx * Library.tileSize;
 		var rawY = this.y + dy * Library.tileSize;
