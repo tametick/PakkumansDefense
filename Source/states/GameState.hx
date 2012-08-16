@@ -52,6 +52,8 @@ class GameState extends BasicState {
 	static var buttonTData:BitmapData;
 	static var buttonT2Data:BitmapData;
 	static var buttonT2DataR:BitmapData;
+	static var instructions:String;
+	static var instructions1:String;
 
 	static var powerupIndicator:Hash<PowerupIndicator>;
 	
@@ -241,6 +243,7 @@ class GameState extends BasicState {
 		var spacer2 = 2 * dim1 + dim2;
 		var spacer1 = dim1 + dim2;
 		
+		
 		switch(controlScheme) {
 			default:
 				buttonW.y = buttonE.y = 80;
@@ -248,7 +251,9 @@ class GameState extends BasicState {
 				buttonS.x = buttonN.x = 160;
 				buttonS.y = 240;
 				buttonT.x = 180;
-				buttonT.y = 100;		
+				buttonT.y = 100;	
+				instructions = "Tap edges to change direction";
+				instructions1 = "Tap center to build towers";
 			case CtrlMode.GAMEPAD:
 				buttonN.y = 320-spacer2;
 				buttonW.y = buttonE.y = 320-spacer1;
@@ -257,6 +262,8 @@ class GameState extends BasicState {
 				buttonS.y = 320-dim1;
 				buttonT.x = 480-120;
 				buttonT.y = 320 - (spacer2 + 120) / 2;
+				instructions = "Tap arrows to change direction";	
+				instructions1 = "Tap tower to build towers";
 			case CtrlMode.GAMEPAD_L:
 				buttonN.y = 320-spacer2;
 				buttonW.y = buttonE.y = 320-spacer1;
@@ -265,7 +272,9 @@ class GameState extends BasicState {
 				buttonS.x = buttonN.x = 480-spacer1;
 				buttonS.y = 320-dim1;
 				buttonT.x = 0;
-				buttonT.y = 320-(spacer2+120)/2;
+				buttonT.y = 320 - (spacer2 + 120) / 2;
+				instructions = "Tap arrows to change direction";	
+				instructions1 = "Tap tower to build towers";
 		}
 	}
 	
@@ -330,7 +339,7 @@ class GameState extends BasicState {
 		#if keyboard
 		var help1Text = new FlxText(-2, 0, screenWidth, "Arrows/WASD to change direction");
 		#else
-		var instructions;
+	/*	var instructions;
 		var instructions1;
 		switch(controlScheme) {
 			case CtrlMode.OVERLAY:
@@ -342,7 +351,7 @@ class GameState extends BasicState {
 			case CtrlMode.SWIPE:
 				instructions = "Swipe to change direction";
 				instructions1 = "Tap to build towers";
-		}
+		}*/
 		var help1Text = new FlxText( -2, 0, screenWidth, instructions);
 		var w1:FlxSprite = null, e1:FlxSprite = null, n1:FlxSprite = null, s1:FlxSprite = null;
 		if(controlScheme==CtrlMode.OVERLAY) {
