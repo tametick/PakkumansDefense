@@ -56,7 +56,7 @@ class GameState extends BasicState {
 	static var powerupIndicator:Hash<PowerupIndicator>;
 	
 	var bg: FlxSprite;
-	var level:Level;
+	public var level:Level;
 	
 	// clear these on next level or game over
 	var deadGhosts:FlxGroup;
