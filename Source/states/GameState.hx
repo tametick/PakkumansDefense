@@ -69,7 +69,6 @@ class GameState extends BasicState {
 	public var help:Int;
 	static var help1:FlxGroup;
 	static var help2:FlxGroup;
-	var powerupInfo:FlxText;
 
 	public static var controlScheme(getCtrlScheme, never):CtrlMode;
 	static function getCtrlScheme():CtrlMode {		
@@ -448,8 +447,6 @@ class GameState extends BasicState {
 		newLevel();
 		level.player.setClickMap();
 		//add(cursor);
-		powerupInfo = newText(0, 0, Std.int(FlxG.width - level.width - 8), "a",Colors.LGREEN);
-		powerupInfo.visible = false;
 		
 		levelCounter = newText(0, -1, Std.int(FlxG.width - level.width - 8), "Level "+levelNumber,Colors.LGREEN);
 		levelCounter.scrollFactor.x = 0;
@@ -725,13 +722,14 @@ class GameState extends BasicState {
 		Utils.play(Library.getSound(Sound.CASH_REGISTER));
 		var cc:Powerup = cast(c, Powerup);
 		
+		var powerupInfo = newText(0, 0, Std.int(FlxG.width - level.width - 8), "a",Colors.LGREEN);
 		powerupInfo.visible = true;
 		powerupInfo.text = cc.text;
 		powerupInfo.x = cc.x;
 		powerupInfo.y = cc.y;
 		powerupInfo.setColor(cc.getColor());
 		Actuate.tween(powerupInfo, 1, { x: 0, y: 0 });
-		Actuate.timer(1).onComplete(hideTheInfoText, [false] );
+		Actuate.timer(1).onComplete(hideTheInfoText, [powerupInfo, false] );
 		
 		if (cc.type == PowerupType.INSTATOWER) {
 			level.player.coins+= Library.towerCost;							
@@ -752,8 +750,12 @@ class GameState extends BasicState {
 		cc.remove();
 	}
 	
-	function hideTheInfoText(visible:Bool) {
-		powerupInfo.visible = visible;
+	function hideTheInfoText(info:FlxText, visible:Bool) {
+		info.visible = visible;
+		if (!visible) {
+			remove(info);
+			info.destroy();
+		}
 	}
 	
 	override public function destroy() {
