@@ -289,8 +289,7 @@ class GameState extends BasicState {
 			SettingsState.settings.data.controlScheme = Type.enumConstructor(CtrlMode.OVERLAY);
 			initController(CtrlMode.OVERLAY);
 		} else {
-			if(GameState.controlScheme!=sc)
-				initController(sc);
+			initController(sc);
 		}
 
 		if (SettingsState.settings.data.blend != null) {
@@ -753,9 +752,9 @@ class GameState extends BasicState {
 		cc.remove();
 	}
 	
-	function hideTheInfoText(visible:Bool)
-	{powerupInfo.visible = visible;
-		}
+	function hideTheInfoText(visible:Bool) {
+		powerupInfo.visible = visible;
+	}
 	
 	override public function destroy() {
 		deadGhosts.destroy();
