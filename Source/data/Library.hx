@@ -15,7 +15,7 @@ class Library {
 	public static inline var levelH = 11;
 	
 	public static inline var towerCost = 20;
-	public static inline var levelTime = 120;
+	public static inline var levelTime = 60;
 	
 	public static inline var debug = false; 
 	

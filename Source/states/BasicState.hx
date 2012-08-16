@@ -24,7 +24,7 @@ class BasicState extends FlxState {
 			mouseIndex = FlxG._game.getChildIndex(FlxG._game._mouse);
 		}
 		
-		if(!Std.is(this,GameState)) {
+		if(! (Std.is(this,GameState) || Std.is(this,HighScoreState)) ) {
 			FlxG._game.addChildAt(settings, mouseIndex);
 		}
 	}
@@ -32,6 +32,11 @@ class BasicState extends FlxState {
 	var mousePoint:FlxPoint;
 	override public function update() {
 		super.update();
+		
+		
+		if ( Std.is(this, GameState) || Std.is(this, HighScoreState) ) {
+			return;
+		}
 		
 		mousePoint = FlxG.mouse.getScreenPosition(null, mousePoint);
 		if (FlxG.mouse.justPressed()) {
