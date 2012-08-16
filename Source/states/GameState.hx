@@ -73,7 +73,7 @@ class GameState extends BasicState {
 	public static var controlScheme(getCtrlScheme, never):CtrlMode;
 	static function getCtrlScheme():CtrlMode {		
 		if (SettingsState.settings.data.controlScheme == null) {
-			SettingsState.settings.data.controlScheme = Type.enumConstructor(CtrlMode.OVERLAY);
+			SettingsState.settings.data.controlScheme = Type.enumConstructor(Library.defaultCtrl);
 		}
 		
 		var scheme = Type.createEnum(CtrlMode, SettingsState.settings.data.controlScheme);
@@ -285,8 +285,8 @@ class GameState extends BasicState {
 		
 		var sc = SettingsState.settings.data.controlScheme==null?null:Type.createEnum(CtrlMode,SettingsState.settings.data.controlScheme);
 		if (sc == null) {
-			SettingsState.settings.data.controlScheme = Type.enumConstructor(CtrlMode.OVERLAY);
-			initController(CtrlMode.OVERLAY);
+			SettingsState.settings.data.controlScheme = Type.enumConstructor(Library.defaultCtrl);
+			initController(Library.defaultCtrl);
 		} else {
 			initController(sc);
 		}
@@ -498,7 +498,7 @@ class GameState extends BasicState {
 		#if keyboard
 		spawnRate = 4 / levelNumber;
 		#else
-		spawnRate = 5 / levelNumber;
+		spawnRate = 6 / levelNumber;
 		#end
 		
 		FlxG.fade(0, 0.5, true, null, true);
@@ -713,9 +713,10 @@ class GameState extends BasicState {
 	function addPowerup() {
 		var pu,pup, pl:FlxPoint, cnt = 0;
 		pl = new FlxPoint(level.player.tileX,level.player.tileY);
-		do { cnt++;
+		do { 
+			cnt++;
 			pup = level.freePos[Utils.randomIntInRange(0, level.freePos.length) - 1];
-		}while (pl != pup && cnt <= 10);
+		} while (pl != pup && cnt <= 10);
 		if (pup != null) {
 			pu = level.spawnPowerup(pup);
 			Utils.play(Library.getSound(Sound.POWERUP));

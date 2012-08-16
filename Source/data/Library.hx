@@ -8,6 +8,7 @@ import nme.text.Font;
 import org.flixel.FlxG;
 import org.flixel.FlxSave;
 import states.SettingsState;
+import states.GameState;
 
 class Library {
 	public static inline var tileSize = 8;
@@ -16,6 +17,8 @@ class Library {
 	
 	public static inline var towerCost = 20;
 	public static inline var levelTime = 60;
+	
+	public static inline var defaultCtrl = CtrlMode.OVERLAY;
 	
 	public static inline var debug = false; 
 	

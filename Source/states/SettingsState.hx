@@ -26,7 +26,7 @@ class SettingsState extends BasicState {
 		super.create();
 		
 		if (GameState.controlScheme == null) {
-			settings.data.controlScheme = Type.enumConstructor(CtrlMode.OVERLAY);
+			settings.data.controlScheme = Type.enumConstructor(Library.defaultCtrl);
 		}
 		
 		if (settings.data.blend==null) {

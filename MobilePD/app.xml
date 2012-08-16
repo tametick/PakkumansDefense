@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <application xmlns="http://ns.adobe.com/air/application/3.1">
 	<id>air.MobilePD</id>
-	<versionNumber>0.1.2</versionNumber>
+	<versionNumber>1.0</versionNumber>
 	<supportedProfiles>mobileDevice</supportedProfiles>
-	<filename>MobilePD</filename>
+	<filename>Pakkuman's Defense</filename>
 	
-	<name>MobilePD</name>
-	<description>asdf</description>
+	<name>Pakkuman's Defense</name>
 	<copyright>Ido Yehieli</copyright>
 	
 	<initialWindow>
-		<title>MobilePD</title>
+		<title>Pakkuman's Defense</title>
 		<content>MobilePD.swf</content>
 		<visible>true</visible>
 		<fullScreen>true</fullScreen>
