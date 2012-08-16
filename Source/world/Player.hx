@@ -31,7 +31,8 @@ class Player extends WarpSprite {
 	
 	private var thinking:Bool;
 	private var delay:Int;
-	var touch:Command = null;
+	public var touch:Command = null;
+	private var plTouching:Bool;
 	
 	public var tileX:Int;
 	public var tileY:Int;
@@ -111,9 +112,18 @@ class Player extends WarpSprite {
 	
 
 	
-	function getCommand():Command {
+	public function getCommand( x:Float, y:Float ):Command {
+		var ix:Int, iy:Int;
+		if(BuskerJam.multiTouchSupported){
+			ix = Std.int(x/460*160);
+			iy = Std.int(y / 320 * 106);
+		} else {
+			ix = Std.int(x);
+			iy=Std.int(y);
 		
-		var color = clickMap.getPixel(FlxG.mouse.screenX, FlxG.mouse.screenY);
+		}
+		
+		var color = clickMap.getPixel(ix, iy);
 		
 		switch (color) {
 			case 0xff00ff:
@@ -163,18 +173,51 @@ class Player extends WarpSprite {
 		}
 		
 		
+			resolveSingleTouch();// leaving this here because of xperia play controls needing keyboard;
+		
+		
+		if (!isMoving) {
+			var oldFacing = facing;
+			facing = facingNext;
+			
+			var hasMoved = move();
+			if (!hasMoved) {
+				facing = oldFacing;
+				move();
+			}
+		}
+		
+		tileX = Utils.pixelToTile(x);
+		tileY = Utils.pixelToTile(y);
+		
+		if (level.activePowerups.exists(Type.enumConstructor(PowerupType.HASTE))) {
+			setColor(Colors.PINK);
+		} else {
+			setColor(Colors.YELLOW);
+		}
+	}
+
+	private function resolveSingleTouch() {
 		var s = cast(FlxG.state, GameState);
+		var tempx=FlxG.mouse.screenX;
+		var tempy=FlxG.mouse.screenY;
 		if(GameState.controlScheme!=CtrlMode.SWIPE){
-			if(FlxG.mouse.justPressed()) {
-				 touch = getCommand();
+			if (FlxG.mouse.justPressed()) {
+				plTouching = true;
+				
 				 if(touch!=null){
 					s.setHighlighted(touch);
 				 }
 			} else if (FlxG.mouse.justReleased()) {
-				var touch2 = getCommand();
+				plTouching = false;
+				var touch2 = getCommand(tempx,tempy);
 				if(touch2!=null){
 					s.setUnhighlighted(touch2);
 				}
+			}
+			
+			if (plTouching) {
+				 touch = getCommand(tempx,tempy);
 			}
 		} else {
 			if (FlxG.mouse.justPressed() && touch == null) {
@@ -182,6 +225,10 @@ class Player extends WarpSprite {
 			}
 		}
 		
+		resolveTouch();
+	}
+	
+	public function resolveTouch() {
 		// change facing according to keyboard input
 		if (FlxG.keys.justPressed("A") || FlxG.keys.justPressed("LEFT") || touch==LEFT) {
 			facingNext = FlxObject.LEFT;
@@ -208,28 +255,7 @@ class Player extends WarpSprite {
 			}
 			touch = null;
 		}
-		
-		if (!isMoving) {
-			var oldFacing = facing;
-			facing = facingNext;
-			
-			var hasMoved = move();
-			if (!hasMoved) {
-				facing = oldFacing;
-				move();
-			}
-		}
-		
-		tileX = Utils.pixelToTile(x);
-		tileY = Utils.pixelToTile(y);
-		
-		if (level.activePowerups.exists(Type.enumConstructor(PowerupType.HASTE))) {
-			setColor(Colors.PINK);
-		} else {
-			setColor(Colors.YELLOW);
-		}
 	}
-	
 	public function swipe(e:TransformGestureEvent){
 		if (e.offsetX == 1) {
 			touch = RIGHT; 
