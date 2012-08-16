@@ -67,8 +67,8 @@ class GameState extends BasicState {
 	var mouse:FlxText;
 	
 	public var help:Int;
-	static var help1:FlxGroup;
-	static var help2:FlxGroup;
+	var help1:FlxGroup;
+	var help2:FlxGroup;
 
 	public static var controlScheme(getCtrlScheme, never):CtrlMode;
 	static function getCtrlScheme():CtrlMode {		
@@ -320,35 +320,36 @@ class GameState extends BasicState {
 		
 		Utils.playMusic(Library.getMusic(THEME));
 		help = 1;
-		if (help1 == null) {				
-			help1 = new FlxGroup();
-			help2 = new FlxGroup();
-			
-			var help1Bg = new FlxSprite(0, 0);
-			help1Bg.makeGraphic(screenWidth, screenHeight, 0x88000000);
-			help1.add(help1Bg);
-			
-			#if keyboard
-			var help1Text = new FlxText(-2, 0, screenWidth, "Arrows/WASD to change direction");
-			#else
-			var instructions;
-			var instructions1;
-			switch(controlScheme) {
-				default:
-					instructions = "Tap edges to change direction";
-					instructions1 = "Tap center to build towers";
-				case CtrlMode.GAMEPAD,CtrlMode.GAMEPAD_L:
-					instructions = "Tap arrows to change direction";	
-					instructions1 = "Tap tower to build towers";
-				case CtrlMode.SWIPE:
-					instructions = "Swipe to change direction";
-					instructions1 = "Tap to build towers";
-			}
-			var help1Text = new FlxText(-2, 0, screenWidth, instructions);
-			var w1 = new FlxSprite(0, 0);
-			var e1 = new FlxSprite(0, 0);
-			var n1 = new FlxSprite(0, 0);
-			var s1 = new FlxSprite(0, 0);
+		help1 = new FlxGroup();
+		help2 = new FlxGroup();
+		
+		var help1Bg = new FlxSprite(0, 0);
+		help1Bg.makeGraphic(screenWidth, screenHeight, 0x88000000);
+		help1.add(help1Bg);
+		
+		#if keyboard
+		var help1Text = new FlxText(-2, 0, screenWidth, "Arrows/WASD to change direction");
+		#else
+		var instructions;
+		var instructions1;
+		switch(controlScheme) {
+			case CtrlMode.OVERLAY:
+				instructions = "Tap edges to change direction";
+				instructions1 = "Tap center to build towers";
+			case CtrlMode.GAMEPAD,CtrlMode.GAMEPAD_L:
+				instructions = "Tap arrows to change direction";	
+				instructions1 = "Tap tower to build towers";
+			case CtrlMode.SWIPE:
+				instructions = "Swipe to change direction";
+				instructions1 = "Tap to build towers";
+		}
+		var help1Text = new FlxText( -2, 0, screenWidth, instructions);
+		var w1:FlxSprite = null, e1:FlxSprite = null, n1:FlxSprite = null, s1:FlxSprite = null;
+		if(controlScheme==CtrlMode.OVERLAY) {
+			w1 = new FlxSprite(0, 0);
+			e1 = new FlxSprite(0, 0);
+			n1 = new FlxSprite(0, 0);
+			s1 = new FlxSprite(0, 0);
 			w1.loadGraphic(Library.getFilename(Image.BIG_ARROW),true,false,7,7);
 			w1.addAnimation("idle", [0]);
 			w1.play("idle");
@@ -373,21 +374,23 @@ class GameState extends BasicState {
 			s1.x = n1.x;
 			s1.y = Library.tileSize * Library.levelH - s1.height - 1;
 			help1.add(s1);
-			#end
-			
-			help1Text.setFormat(Library.getFont().fontName,null,null,"center");
-			help1Text.scrollFactor.x = help1Text.scrollFactor.y = 0;
-			help1Text.y = screenHeight / 2 - help1Text.height + Library.tileSize +1;
-			help1.add(help1Text);
-			
-			var help2Bg = new FlxSprite(0, 0);
-			help2Bg.makeGraphic(screenWidth, screenHeight, 0x88000000);
-			help2.add(help2Bg);
-			
-			#if keyboard
-			var help2Text = new FlxText(0, 0, screenWidth, "Space bar to build towers");
-			#else
-			var help2Text = new FlxText(0, 0, screenWidth, instructions1);
+		}
+		#end
+		
+		help1Text.setFormat(Library.getFont().fontName,null,null,"center");
+		help1Text.scrollFactor.x = help1Text.scrollFactor.y = 0;
+		help1Text.y = screenHeight / 2 - help1Text.height + Library.tileSize +1;
+		help1.add(help1Text);
+		
+		var help2Bg = new FlxSprite(0, 0);
+		help2Bg.makeGraphic(screenWidth, screenHeight, 0x88000000);
+		help2.add(help2Bg);
+		
+		#if keyboard
+		var help2Text = new FlxText(0, 0, screenWidth, "Space bar to build towers");
+		#else
+		var help2Text = new FlxText(0, 0, screenWidth, instructions1);
+		if(controlScheme==CtrlMode.OVERLAY) {
 			var w2 = new FlxSprite(0, 0);
 			var e2 = new FlxSprite(0, 0);
 			var n2 = new FlxSprite(0, 0);
@@ -416,15 +419,14 @@ class GameState extends BasicState {
 			help2.add(e2);
 			help2.add(n2);
 			help2.add(s2);
-			#end
-			
-			
-			help2Text.setFormat(Library.getFont().fontName,null,null,"center");
-			help2Text.scrollFactor.x = help2Text.scrollFactor.y = 0;
-			help2Text.y = screenHeight / 2 - help2Text.height + Library.tileSize +1;
-			help2.add(help2Text);
-			
 		}
+		#end
+		
+		
+		help2Text.setFormat(Library.getFont().fontName,null,null,"center");
+		help2Text.scrollFactor.x = help2Text.scrollFactor.y = 0;
+		help2Text.y = screenHeight / 2 - help2Text.height + Library.tileSize +1;
+		help2.add(help2Text);
 				
 		powerupIndicator = new Hash();
 		powerupIndicator.set(Type.enumConstructor(PowerupType.CASHFORKILLS), new PowerupIndicator(Image.CASH));
@@ -688,19 +690,23 @@ class GameState extends BasicState {
 	}
 	
 	function pickUpCoin(p:FlxObject, c:FlxObject) {	
-		Utils.play(Library.getSound(cast(c,Coin).snd));
+		var coin = cast(c, Coin);
+		Utils.play(Library.getSound(coin.snd));
 		
 		level.freePos.insert(0,new FlxPoint(Std.int(c.x/Library.tileSize),Std.int(c.y/Library.tileSize)));
-		
 		level.coins.remove(c, true);
-		level.player.coins++;
-		if(cast(c,Coin).type==BIG)	level.player.coins+=9;	
+		level.player.coins += coin.value;
+			
 		coinCounter.text = "$: " + level.player.coins;
 		if (level.coins.length % 15 == 0) {
 			addPowerup();
 		}
 		if (level.coins.length < 1) {
 			newLevel();
+		}
+		
+		if (coin.value > 1) {
+			showInfoText("$" + coin.value + "!", c.x, c.y, 4*Library.tileSize, 0, Colors.LBLUE);
 		}
 	}
 	
@@ -722,7 +728,7 @@ class GameState extends BasicState {
 		Utils.play(Library.getSound(Sound.CASH_REGISTER));
 		var cc:Powerup = cast(c, Powerup);
 		
-		showInfoText(cc.text, cc.x, cc.y, cc.getColor());
+		showInfoText(cc.text, cc.x, cc.y, 0, 0, cc.getColor());
 		if (cc.type == PowerupType.INSTATOWER) {
 			level.player.coins+= Library.towerCost;							
 			level.player.spawnTower();
@@ -742,14 +748,14 @@ class GameState extends BasicState {
 		cc.remove();
 	}
 	
-	function showInfoText(text:String, x:Float, y:Float, color:UInt) {
+	function showInfoText(text:String, x:Float, y:Float, destX:Float, destY:Float, color:UInt) {
 		var powerupInfo = newText(0, 0, Std.int(FlxG.width - level.width - 8), "a",Colors.LGREEN);
 		powerupInfo.visible = true;
 		powerupInfo.text = text;
 		powerupInfo.x = x;
 		powerupInfo.y = y;
 		powerupInfo.setColor(color);
-		Actuate.tween(powerupInfo, 1, { x: 0, y: 0 });
+		Actuate.tween(powerupInfo, 1, { x: destX, y: destY });
 		Actuate.timer(1).onComplete(hideInfoText, [powerupInfo, false] );
 	}
 	

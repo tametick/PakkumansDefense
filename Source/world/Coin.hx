@@ -7,8 +7,10 @@ import org.flixel.FlxG;
 
 
 class Coin extends WarpSprite {
+	public var value:Int;
 	public var type:CoinType;
 	public var snd:Sound;
+	
 	public function new(level:Level, start:FlxPoint, ?typ:CoinType = null ) {
 		if (typ == null) {
 			typ = CoinType.NORMAL;
@@ -20,6 +22,7 @@ class Coin extends WarpSprite {
 			case NORMAL:
 				makeGraphic(2, 2, Colors.BLUEGRAY);
 				snd = Sound.MONEY;
+				value = 1;
 			case BIG:
 				loadGraphic(Library.getFilename(Image.FRUIT));
 				snd = Sound.FRUIT;
@@ -31,6 +34,7 @@ class Coin extends WarpSprite {
 					case 2:
 						setColor(Colors.RED);
 				}
+				value = 10;
 		}
 		
 		
