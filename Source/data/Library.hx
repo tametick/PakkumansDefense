@@ -18,7 +18,7 @@ class Library {
 	public static inline var towerCost = 20;
 	public static inline var levelTime = 60;
 	
-	public static inline var defaultCtrl = CtrlMode.OVERLAY;
+	public static inline var defaultCtrl = CtrlMode.GAMEPAD;
 	
 	public static inline var debug = false; 
 	

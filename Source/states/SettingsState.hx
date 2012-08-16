@@ -71,6 +71,19 @@ class SettingsState extends BasicState {
 		#if !keyboard
 		var controlRadios = new List<Radio>();
 		
+		var ctrlDPad = newText(x, y += music.height, FlxG.width, "Virtual game-pad", Colors.BLUEGRAY);
+		ctrlDPad.setSize(16);
+		labels.add(ctrlDPad );
+		dpadRadio= new Radio(controlRadios, x - 24, y, dpadCB, GameState.controlScheme==CtrlMode.GAMEPAD || GameState.controlScheme==CtrlMode.GAMEPAD_L);
+		buttons.add(dpadRadio);
+		
+		
+		var ctrlDPasLeft = newText(x+32, y += music.height, FlxG.width, "Left-handed", Colors.YELLOW);
+		ctrlDPasLeft.setSize(16);
+		labels.add(ctrlDPasLeft);
+		dpadTick = new Tick(x +32 - 24, y, dpadCBLeft, GameState.controlScheme==CtrlMode.GAMEPAD_L);
+		buttons.add(dpadTick);
+		
 		var ctrlOverlay = newText(x, y +=  music.height, FlxG.width, "Controller overlay", Colors.BLUEGRAY);
 		ctrlOverlay.setSize(16);
 		labels.add(ctrlOverlay );
@@ -88,25 +101,14 @@ class SettingsState extends BasicState {
 		
 		buttons.add(overlayTick);
 				
-		var ctrlDPad = newText(x, y += music.height, FlxG.width, "Virtual game-pad", Colors.BLUEGRAY);
-		ctrlDPad.setSize(16);
-		labels.add(ctrlDPad );
-		dpadRadio= new Radio(controlRadios, x - 24, y, dpadCB, GameState.controlScheme==CtrlMode.GAMEPAD || GameState.controlScheme==CtrlMode.GAMEPAD_L);
-		buttons.add(dpadRadio);
 		
-		
-		var ctrlDPasLeft = newText(x+32, y += music.height, FlxG.width, "Left-handed", Colors.YELLOW);
-		ctrlDPasLeft.setSize(16);
-		labels.add(ctrlDPasLeft);
-		dpadTick = new Tick(x +32 - 24, y, dpadCBLeft, GameState.controlScheme==CtrlMode.GAMEPAD_L);
-		buttons.add(dpadTick);
 		
 		
 		dpadTick.owner = dpadRadio;
 		overlayTick.owner = overlayRadio;
 		
-		controlRadios.add(overlayRadio);
 		controlRadios.add(dpadRadio);
+		controlRadios.add(overlayRadio);
 		#end
 		
 		
