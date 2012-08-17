@@ -32,6 +32,7 @@ class Player extends WarpSprite {
 	private var thinking:Bool;
 	private var delay:Int;
 	public var touch:Command = null;
+	public var prevtouch:Command = null;
 	private var plTouching:Bool;
 	
 	public var tileX:Int;
@@ -82,8 +83,7 @@ class Player extends WarpSprite {
 		
 		coins = 20;		
 		
-	//	powerupIndicator = new FlxBar(0, 0, FlxBar.FILL_LEFT_TO_RIGHT, 64, 4, level, "activepowerups[0]");
-	//	powerupIndicator.trackParent(0, -5);
+	
 	}
 	
 	public function setClickMap() {		
@@ -155,6 +155,14 @@ class Player extends WarpSprite {
 	
 	override public function update() {
 		super.update();
+		var s = cast(FlxG.state, GameState);
+		if(!BuskerJam.multiTouchSupported){
+			s.setUnhighlighted(TOWER);
+			s.setUnhighlighted(UP);
+			s.setUnhighlighted(DOWN);
+			s.setUnhighlighted(LEFT);
+			s.setUnhighlighted(RIGHT);
+		}
 		
 		if (cast(FlxG.state, GameState).help < 3)
 			return;
@@ -173,9 +181,15 @@ class Player extends WarpSprite {
 		}
 		
 		
-			resolveSingleTouch();// leaving this here because of xperia play controls needing keyboard;
-		
-		
+			resolveKeys();
+			if (!BuskerJam.multiTouchSupported) {
+				resolveSingleTouch();
+			}
+			if (touch != prevtouch && touch!=null) {
+				Utils.play(Library.getSound(CLICK));
+			}
+			resolveTouch();
+			
 		if (!isMoving) {
 			var oldFacing = facing;
 			facing = facingNext;
@@ -198,26 +212,23 @@ class Player extends WarpSprite {
 	}
 
 	private function resolveSingleTouch() {
-		var s = cast(FlxG.state, GameState);
+		
 		var tempx=FlxG.mouse.screenX;
 		var tempy=FlxG.mouse.screenY;
 		if(GameState.controlScheme!=CtrlMode.SWIPE){
 			if (FlxG.mouse.justPressed()) {
 				plTouching = true;
+				touch = getCommand(tempx, tempy);
 				
-				 if(touch!=null){
-					s.setHighlighted(touch);
-				 }
 			} else if (FlxG.mouse.justReleased()) {
 				plTouching = false;
-				var touch2 = getCommand(tempx,tempy);
-				if(touch2!=null){
-					s.setUnhighlighted(touch2);
 				}
 			}
 			
 			if (plTouching) {
-				 touch = getCommand(tempx,tempy);
+				if (touch != TOWER && prevtouch!=TOWER) {
+					touch = getCommand(tempx, tempy);
+				}
 			}
 		} else {
 			if (FlxG.mouse.justPressed() && touch == null) {
@@ -225,28 +236,33 @@ class Player extends WarpSprite {
 			}
 		}
 		
-		resolveTouch();
 	}
 	
 	public function resolveTouch() {
+		if(touch!=null){
+			var s = cast(FlxG.state, GameState);
+			s.setHighlighted(touch);
+			prevtouch = touch;
+
+		
 		// change facing according to keyboard input
-		if (FlxG.keys.justPressed("A") || FlxG.keys.justPressed("LEFT") || touch==LEFT) {
+		if (touch==LEFT) {
 			facingNext = FlxObject.LEFT;
 			arrow.play("W");
 			touch = null;
-		} if (FlxG.keys.justPressed("D") || FlxG.keys.justPressed("RIGHT") || touch==RIGHT) {
+		} if (touch==RIGHT) {
 			facingNext = FlxObject.RIGHT;
 			arrow.play("E");
 			touch = null;
-		} if (FlxG.keys.justPressed("S") || FlxG.keys.justPressed("DOWN") || touch==DOWN) {
+		} if (touch==DOWN) {
 			facingNext = FlxObject.DOWN;
 			arrow.play("S");
 			touch = null;
-		} if (FlxG.keys.justPressed("W") || FlxG.keys.justPressed("UP") || touch==UP) {
+		} if (touch==UP) {
 			facingNext = FlxObject.UP;
 			arrow.play("N");
 			touch = null;
-		} if (FlxG.keys.justPressed("SPACE") || FlxG.keys.justPressed("ENTER") || touch == TOWER) {
+		} if (touch == TOWER) {
 			if (level.player.coins >= Library.towerCost || Library.debug) {
 				spawnTower();
 				
@@ -256,6 +272,24 @@ class Player extends WarpSprite {
 			touch = null;
 		}
 	}
+	
+	}
+	
+	public function resolveKeys() {
+		
+		if (FlxG.keys.justPressed("A") || FlxG.keys.justPressed("LEFT") ) {
+			touch = LEFT;
+		} if (FlxG.keys.justPressed("D") || FlxG.keys.justPressed("RIGHT") ) {
+			touch = RIGHT;
+		} if (FlxG.keys.justPressed("S") || FlxG.keys.justPressed("DOWN")) {
+			touch = DOWN;
+		} if (FlxG.keys.justPressed("W") || FlxG.keys.justPressed("UP")) {
+			touch = UP;
+		} if (FlxG.keys.justPressed("SPACE") || FlxG.keys.justPressed("ENTER") ) {
+			touch = TOWER;
+		}
+	}
+	
 	public function swipe(e:TransformGestureEvent){
 		if (e.offsetX == 1) {
 			touch = RIGHT; 

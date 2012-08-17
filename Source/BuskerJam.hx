@@ -16,7 +16,7 @@ import states.GameState;
 import states.HighScoreState;
 import states.LevelSelectState;
 import states.MenuState;
-
+import world.Player;
 
 class BuskerJam extends FlxGame {	
 	public static var returnToState:Class<BasicState>;
@@ -32,7 +32,7 @@ class BuskerJam extends FlxGame {
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			Lib.current.stage.addEventListener(TouchEvent.TOUCH_BEGIN, touchBegin,false,0,true);
 			Lib.current.stage.addEventListener(TouchEvent.TOUCH_MOVE, touchBegin,false,0,true);
-			//Lib.current.stage.addEventListener(TouchEvent.TOUCH_END, touchEnd,false,0,true);
+			Lib.current.stage.addEventListener(TouchEvent.TOUCH_END, touchEnd,false,0,true);
 		}
 	}
 	static function nothing(e:Event) {	}
@@ -53,12 +53,36 @@ class BuskerJam extends FlxGame {
 	private static function touchBegin(e:TouchEvent):Void {   
 	
 		if (Std.is(FlxG.state, GameState))	{
+					
 			        var pl=cast(FlxG.state,GameState).level.player;
 					pl.touch=pl.getCommand(e.stageX, e.stageY);
-					pl.resolveTouch();
+					//pl.resolveTouch();
 				}
 	}
-
+	
+	private static function touchEnd(e:TouchEvent):Void {   
+	   var s = cast(FlxG.state, GameState);
+			s.setUnhighlighted(TOWER);
+			s.setUnhighlighted(UP);
+			s.setUnhighlighted(DOWN);
+			s.setUnhighlighted(LEFT);
+			s.setUnhighlighted(RIGHT);
+	
+	}
+	
+	private static function touchMove(e:TouchEvent):Void {   
+	
+		if (Std.is(FlxG.state, GameState))	{
+			        var pl=cast(FlxG.state,GameState).level.player;
+					pl.touch=pl.getCommand(e.stageX, e.stageY);
+					if (pl.touch == Command.TOWER) {
+						pl.touch = null;	
+					} else {
+						pl.resolveTouch();
+					}
+					
+				}
+	}
 
 	
 }
