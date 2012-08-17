@@ -87,25 +87,25 @@ class GameState extends BasicState {
 			case LEFT:
 				buttonW.alpha = 2;
 				
-				Utils.play(Library.getSound(CLICK));
+				//Utils.play(Library.getSound(CLICK));
 			case RIGHT:
 				buttonE.alpha = 2;
 				
-				Utils.play(Library.getSound(CLICK));
+				//Utils.play(Library.getSound(CLICK));
 			case UP:
 				buttonN.alpha = 2;
 				
-				Utils.play(Library.getSound(CLICK));
+				//Utils.play(Library.getSound(CLICK));
 			case DOWN:
 				buttonS.alpha = 2;
 				
-				Utils.play(Library.getSound(CLICK));
+				//Utils.play(Library.getSound(CLICK));
 			case TOWER:
 				if (level.player.coins < Library.towerCost) {
 					buttonT.bitmapData = buttonT2DataR;
 				} else {
 					buttonT.bitmapData = buttonT2Data;
-					Utils.play(Library.getSound(CLICK));
+					//Utils.play(Library.getSound(CLICK));
 				}
 		}
 	}

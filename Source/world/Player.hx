@@ -229,8 +229,7 @@ class Player extends WarpSprite {
 				if (touch != TOWER && prevtouch!=TOWER) {
 					touch = getCommand(tempx, tempy);
 				}
-			}
-		} else {
+			} else {
 			if (FlxG.mouse.justPressed() && touch == null) {
 				touch = TOWER;
 			}
