@@ -54,7 +54,11 @@ class BuskerJam extends FlxGame {
 	
 		if (Std.is(FlxG.state, GameState))	{
 					
-			        var pl=cast(FlxG.state,GameState).level.player;
+			        var g = cast(FlxG.state, GameState);
+					if (g.help < 3) {
+						return;
+					}	
+					var pl=g.level.player;
 					pl.touch=pl.getCommand(e.stageX, e.stageY);
 					//pl.resolveTouch();
 				}
@@ -73,7 +77,11 @@ class BuskerJam extends FlxGame {
 	private static function touchMove(e:TouchEvent):Void {   
 	
 		if (Std.is(FlxG.state, GameState))	{
-			        var pl=cast(FlxG.state,GameState).level.player;
+			        var g = cast(FlxG.state, GameState);
+					if (g.help < 3) {
+						return;
+					}	
+					var pl=g.level.player;
 					pl.touch=pl.getCommand(e.stageX, e.stageY);
 					if (pl.touch == Command.TOWER) {
 						pl.touch = null;	
