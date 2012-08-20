@@ -156,13 +156,6 @@ class Player extends WarpSprite {
 	override public function update() {
 		super.update();
 		var s = cast(FlxG.state, GameState);
-		/*if(!BuskerJam.multiTouchSupported){
-			s.setUnhighlighted(TOWER);
-			s.setUnhighlighted(UP);
-			s.setUnhighlighted(DOWN);
-			s.setUnhighlighted(LEFT);
-			s.setUnhighlighted(RIGHT);
-		}*/
 		
 		if (cast(FlxG.state, GameState).help < 3)
 			return;
