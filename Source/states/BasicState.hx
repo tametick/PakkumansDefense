@@ -1,6 +1,7 @@
 package states;
 
 import data.Library;
+import flash.desktop.NativeApplication;
 import nme.display.Bitmap;
 import nme.Lib;
 import org.flixel.FlxG;
@@ -38,25 +39,50 @@ class BasicState extends FlxState {
 			return;
 		}
 		
-		mousePoint = FlxG.mouse.getScreenPosition(null, mousePoint);
-		if (FlxG.mouse.justPressed()) {
-			var x = mousePoint.x * FlxG.camera.getScale().x; 
-			var y = mousePoint.y * FlxG.camera.getScale().y;
-			if (x > settings.x && x < settings.x + settings.width && y > settings.y && y < settings.y + settings.height) {
-				FlxG.mouse.reset();
-				if (Std.is(this, SettingsState)) {
-					var s = BuskerJam.returnToState;
-					if (s == null) {
-						s = MenuState;
-					}
-					BuskerJam.returnToState = null;
-					FlxG.switchState(Type.createInstance(s, []));
-				} else {
-					BuskerJam.returnToState = Type.getClass(this);
-					FlxG.switchState(new SettingsState());
+		
+		if (BuskerJam.backButton) {
+			if (Std.is(this, MenuState)) {
+				NativeApplication.nativeApplication.exit();
+				}else{
+					BuskerJam.backButton = false;
+					goBack();
 				}
-			}	
+		} else	if (settingsButtonPressed() || BuskerJam.menuButton ) {
+						BuskerJam.menuButton  = false;
+						if (Std.is(this, SettingsState)) {
+							
+							goBack();
+					
+						}else {
+							BuskerJam.returnToState = Type.getClass(this);
+							FlxG.switchState(new SettingsState());
+						}
+				}
+		
+	}
+	
+function goBack() {
+		var s = BuskerJam.returnToState;
+		if (s == null) {
+			s = MenuState;
+			}
+		BuskerJam.returnToState = null;
+		FlxG.switchState(Type.createInstance(s, []));
+	}
+
+	
+	function settingsButtonPressed():Bool {
+		if (!FlxG.mouse.justPressed()) {
+			return false;
 		}
+		
+		mousePoint = FlxG.mouse.getScreenPosition(null, mousePoint);
+		var x = mousePoint.x * FlxG.camera.getScale().x; 
+		var y = mousePoint.y * FlxG.camera.getScale().y;
+		if (x > settings.x && x < settings.x + settings.width && y > settings.y && y < settings.y + settings.height) {
+			FlxG.mouse.reset(); return true;
+		}
+	return false;
 	}
 	
 	function newText(x:Float, y:Float, w:Int, text:String, color:Int, ?alignment:String=null) {

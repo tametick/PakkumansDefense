@@ -18,10 +18,15 @@ import states.LevelSelectState;
 import states.MenuState;
 import world.Player;
 
+import flash.events.KeyboardEvent;
+import flash.ui.Keyboard;
+
 class BuskerJam extends FlxGame {	
 	public static var returnToState:Class<BasicState>;
 	public static var touchPoints:Array<FlxPoint>;
 	public static var multiTouchSupported;
+	public static var menuButton;
+	public static var backButton;
 	
 	public static function main () {
 		Lib.current.addChild (new BuskerJam());
@@ -32,7 +37,9 @@ class BuskerJam extends FlxGame {
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			Lib.current.stage.addEventListener(TouchEvent.TOUCH_BEGIN, touchBegin,false,0,true);
 			Lib.current.stage.addEventListener(TouchEvent.TOUCH_MOVE, touchBegin,false,0,true);
-			Lib.current.stage.addEventListener(TouchEvent.TOUCH_END, touchEnd,false,0,true);
+			Lib.current.stage.addEventListener(TouchEvent.TOUCH_END, touchEnd, false, 0, true);
+			
+			Lib.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyHandler,false,0,true);
 		}
 	}
 	static function nothing(e:Event) {	}
@@ -91,6 +98,19 @@ class BuskerJam extends FlxGame {
 					
 				}
 	}
+	
+	static function keyHandler(event:KeyboardEvent):Void {
+            //trace("keyHandler: " + event.keyCode);
+            switch (event.keyCode){
+                case Keyboard.BACK:
+					backButton = true;
+                  //  trace("Back key is pressed.");
+                    event.preventDefault();
+                case Keyboard.MENU:
+					menuButton = true;
+                   // trace("Menu key is pressed.");
+            }
+         }
 
 	
 }
