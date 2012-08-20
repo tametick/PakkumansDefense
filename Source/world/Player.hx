@@ -179,16 +179,15 @@ class Player extends WarpSprite {
 				delay ++;
 			}
 		}
-		
-		
-			resolveKeys();
-			if (!BuskerJam.multiTouchSupported) {
-				resolveSingleTouch();
-			}
-			if (touch != prevtouch && touch!=null) {
-				Utils.play(Library.getSound(CLICK));
-			}
-			resolveTouch();
+				
+		resolveKeys();
+		if (!BuskerJam.multiTouchSupported) {
+			resolveSingleTouch();
+		}
+		if (touch != prevtouch && touch!=null) {
+			Utils.play(Library.getSound(CLICK));
+		}
+		executeCurrentCommand();
 			
 		if (!isMoving) {
 			var oldFacing = facing;
@@ -237,41 +236,39 @@ class Player extends WarpSprite {
 		
 	}
 	
-	public function resolveTouch() {
+	public function executeCurrentCommand() {
 		if(touch!=null){
 			var s = cast(FlxG.state, GameState);
 			s.setHighlighted(touch);
 			prevtouch = touch;
-
 		
-		// change facing according to keyboard input
-		if (touch==LEFT) {
-			facingNext = FlxObject.LEFT;
-			arrow.play("W");
-			touch = null;
-		} if (touch==RIGHT) {
-			facingNext = FlxObject.RIGHT;
-			arrow.play("E");
-			touch = null;
-		} if (touch==DOWN) {
-			facingNext = FlxObject.DOWN;
-			arrow.play("S");
-			touch = null;
-		} if (touch==UP) {
-			facingNext = FlxObject.UP;
-			arrow.play("N");
-			touch = null;
-		} if (touch == TOWER) {
-			if (level.player.coins >= Library.towerCost || Library.debug) {
-				spawnTower();
-				
-			} else {
-				Utils.play(Library.getSound(Sound.ERROR));
+			// change facing according to keyboard input
+			if (touch==LEFT) {
+				facingNext = FlxObject.LEFT;
+				arrow.play("W");
+				touch = null;
+			} if (touch==RIGHT) {
+				facingNext = FlxObject.RIGHT;
+				arrow.play("E");
+				touch = null;
+			} if (touch==DOWN) {
+				facingNext = FlxObject.DOWN;
+				arrow.play("S");
+				touch = null;
+			} if (touch==UP) {
+				facingNext = FlxObject.UP;
+				arrow.play("N");
+				touch = null;
+			} if (touch == TOWER) {
+				if (level.player.coins >= Library.towerCost || Library.debug) {
+					spawnTower();
+					
+				} else {
+					Utils.play(Library.getSound(Sound.ERROR));
+				}
+				touch = null;
 			}
-			touch = null;
 		}
-	}
-	
 	}
 	
 	public function resolveKeys() {
