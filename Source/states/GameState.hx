@@ -771,7 +771,7 @@ class GameState extends BasicState {
 	
 	function hideInfoText(info:FlxText, visible:Bool) {
 		info.visible = visible;
-		if (!visible) {
+		if (!visible && info!=null) {
 			remove(info);
 			info.destroy();
 		}

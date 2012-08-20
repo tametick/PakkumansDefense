@@ -36,7 +36,7 @@ class BuskerJam extends FlxGame {
 		if (multiTouchSupported){
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			Lib.current.stage.addEventListener(TouchEvent.TOUCH_BEGIN, touchBegin,false,0,true);
-			Lib.current.stage.addEventListener(TouchEvent.TOUCH_MOVE, touchBegin,false,0,true);
+			Lib.current.stage.addEventListener(TouchEvent.TOUCH_MOVE, touchMove,false,0,true);
 			
 			Lib.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyHandler,false,0,true);
 		}
@@ -71,8 +71,10 @@ class BuskerJam extends FlxGame {
 			if (g.help < 3) {
 				return;
 			}	
+			
 			var pl=g.level.player;
-			pl.touch=pl.getCommand(e.stageX, e.stageY);
+			pl.touch = pl.getCommand(e.stageX, e.stageY);
+			
 			if (pl.touch == Command.TOWER) {
 				pl.touch = null;	
 			} else {
