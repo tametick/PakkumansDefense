@@ -85,7 +85,7 @@ class BuskerJam extends FlxGame {
 			if (pl.touch == Command.TOWER) {
 				pl.touch = null;	
 			} else {
-				pl.resolveTouch();
+				pl.executeCurrentCommand();
 			}
 			
 		}
