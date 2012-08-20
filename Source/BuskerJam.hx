@@ -45,52 +45,42 @@ class BuskerJam extends FlxGame {
 			super(240, 160, MenuState, 2, 30, 30);
 		}
 	}
-	
-	override private function update():Void {
-		super.update();
+		
+	static function touchBegin(e:TouchEvent):Void {  
+		if (Std.is(FlxG.state, GameState))	{					
+			var g = cast(FlxG.state, GameState);
+			if (g.help < 3) {
+				return;
+			}	
+			var pl=g.level.player;
+			pl.touch=pl.getCommand(e.stageX, e.stageY);
+			//pl.resolveTouch();
+		}
 	}
 	
-	private static function touchBegin(e:TouchEvent):Void {   
-	
-		if (Std.is(FlxG.state, GameState))	{
-					
-			        var g = cast(FlxG.state, GameState);
-					if (g.help < 3) {
-						return;
-					}	
-					var pl=g.level.player;
-					pl.touch=pl.getCommand(e.stageX, e.stageY);
-					//pl.resolveTouch();
-				}
-	}
-	
-	private static function touchEnd(e:TouchEvent):Void {   
+	static function touchEnd(e:TouchEvent):Void {   
 	   var s = cast(FlxG.state, GameState);
-			s.setUnhighlighted(TOWER);
-			s.setUnhighlighted(UP);
-			s.setUnhighlighted(DOWN);
-			s.setUnhighlighted(LEFT);
-			s.setUnhighlighted(RIGHT);
-	
+		s.setUnhighlighted(TOWER);
+		s.setUnhighlighted(UP);
+		s.setUnhighlighted(DOWN);
+		s.setUnhighlighted(LEFT);
+		s.setUnhighlighted(RIGHT);
 	}
 	
-	private static function touchMove(e:TouchEvent):Void {   
-	
+	static function touchMove(e:TouchEvent):Void {   
 		if (Std.is(FlxG.state, GameState))	{
-			        var g = cast(FlxG.state, GameState);
-					if (g.help < 3) {
-						return;
-					}	
-					var pl=g.level.player;
-					pl.touch=pl.getCommand(e.stageX, e.stageY);
-					if (pl.touch == Command.TOWER) {
-						pl.touch = null;	
-					} else {
-						pl.resolveTouch();
-					}
-					
-				}
+			var g = cast(FlxG.state, GameState);
+			if (g.help < 3) {
+				return;
+			}	
+			var pl=g.level.player;
+			pl.touch=pl.getCommand(e.stageX, e.stageY);
+			if (pl.touch == Command.TOWER) {
+				pl.touch = null;	
+			} else {
+				pl.resolveTouch();
+			}
+			
+		}
 	}
-
-	
 }
