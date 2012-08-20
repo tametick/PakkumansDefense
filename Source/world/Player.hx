@@ -156,13 +156,13 @@ class Player extends WarpSprite {
 	override public function update() {
 		super.update();
 		var s = cast(FlxG.state, GameState);
-		if(!BuskerJam.multiTouchSupported){
+		/*if(!BuskerJam.multiTouchSupported){
 			s.setUnhighlighted(TOWER);
 			s.setUnhighlighted(UP);
 			s.setUnhighlighted(DOWN);
 			s.setUnhighlighted(LEFT);
 			s.setUnhighlighted(RIGHT);
-		}
+		}*/
 		
 		if (cast(FlxG.state, GameState).help < 3)
 			return;
@@ -237,8 +237,17 @@ class Player extends WarpSprite {
 	}
 	
 	public function executeCurrentCommand() {
-		if(touch!=null){
-			var s = cast(FlxG.state, GameState);
+		
+	
+		if (touch != null) {
+			
+			  var s = cast(FlxG.state, GameState);
+				for (i in Type.allEnums(Command)) {
+			  if (touch != i) {
+				  s.setUnhighlighted(i);
+			  }
+		  }
+			//var s = cast(FlxG.state, GameState);
 			s.setHighlighted(touch);
 			prevtouch = touch;
 		
