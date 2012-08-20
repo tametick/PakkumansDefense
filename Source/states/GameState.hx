@@ -342,12 +342,12 @@ class GameState extends BasicState {
 	/*	var instructions;
 		var instructions1;
 		switch(controlScheme) {
-			case CtrlMode.OVERLAY:
+			case CtrlMode.OVERLAY: 
 				instructions = "Tap edges to change direction";
 				instructions1 = "Tap center to build towers";
 			case CtrlMode.GAMEPAD,CtrlMode.GAMEPAD_L:
-				instructions = "Tap arrows to change direction";	
-				instructions1 = "Tap tower to build towers";
+				instructions = "Touch arrows to change direction";	
+				instructions1 = "Touchtower to build towers";
 			case CtrlMode.SWIPE:
 				instructions = "Swipe to change direction";
 				instructions1 = "Tap to build towers";
