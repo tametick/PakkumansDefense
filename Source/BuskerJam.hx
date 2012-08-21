@@ -133,7 +133,7 @@ class BuskerJam extends FlxGame {
 	
 	#if keyboard
 	static function clickBuy(e : Event) {
-		var request : URLRequest = new URLRequest("https://play.google.com/store/apps/details?id=air.com.tametick.cardinalquest");
+		var request : URLRequest = new URLRequest("https://play.google.com/store/apps/details?id=air.tametick.pakkuman");
 		Lib.getURL(request);
 		request = null;
 	}

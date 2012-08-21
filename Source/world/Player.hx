@@ -174,9 +174,11 @@ class Player extends WarpSprite {
 		}
 				
 		resolveKeys();
+		#if !keyboard
 		if (!BuskerJam.multiTouchSupported) {
 			resolveSingleTouch();
 		}
+		#end
 		if (touch != prevtouch && touch!=null) {
 			Utils.play(Library.getSound(CLICK));
 		}
