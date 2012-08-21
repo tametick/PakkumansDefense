@@ -32,7 +32,7 @@ set APP_DIR=bin
 set FILE_OR_DIR=-C %APP_DIR% .
 
 :: Your application ID (must match <id> of Application descriptor)
-set APP_ID=air.MobilePD
+set APP_ID=tametick.pakkuman
 
 :: Output packages
 set DIST_PATH=dist
