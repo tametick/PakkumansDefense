@@ -72,26 +72,27 @@ class LevelSelectState extends BasicState {
 	
 	override public function update():Void {
 		super.update();
-		
-		if (FlxG.keys.justPressed("ONE")) {
-			click(0%levelsH, Std.int(0/levelsH));
-		} else if (FlxG.keys.justPressed("TWO")) {
-			click(1%levelsH, Std.int(1/levelsH));
-		} else if (FlxG.keys.justPressed("THREE")) {
-			click(2%levelsH, Std.int(2/levelsH));
-		} else if (FlxG.keys.justPressed("FOUR")) {
-			click(3%levelsH, Std.int(3/levelsH));
-		} else if (FlxG.keys.justPressed("FIVE")) {
-			click(4%levelsH, Std.int(4/levelsH));
-		} else if (FlxG.keys.justPressed("SIX")) {
-			click(5%levelsH, Std.int(5/levelsH));
-		} else if (FlxG.keys.justPressed("SEVEN")) {
-			click(6%levelsH, Std.int(6/levelsH));
-		} else if (FlxG.keys.justPressed("EIGHT")) {
-			click(7%levelsH, Std.int(7/levelsH));
-		} else if (FlxG.keys.justPressed("NINE")) {
-			click(8%levelsH, Std.int(8/levelsH));
-		}
+		//if(Library.debug) {
+			if (FlxG.keys.justPressed("ONE")) {
+				click(0%levelsH, Std.int(0/levelsH));
+			} else if (FlxG.keys.justPressed("TWO")) {
+				click(1%levelsH, Std.int(1/levelsH));
+			} else if (FlxG.keys.justPressed("THREE")) {
+				click(2%levelsH, Std.int(2/levelsH));
+			} else if (FlxG.keys.justPressed("FOUR")) {
+				click(3%levelsH, Std.int(3/levelsH));
+			} else if (FlxG.keys.justPressed("FIVE")) {
+				click(4%levelsH, Std.int(4/levelsH));
+			} else if (FlxG.keys.justPressed("SIX")) {
+				click(5%levelsH, Std.int(5/levelsH));
+			} else if (FlxG.keys.justPressed("SEVEN")) {
+				click(6%levelsH, Std.int(6/levelsH));
+			} else if (FlxG.keys.justPressed("EIGHT")) {
+				click(7%levelsH, Std.int(7/levelsH));
+			} else if (FlxG.keys.justPressed("NINE")) {
+				click(8%levelsH, Std.int(8/levelsH));
+			}
+		//}
 	}
 	
 	override public function destroy() {

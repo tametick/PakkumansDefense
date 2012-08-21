@@ -230,17 +230,15 @@ class Player extends WarpSprite {
 	}
 	
 	public function executeCurrentCommand() {
-		
-	
 		if (touch != null) {
 			
-			  var s = cast(FlxG.state, GameState);
-				for (i in Type.allEnums(Command)) {
-			  if (touch != i) {
-				  s.setUnhighlighted(i);
-			  }
-		  }
-			//var s = cast(FlxG.state, GameState);
+			var s = cast(FlxG.state, GameState);
+			for (i in Type.allEnums(Command)) {
+				if (touch != i) {
+					s.setUnhighlighted(i);
+				}
+			}
+			
 			s.setHighlighted(touch);
 			prevtouch = touch;
 		
@@ -249,22 +247,21 @@ class Player extends WarpSprite {
 				facingNext = FlxObject.LEFT;
 				arrow.play("W");
 				touch = null;
-			} if (touch==RIGHT) {
+			} else if (touch == RIGHT) {
 				facingNext = FlxObject.RIGHT;
 				arrow.play("E");
 				touch = null;
-			} if (touch==DOWN) {
+			} else if (touch==DOWN) {
 				facingNext = FlxObject.DOWN;
 				arrow.play("S");
 				touch = null;
-			} if (touch==UP) {
+			} else if (touch==UP) {
 				facingNext = FlxObject.UP;
 				arrow.play("N");
 				touch = null;
-			} if (touch == TOWER) {
+			} else if (touch == TOWER) {
 				if (level.player.coins >= Library.towerCost || Library.debug) {
 					spawnTower();
-					
 				} else {
 					Utils.play(Library.getSound(Sound.ERROR));
 				}

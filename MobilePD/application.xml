@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?> 
 <application xmlns="http://ns.adobe.com/air/application/3.2">
 	
-	<id>air.MobilePD</id>
-	<versionNumber>0.1</versionNumber>
+	<id>tametick.pakkuman</id>
+	<versionNumber>1.0</versionNumber>
 	<supportedProfiles>mobileDevice</supportedProfiles>
 	<filename>Pakkuman's Defense</filename>
 	
@@ -46,7 +46,7 @@
     </iPhone> 
 	
 	<initialWindow>
-		<title>MobilePD</title>
+		<title>Pakkuman's Defense</title>
 		<content>MobilePD.swf</content>
 		<visible>true</visible>
 		<fullScreen>true</fullScreen>
