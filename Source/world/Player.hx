@@ -57,10 +57,10 @@ class Player extends WarpSprite {
 	public function new(level:Level, start:FlxPoint) {
 		super(level);
 		
-		if(GameState.controlScheme == CtrlMode.SWIPE){
+		/*if(GameState.controlScheme == CtrlMode.SWIPE){
 			Multitouch.inputMode = MultitouchInputMode.GESTURE;
 			Lib.current.addEventListener(TransformGestureEvent.GESTURE_SWIPE , swipe);
-		}
+		}*/
 		
 		loadGraphic(Library.getFilename(Image.PAKKU), true, true, 5, 5);
 		addAnimation("walk", [0, 1], 5);
