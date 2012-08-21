@@ -1,5 +1,5 @@
 package world;
-import data.Library;
+import data.AssetsLibrary;
 import data.Image;
 import org.flixel.FlxG;
 import org.flixel.FlxPoint;
@@ -75,7 +75,7 @@ class Powerup extends WarpSprite {
 				duration = 0;
 			}
 		
-		loadGraphic(Library.getFilename(img),true, 8, 8);
+		loadGraphic(AssetsLibrary.getFilename(img),true, 8, 8);
 		addAnimation("not blink", [0, 0], 0);
 		addAnimation("blink", [0, 1], 3);
 		

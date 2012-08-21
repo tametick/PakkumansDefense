@@ -8,7 +8,7 @@ import org.flixel.FlxSprite;
 import org.flixel.FlxText;
 import org.flixel.plugin.photonstorm.FlxButtonPlus;
 import org.flixel.plugin.photonstorm.FlxGridOverlay;
-import data.Library;
+import data.AssetsLibrary;
 import utils.Colors;
 import data.Image;
 
@@ -25,7 +25,7 @@ class LevelSelectState extends BasicState {
 		
 		FlxG.fade(0, 0.5, true, null, true);
 		
-		add(new FlxSprite(0,0,Library.getFilename(Image.LEVEL_SELECT)));
+		add(new FlxSprite(0,0,AssetsLibrary.getFilename(Image.LEVEL_SELECT)));
 		GameState.startingLevel = 1;
 		
 		levels = new FlxSave();
@@ -35,7 +35,7 @@ class LevelSelectState extends BasicState {
 			levels.data.highest  = 1;
 		}
 		
-		title = newText(0, Library.tileSize, FlxG.width, "Select Level",Colors.WHITE,"center");
+		title = newText(0, AssetsLibrary.tileSize, FlxG.width, "Select Level",Colors.WHITE,"center");
 		title.setSize(16);
 		
 		
@@ -43,8 +43,8 @@ class LevelSelectState extends BasicState {
 		var shiftY = 32;
 		
 		buttons = new FlxGroup(levelsH * levelsW);
-		var inactive = new FlxSprite(0,0,Library.getFilename(Image.BUTTON));
-		var active = new FlxSprite(0, 0, Library.getFilename(Image.BUTTON_ACTIVE));
+		var inactive = new FlxSprite(0,0,AssetsLibrary.getFilename(Image.BUTTON));
+		var active = new FlxSprite(0, 0, AssetsLibrary.getFilename(Image.BUTTON_ACTIVE));
 		add(buttons);
 		
 		for (y in 0...levelsH) {
@@ -73,7 +73,7 @@ class LevelSelectState extends BasicState {
 	
 	override public function update():Void {
 		super.update();
-		//if(Library.debug) {
+		//if(AssetsLibrary.debug) {
 			if (FlxG.keys.justPressed("ONE")) {
 				click(0%levelsH, Std.int(0/levelsH));
 			} else if (FlxG.keys.justPressed("TWO")) {

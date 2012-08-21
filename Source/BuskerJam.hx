@@ -1,4 +1,4 @@
-import data.Library;
+import data.AssetsLibrary;
 import nme.display.Bitmap;
 import nme.events.Event;
 import nme.events.TouchEvent;
@@ -18,7 +18,7 @@ import org.flixel.FlxPoint;
 import states.BasicState;
 import states.SettingsState;
 
-import flash.events.MouseEvent;
+import nme.events.MouseEvent;
 import org.flixel.FlxGame;
 import states.GameState;
 import states.HighScoreState;
@@ -26,8 +26,8 @@ import states.LevelSelectState;
 import states.MenuState;
 import world.Player;
 
-import flash.events.KeyboardEvent;
-import flash.ui.Keyboard;
+import nme.events.KeyboardEvent;
+import nme.ui.Keyboard;
 
 class BuskerJam extends FlxGame {	
 	public static var returnToState:Class<BasicState>;
@@ -84,7 +84,7 @@ class BuskerJam extends FlxGame {
 	static function nothing(e:Event) {	}
 	
 	public function new() {
-		if(Library.debug) {
+		if(AssetsLibrary.debug) {
 			super(240, 160, GameState, 2, 30, 30);
 			forceDebugger = true;
 		} else {
@@ -122,13 +122,14 @@ class BuskerJam extends FlxGame {
 	}
 	
 	static function keyHandler(event:KeyboardEvent):Void {
+		/*
 		switch (event.keyCode){
 			case Keyboard.BACK:
 				backButton = true;
 				event.preventDefault();
 			case Keyboard.MENU:
 				menuButton = true;
-		}
+		}*/
 	}
 	
 	#if keyboard

@@ -2,7 +2,7 @@ package states;
 
 import com.eclecticdesignstudio.motion.Actuate;
 import com.eclecticdesignstudio.motion.easing.Linear;
-import data.Library;
+import data.AssetsLibrary;
 import data.Image;
 import data.Sound;
 import data.Score;
@@ -29,6 +29,7 @@ import org.flixel.FlxText;
 import org.flixel.plugin.photonstorm.baseTypes.Bullet;
 import org.flixel.plugin.photonstorm.FlxGridOverlay;
 import org.flixel.system.input.Input;
+import org.flixel.tileSheetManager.TileSheetManager;
 import ui.Cursor;
 import ui.PowerupIndicator;
 import utils.Colors;
@@ -38,7 +39,6 @@ import world.Powerup;
 import world.Ghost;
 import world.Level;
 import world.Player;
-import flash.events.TransformGestureEvent;
 
 
 class GameState extends BasicState {
@@ -76,7 +76,7 @@ class GameState extends BasicState {
 	public static var controlScheme(getCtrlScheme, never):CtrlMode;
 	static function getCtrlScheme():CtrlMode {		
 		if (SettingsState.settings.data.controlScheme == null) {
-			SettingsState.settings.data.controlScheme = Type.enumConstructor(Library.defaultCtrl);
+			SettingsState.settings.data.controlScheme = Type.enumConstructor(AssetsLibrary.defaultCtrl);
 		}
 		
 		var scheme = Type.createEnum(CtrlMode, SettingsState.settings.data.controlScheme);
@@ -88,25 +88,25 @@ class GameState extends BasicState {
 			case LEFT:
 				buttonW.alpha = 2;
 				
-				//Utils.play(Library.getSound(CLICK));
+				//Utils.play(AssetsLibrary.getSound(CLICK));
 			case RIGHT:
 				buttonE.alpha = 2;
 				
-				//Utils.play(Library.getSound(CLICK));
+				//Utils.play(AssetsLibrary.getSound(CLICK));
 			case UP:
 				buttonN.alpha = 2;
 				
-				//Utils.play(Library.getSound(CLICK));
+				//Utils.play(AssetsLibrary.getSound(CLICK));
 			case DOWN:
 				buttonS.alpha = 2;
 				
-				//Utils.play(Library.getSound(CLICK));
+				//Utils.play(AssetsLibrary.getSound(CLICK));
 			case TOWER:
-				if (level.player.coins < Library.towerCost) {
+				if (level.player.coins < AssetsLibrary.towerCost) {
 					buttonT.bitmapData = buttonT2DataR;
 				} else {
 					buttonT.bitmapData = buttonT2Data;
-					//Utils.play(Library.getSound(CLICK));
+					//Utils.play(AssetsLibrary.getSound(CLICK));
 				}
 		}
 	}
@@ -159,7 +159,7 @@ class GameState extends BasicState {
 		var shape = new Shape();
 		//shape.graphics.lineStyle(1, color, alpha, false, null, null,JointStyle.ROUND);
 		shape.graphics.beginFill(color, alpha);
-		var triangle = Vector.ofArray([v1x, v1y, v2x, v2y, v3x, v3y]);
+		var triangle = Utils.arrayToVector([v1x, v1y, v2x, v2y, v3x, v3y]);
 		shape.graphics.drawTriangles(triangle);
 		shape.graphics.endFill();
 		
@@ -236,9 +236,9 @@ class GameState extends BasicState {
 		}
 
 		if(buttonT==null){
-			buttonT = new Bitmap(buttonTData = Library.getImage(Image.BUTTONS_OVERLAY_T), PixelSnapping.AUTO, true);
-			buttonT2Data = Library.getImage(Image.BUTTONS_OVERLAY_T2);
-			buttonT2DataR = Library.getImage(Image.BUTTONS_OVERLAY_T2R);
+			buttonT = new Bitmap(buttonTData = AssetsLibrary.getImage(Image.BUTTONS_OVERLAY_T), PixelSnapping.AUTO, true);
+			buttonT2Data = AssetsLibrary.getImage(Image.BUTTONS_OVERLAY_T2);
+			buttonT2DataR = AssetsLibrary.getImage(Image.BUTTONS_OVERLAY_T2R);
 		}
 		
 		var spacer2 = 2 * dim1 + dim2;
@@ -299,8 +299,8 @@ class GameState extends BasicState {
 		
 		var sc = SettingsState.settings.data.controlScheme==null?null:Type.createEnum(CtrlMode,SettingsState.settings.data.controlScheme);
 		if (sc == null) {
-			SettingsState.settings.data.controlScheme = Type.enumConstructor(Library.defaultCtrl);
-			initController(Library.defaultCtrl);
+			SettingsState.settings.data.controlScheme = Type.enumConstructor(AssetsLibrary.defaultCtrl);
+			initController(AssetsLibrary.defaultCtrl);
 		} else {
 			initController(sc);
 		}
@@ -317,7 +317,7 @@ class GameState extends BasicState {
 		mouse.scrollFactor.x = mouse.scrollFactor.y = 0;
 		
 		if (hud == null) {
-			hud = new Bitmap(Library.getImage(Image.HUD_OVERLAY));
+			hud = new Bitmap(AssetsLibrary.getImage(Image.HUD_OVERLAY));
 			hud.width *= 2;
 			hud.height *= 2;
 		}
@@ -332,7 +332,7 @@ class GameState extends BasicState {
 		FlxG._game.addChild(buttonT);
 		#end
 		
-		Utils.playMusic(Library.getMusic(THEME));
+		Utils.playMusic(AssetsLibrary.getMusic(THEME));
 		help = 1;
 		help1 = new FlxGroup();
 		help2 = new FlxGroup();
@@ -364,36 +364,36 @@ class GameState extends BasicState {
 			e1 = new FlxSprite(0, 0);
 			n1 = new FlxSprite(0, 0);
 			s1 = new FlxSprite(0, 0);
-			w1.loadGraphic(Library.getFilename(Image.BIG_ARROW),true,false,7,7);
+			w1.loadGraphic(AssetsLibrary.getFilename(Image.BIG_ARROW),true,false,7,7);
 			w1.addAnimation("idle", [0]);
 			w1.play("idle");
-			e1.loadGraphic(Library.getFilename(Image.BIG_ARROW),true,false,7,7);
+			e1.loadGraphic(AssetsLibrary.getFilename(Image.BIG_ARROW),true,false,7,7);
 			e1.addAnimation("idle", [1]);
 			e1.play("idle");
-			n1.loadGraphic(Library.getFilename(Image.BIG_ARROW),true,false,7,7);
+			n1.loadGraphic(AssetsLibrary.getFilename(Image.BIG_ARROW),true,false,7,7);
 			n1.addAnimation("idle", [2]);
 			n1.play("idle");
-			s1.loadGraphic(Library.getFilename(Image.BIG_ARROW),true,false,7,7);
+			s1.loadGraphic(AssetsLibrary.getFilename(Image.BIG_ARROW),true,false,7,7);
 			s1.addAnimation("idle", [3]);
 			s1.play("idle");
 			w1.x = 1;
-			w1.y = (screenHeight - w1.height) / 2 - Library.tileSize;
+			w1.y = (screenHeight - w1.height) / 2 - AssetsLibrary.tileSize;
 			help1.add(w1);			
-			e1.x = Library.tileSize*(Library.levelW-1);
-			e1.y = (screenHeight - w1.height) / 2 - Library.tileSize;
+			e1.x = AssetsLibrary.tileSize*(AssetsLibrary.levelW-1);
+			e1.y = (screenHeight - w1.height) / 2 - AssetsLibrary.tileSize;
 			help1.add(e1);
-			n1.x = (Library.tileSize*Library.levelW-n1.width) /2;
+			n1.x = (AssetsLibrary.tileSize*AssetsLibrary.levelW-n1.width) /2;
 			n1.y = 1;
 			help1.add(n1);
 			s1.x = n1.x;
-			s1.y = Library.tileSize * Library.levelH - s1.height - 1;
+			s1.y = AssetsLibrary.tileSize * AssetsLibrary.levelH - s1.height - 1;
 			help1.add(s1);
 		}
 		#end
 		
-		help1Text.setFormat(Library.getFont().fontName,null,null,"center");
+		help1Text.setFormat(AssetsLibrary.getFont().fontName,null,null,"center");
 		help1Text.scrollFactor.x = help1Text.scrollFactor.y = 0;
-		help1Text.y = screenHeight / 2 - help1Text.height + Library.tileSize +1;
+		help1Text.y = screenHeight / 2 - help1Text.height + AssetsLibrary.tileSize +1;
 		help1.add(help1Text);
 		
 		var help2Bg = new FlxSprite(0, 0);
@@ -409,16 +409,16 @@ class GameState extends BasicState {
 			var e2 = new FlxSprite(0, 0);
 			var n2 = new FlxSprite(0, 0);
 			var s2 = new FlxSprite(0, 0);
-			w2.loadGraphic(Library.getFilename(Image.BIG_ARROW),true,false,7,7);
+			w2.loadGraphic(AssetsLibrary.getFilename(Image.BIG_ARROW),true,false,7,7);
 			w2.addAnimation("idle", [1]);
 			w2.play("idle");
-			e2.loadGraphic(Library.getFilename(Image.BIG_ARROW),true,false,7,7);
+			e2.loadGraphic(AssetsLibrary.getFilename(Image.BIG_ARROW),true,false,7,7);
 			e2.addAnimation("idle", [0]);
 			e2.play("idle");
-			n2.loadGraphic(Library.getFilename(Image.BIG_ARROW),true,false,7,7);
+			n2.loadGraphic(AssetsLibrary.getFilename(Image.BIG_ARROW),true,false,7,7);
 			n2.addAnimation("idle", [3]);
 			n2.play("idle");
-			s2.loadGraphic(Library.getFilename(Image.BIG_ARROW),true,false,7,7);
+			s2.loadGraphic(AssetsLibrary.getFilename(Image.BIG_ARROW),true,false,7,7);
 			s2.addAnimation("idle", [2]);
 			s2.play("idle");
 			s2.x = s1.x;
@@ -437,9 +437,9 @@ class GameState extends BasicState {
 		#end
 		
 		
-		help2Text.setFormat(Library.getFont().fontName,null,null,"center");
+		help2Text.setFormat(AssetsLibrary.getFont().fontName,null,null,"center");
 		help2Text.scrollFactor.x = help2Text.scrollFactor.y = 0;
-		help2Text.y = screenHeight / 2 - help2Text.height + Library.tileSize +1;
+		help2Text.y = screenHeight / 2 - help2Text.height + AssetsLibrary.tileSize +1;
 		help2.add(help2Text);
 				
 		powerupIndicator = new Hash();
@@ -452,7 +452,7 @@ class GameState extends BasicState {
 			
 		Actuate.defaultEase = Linear.easeNone;
 		
-		Log.setColor(0xFFFFFF);
+		//Log.setColor(0xFFFFFF);
 		#if keyboard
 		FlxG.mouse.show();
 		#end
@@ -472,7 +472,7 @@ class GameState extends BasicState {
 		timeCounter.scrollFactor.x = 0;
 		timeCounter.scrollFactor.y = 0;
 		
-		coinCounter = newText(screenWidth/6*2, -1, Std.int(FlxG.width - level.width - 8), "$: "+Library.towerCost,Colors.LBLUE);
+		coinCounter = newText(screenWidth/6*2, -1, Std.int(FlxG.width - level.width - 8), "$: "+AssetsLibrary.towerCost,Colors.LBLUE);
 		coinCounter.scrollFactor.x = 0;
 		coinCounter.scrollFactor.y = 0;
 		
@@ -491,12 +491,12 @@ class GameState extends BasicState {
 		
 		add(help1);
 		
-		var gap = screenWidth - Library.levelW * Library.tileSize;
+		var gap = screenWidth - AssetsLibrary.levelW * AssetsLibrary.tileSize;
 		
-		FlxG.camera.scroll.y = -Library.tileSize * 1.5;
+		FlxG.camera.scroll.y = -AssetsLibrary.tileSize * 1.5;
 		FlxG.camera.scroll.x = -gap/2;
 		
-		if (Library.debug) {
+		if (AssetsLibrary.debug) {
 			add(mouse);
 		}
 			
@@ -556,7 +556,15 @@ class GameState extends BasicState {
 				c1 = Colors.BLACK;
 		}
 		
-		bg = FlxGridOverlay.create(Library.tileSize, Library.tileSize, Std.int(level.width), Std.int(level.height), false, true, c0, c1);
+		bg = FlxGridOverlay.create(AssetsLibrary.tileSize, AssetsLibrary.tileSize, Std.int(level.width), Std.int(level.height), false, true, c0, c1);
+		
+				TileSheetManager.setTileSheetIndex(level.getTileSheetIndex(), -TileSheetManager.getMaxIndex());
+		TileSheetManager.setTileSheetIndex(bg.getTileSheetIndex(), -TileSheetManager.getMaxIndex());
+		//TileSheetManager.setTileSheetIndex(level.coin.getTileSheetIndex(), TileSheetManager.getMaxIndex());
+		TileSheetManager.setTileSheetIndex(level.player.getTileSheetIndex(), TileSheetManager.getMaxIndex());
+		TileSheetManager.setTileSheetIndex(level.player.arrow.getTileSheetIndex(), TileSheetManager.getMaxIndex());
+
+		level.player.getTileSheetIndex();
 		add(bg);
 		add(level);
 		add(level.coins);
@@ -603,7 +611,7 @@ class GameState extends BasicState {
 			if (sec != level.player.lastbeep) {
 				level.player.lastbeep = sec;
 				var s = Sound.TIMER;
-				Utils.play(Library.getSound(s));
+				Utils.play(AssetsLibrary.getSound(s));
 			}
 			
 		}
@@ -673,7 +681,7 @@ class GameState extends BasicState {
 		if (level.activePowerups.exists(Type.enumConstructor(PowerupType.CASHFORKILLS))) {
 			level.player.coins++;
 		}
-		Utils.play(Library.getSound(Sound.GHOST_HIT));
+		Utils.play(AssetsLibrary.getSound(Sound.GHOST_HIT));
 		b.kill();
 		level.ghosts.remove(g, true);
 		cast(g, Ghost).explode();
@@ -690,7 +698,7 @@ class GameState extends BasicState {
 		if (!active)
 			return;
 		active = false;
-		Utils.play(Library.getSound(Sound.DEATH));
+		Utils.play(AssetsLibrary.getSound(Sound.DEATH));
 		level.player.explode();
 		
 		HighScoreState.mostRecentScore = new Score(levelNumber,level.player.coins,level.player.kills,level.towers.length);
@@ -706,9 +714,9 @@ class GameState extends BasicState {
 	
 	function pickUpCoin(p:FlxObject, c:FlxObject) {	
 		var coin = cast(c, Coin);
-		Utils.play(Library.getSound(coin.snd));
+		Utils.play(AssetsLibrary.getSound(coin.snd));
 		
-		level.freePos.insert(0,new FlxPoint(Std.int(c.x/Library.tileSize),Std.int(c.y/Library.tileSize)));
+		level.freePos.insert(0,new FlxPoint(Std.int(c.x/AssetsLibrary.tileSize),Std.int(c.y/AssetsLibrary.tileSize)));
 		level.coins.remove(c, true);
 		level.player.coins += coin.value;
 			
@@ -721,7 +729,7 @@ class GameState extends BasicState {
 		}
 		
 		if (coin.value > 1) {
-			showInfoText("$" + coin.value + "!", c.x, c.y, 4*Library.tileSize, 0, Colors.LBLUE);
+			showInfoText("$" + coin.value + "!", c.x, c.y, 4*AssetsLibrary.tileSize, 0, Colors.LBLUE);
 		}
 	}
 	
@@ -734,19 +742,19 @@ class GameState extends BasicState {
 		} while (pl != pup && cnt <= 10);
 		if (pup != null) {
 			pu = level.spawnPowerup(pup);
-			Utils.play(Library.getSound(Sound.POWERUP));
+			Utils.play(AssetsLibrary.getSound(Sound.POWERUP));
 			add(level.powerupEffect);
 			level.powerupEffect.explode(pu.x, pu.y);
 		}
 	}
 	
 	function pickUpPowerup(p:FlxObject, c:FlxObject) {	
-		Utils.play(Library.getSound(Sound.CASH_REGISTER));
+		Utils.play(AssetsLibrary.getSound(Sound.CASH_REGISTER));
 		var cc:Powerup = cast(c, Powerup);
 		
 		showInfoText(cc.text, cc.x, cc.y, 0, 0, cc.getColor());
 		if (cc.type == PowerupType.INSTATOWER) {
-			level.player.coins+= Library.towerCost;							
+			level.player.coins+= AssetsLibrary.towerCost;							
 			level.player.spawnTower();
 		} else {
 			powerupIndicator.get(Type.enumConstructor(cc.type)).play("not blink");
@@ -764,7 +772,7 @@ class GameState extends BasicState {
 		cc.remove();
 	}
 	
-	function showInfoText(text:String, x:Float, y:Float, destX:Float, destY:Float, color:UInt) {
+	function showInfoText(text:String, x:Float, y:Float, destX:Float, destY:Float, color:Int) {
 		var powerupInfo = newText(0, 0, Std.int(FlxG.width - level.width - 8), "a",Colors.LGREEN);
 		powerupInfo.visible = true;
 		powerupInfo.text = text;

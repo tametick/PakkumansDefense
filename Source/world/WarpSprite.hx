@@ -1,5 +1,5 @@
 package world;
-import data.Library;
+import data.AssetsLibrary;
 import org.flixel.FlxPoint;
 import org.flixel.FlxSprite;
 
@@ -49,8 +49,8 @@ class WarpSprite extends FlxSprite{
 	
 		
 	public function setPosition(start:FlxPoint) {
-		x = start.x * Library.tileSize + (Library.tileSize-width)/2;
-		y = start.y * Library.tileSize + (Library.tileSize-height)/2;		
+		x = start.x * AssetsLibrary.tileSize + (AssetsLibrary.tileSize-width)/2;
+		y = start.y * AssetsLibrary.tileSize + (AssetsLibrary.tileSize-height)/2;		
 	}
 	
 }

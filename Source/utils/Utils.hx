@@ -1,7 +1,8 @@
 package utils;
 
-import data.Library;
+import data.AssetsLibrary;
 import nme.media.Sound;
+import nme.Vector;
 import org.flixel.FlxG;
 import org.flixel.FlxPoint;
 
@@ -19,14 +20,28 @@ class Utils {
 		return null;
 	}
 	
+	public static function arrayToVector<T>(arr:Array<T>):Vector<T> {
+		#if flash
+		return Vector.ofArray(arr);
+		#else
+		var vect:Vector<T> = new Vector<T>();
+		var j = 0;
+		for (i in arr) {
+			vect.insert(j++, i);
+		}
+		return vect;
+		
+		#end
+	}
+	
 	public static function play(snd:nme.media.Sound) {
-		if(Library.sounds) {
+		if(AssetsLibrary.sounds) {
 			FlxG.play(snd);
 		}
 	}
 	public static function playMusic(mus:nme.media.Sound) {
 		var vol = 0.0;
-		if(Library.music) {
+		if(AssetsLibrary.music) {
 			vol = 1;
 		}
 		
@@ -153,11 +168,11 @@ class Utils {
 	}
 	
 	public static inline function getPositionSnappedToGrid(p:Float):Int {
-		return pixelToTile(p)*Library.tileSize;
+		return pixelToTile(p)*AssetsLibrary.tileSize;
 	}
 
 	public static inline function pixelToTile(p:Float):Int {
-		return Std.int(p / Library.tileSize);
+		return Std.int(p / AssetsLibrary.tileSize);
 	}
 	
 	public static inline function convertPixelToTilePosition(pos:FlxPoint) {

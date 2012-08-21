@@ -1,5 +1,5 @@
 package states;
-import data.Library;
+import data.AssetsLibrary;
 import org.flixel.FlxG;
 import org.flixel.FlxGroup;
 import org.flixel.FlxSave;
@@ -27,7 +27,7 @@ class SettingsState extends BasicState {
 		super.create();
 		
 		if (GameState.controlScheme == null) {
-			settings.data.controlScheme = Type.enumConstructor(Library.defaultCtrl);
+			settings.data.controlScheme = Type.enumConstructor(AssetsLibrary.defaultCtrl);
 		}
 		
 		if (settings.data.blend==null) {
@@ -40,9 +40,9 @@ class SettingsState extends BasicState {
 		#end
 		
 		FlxG.fade(0, 0.5, true, null, true);
-		add(new FlxSprite(0, 0, Library.getFilename(Image.LEVEL_SELECT)));
+		add(new FlxSprite(0, 0, AssetsLibrary.getFilename(Image.LEVEL_SELECT)));
 		
-		var y:Float = Library.tileSize;
+		var y:Float = AssetsLibrary.tileSize;
 		
 		title = newText(0, y, FlxG.width, "Settings",Colors.WHITE,"center");
 		title.setSize(16);
@@ -56,16 +56,16 @@ class SettingsState extends BasicState {
 		x -= 25;
 		#end
 		
-		var music = newText(x, y += title.height + Library.tileSize, FlxG.width, "Music", Colors.YELLOW);
+		var music = newText(x, y += title.height + AssetsLibrary.tileSize, FlxG.width, "Music", Colors.YELLOW);
 		music.setSize(16);
 		labels.add(music);
-		var musicTick = new Tick(x - 24, y, function() { Library.setMusic(!Library.music); }, Library.music );
+		var musicTick = new Tick(x - 24, y, function() { AssetsLibrary.setMusic(!AssetsLibrary.music); }, AssetsLibrary.music );
 		buttons.add(musicTick);
 		
 		var sounds = newText(x, y += music.height, FlxG.width, "Sounds", Colors.YELLOW);
 		sounds.setSize(16);
 		labels.add(sounds);
-		var soundTick = new Tick(x - 24, y, function() { Library.setSounds(!Library.sounds); }, Library.sounds );
+		var soundTick = new Tick(x - 24, y, function() { AssetsLibrary.setSounds(!AssetsLibrary.sounds); }, AssetsLibrary.sounds );
 		buttons.add(soundTick);
 		
 		

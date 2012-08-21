@@ -1,5 +1,5 @@
 package world;
-import data.Library;
+import data.AssetsLibrary;
 import nme.system.System;
 import org.flixel.FlxG;
 import org.flixel.FlxGroup;
@@ -31,8 +31,8 @@ class Level extends FlxTilemap {
 		
 		freePos = [];
 		
-		var w = Library.levelW;
-		var h = Library.levelH;
+		var w = AssetsLibrary.levelW;
+		var h = AssetsLibrary.levelH;
 		var halfW = Std.int(w / 2);
 		var halfH = Std.int(h / 2);
 		
@@ -81,12 +81,12 @@ class Level extends FlxTilemap {
 		
 		var bigCX, bigCY;
 		do {
-			bigCX = Utils.randomInt(Std.int(Library.levelW / 2)-2)+1;
-			bigCY = Utils.randomInt(Std.int(Library.levelH / 2)-2)+1;
-		} while(map[bigCY*(Library.levelW)+bigCX]!=0);
+			bigCX = Utils.randomInt(Std.int(AssetsLibrary.levelW / 2)-2)+1;
+			bigCY = Utils.randomInt(Std.int(AssetsLibrary.levelH / 2)-2)+1;
+		} while(map[bigCY*(AssetsLibrary.levelW)+bigCX]!=0);
 
 		for (mi in 0...map.length) {
-			if (x >= Library.levelW) {
+			if (x >= AssetsLibrary.levelW) {
 				x = 0;
 				y++;
 			}
@@ -95,9 +95,9 @@ class Level extends FlxTilemap {
 				coinStart.x = x;
 				coinStart.y = y;
 				if ((x == bigCX && y == bigCY) ||
-				(x == Library.levelW -bigCX-1 && y == bigCY)	||
-				(x == Library.levelW -bigCX-1 && y == Library.levelH-bigCY-1)	||
-				(x == bigCX && y == Library.levelH -  bigCY-1)) {
+				(x == AssetsLibrary.levelW -bigCX-1 && y == bigCY)	||
+				(x == AssetsLibrary.levelW -bigCX-1 && y == AssetsLibrary.levelH-bigCY-1)	||
+				(x == bigCX && y == AssetsLibrary.levelH -  bigCY-1)) {
 					coins.add(new Coin(this, coinStart,BIG));
 				} else {
 					coins.add(new Coin(this, coinStart));
@@ -116,13 +116,13 @@ class Level extends FlxTilemap {
 		} else {
 			// recycle the player from previous level
 			player = p;
-			player.x = playerStart.x * Library.tileSize + (Library.tileSize-player.width)/2;
-			player.y = playerStart.y * Library.tileSize + (Library.tileSize-player.height) / 2;
+			player.x = playerStart.x * AssetsLibrary.tileSize + (AssetsLibrary.tileSize-player.width)/2;
+			player.y = playerStart.y * AssetsLibrary.tileSize + (AssetsLibrary.tileSize-player.height) / 2;
 			//player.level.destroy();
 			player.level = this;
 		}
 		
-		player.time = Library.levelTime;
+		player.time = AssetsLibrary.levelTime;
 		player.lastbeep = -1;
 		
 		ghosts = new FlxGroup();
@@ -160,9 +160,9 @@ class Level extends FlxTilemap {
 	
 	public function movePoint(p:FlxPoint,d:Int):FlxPoint {
 		var alternateX = p.x + 5;
-		if (alternateX >= Library.levelW) alternateX -= Library.levelW;
+		if (alternateX >= AssetsLibrary.levelW) alternateX -= AssetsLibrary.levelW;
 		var alternateY = p.y + 5;
-		if (alternateY >= Library.levelH) alternateY -= Library.levelH;
+		if (alternateY >= AssetsLibrary.levelH) alternateY -= AssetsLibrary.levelH;
 		return new FlxPoint(alternateX, alternateY);
 	}
 	
@@ -183,14 +183,14 @@ class Level extends FlxTilemap {
 	}
 	
 	function clearHorizontalLine(tilesIndex:Array<Int>, y:Int) {
-		for (x in 0...Library.levelW) {
-			Utils.set(tilesIndex, Library.levelW, x, y, 0);
+		for (x in 0...AssetsLibrary.levelW) {
+			Utils.set(tilesIndex, AssetsLibrary.levelW, x, y, 0);
 		}
 	}
 	
 	function clearVerticalLine(tilesIndex:Array<Int>, x:Int) {
-		for (y in 0...Library.levelH) {
-			Utils.set(tilesIndex, Library.levelW, x, y, 0);
+		for (y in 0...AssetsLibrary.levelH) {
+			Utils.set(tilesIndex, AssetsLibrary.levelW, x, y, 0);
 		}
 	}
 	
@@ -200,26 +200,26 @@ class Level extends FlxTilemap {
 		var map = getData();
 		
 		do {
-			x = Utils.randomInt(Library.levelW);
-			y = Utils.randomInt(Library.levelH);			
-		} while (Utils.get(map, Library.levelW, x, y) != 0);
+			x = Utils.randomInt(AssetsLibrary.levelW);
+			y = Utils.randomInt(AssetsLibrary.levelH);			
+		} while (Utils.get(map, AssetsLibrary.levelW, x, y) != 0);
 		
 		return new FlxPoint(x, y);
 	}
 	
 	public function isFree(x:Int, y:Int):Bool {
 		if (x < 0) {
-			x = Library.levelW - 1;
-		} else if (x >= Library.levelW ) {
+			x = AssetsLibrary.levelW - 1;
+		} else if (x >= AssetsLibrary.levelW ) {
 			x = 0;
 		} 
 		if (y < 0) {
-			y = Library.levelH - 1;
-		} else if (y >= Library.levelH) {
+			y = AssetsLibrary.levelH - 1;
+		} else if (y >= AssetsLibrary.levelH) {
 			y = 0;
 		}
 		
-		return Utils.get(getData(), Library.levelW, x, y) == 0;
+		return Utils.get(getData(), AssetsLibrary.levelW, x, y) == 0;
 	}
 	
 	var p0:FlxPoint;

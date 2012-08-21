@@ -13,7 +13,7 @@ import data.Image;
 import data.Music;
 import data.Sound;
 
-class Library {
+class AssetsLibrary {
 	public static inline var tileSize = 8;
 	public static inline var levelW = 15;
 	public static inline var levelH = 11;
@@ -47,7 +47,7 @@ class Library {
 	static var assets:Hash<Dynamic> = new Hash<Dynamic>();
 	
 	public static function getImage(i:Image):BitmapData {
-		var name = Library.getFilename(i);
+		var name = AssetsLibrary.getFilename(i);
 		return Assets.getBitmapData(name);
 	}
 		
@@ -60,7 +60,7 @@ class Library {
 	}
 	
 	public static function getSound(s:data.Sound):nme.media.Sound {
-		var name = Library.getFilename(s);
+		var name = AssetsLibrary.getFilename(s);
 		if (!assets.exists(name)){
 			assets.set(name, Assets.getSound(name));
 		}
@@ -68,7 +68,7 @@ class Library {
 	}
 	
 	public static function getMusic(s:Music):nme.media.Sound {
-		var name = Library.getFilename(s);
+		var name = AssetsLibrary.getFilename(s);
 		if (!assets.exists(name)){
 			assets.set(name, Assets.getSound(name));
 		}
@@ -77,11 +77,11 @@ class Library {
 		
 	public static function getFilename(i:Dynamic):String {
 		var suffix = "";
-		if (Type.getEnum(i) == Image) {
+		if (Type.getEnum(i) == data.Image) {
 			suffix = ".png";
-		} else if (Type.getEnum(i) == Sound) {
+		} else if (Type.getEnum(i) == data.Sound) {
 			suffix = ".mp3";
-		} else if (Type.getEnum(i) == Music) {
+		} else if (Type.getEnum(i) == data.Music) {
 			suffix = ".mp3";
 		}
 	

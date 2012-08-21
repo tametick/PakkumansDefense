@@ -1,5 +1,5 @@
 package ui;
-import data.Library;
+import data.AssetsLibrary;
 import data.Image;
 import org.flixel.FlxSprite;
 
@@ -13,8 +13,8 @@ class Radio extends Selectable {
 	}
 	
 	override private function initGraphics(){
-		var inactive = new FlxSprite(0,0,Library.getFilename(Image.RADIO));
-		var active = new FlxSprite(0, 0, Library.getFilename(Image.RADIO_SELECTED));
+		var inactive = new FlxSprite(0,0,AssetsLibrary.getFilename(Image.RADIO));
+		var active = new FlxSprite(0, 0, AssetsLibrary.getFilename(Image.RADIO_SELECTED));
 		
 		loadGraphic(inactive, active);
 	}

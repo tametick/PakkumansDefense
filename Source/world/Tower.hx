@@ -1,6 +1,6 @@
 package world;
 
-import data.Library;
+import data.AssetsLibrary;
 import data.Image;
 import data.Sound;
 import world.Powerup;
@@ -21,7 +21,7 @@ class Tower extends WarpSprite {
 	public function new(level:Level, start:FlxPoint) {
 		super(level);
 		
-		loadGraphic(Library.getFilename(Image.TOWER));
+		loadGraphic(AssetsLibrary.getFilename(Image.TOWER));
 		setColor(Colors.YELLOW);
 		
 		counter = 0;
@@ -34,7 +34,7 @@ class Tower extends WarpSprite {
 		weapon.setBulletLifeSpan(750);
 		
 		fireRate = 1;
-		range = 3.5 * Library.tileSize;
+		range = 3.5 * AssetsLibrary.tileSize;
 	}
 	
 	override public function update() {
@@ -45,7 +45,7 @@ class Tower extends WarpSprite {
 			counter = 0;
 			var target = level.getGhostInRange(this,range);
 			if (target != null) {
-				Utils.play(Library.getSound(Sound.TOWER_SHOT));
+				Utils.play(AssetsLibrary.getSound(Sound.TOWER_SHOT));
 				var angle = Std.int(180 / Math.PI * Math.atan2(target.y - y, target.x - x));
 				weapon.fireFromAngle(angle);
 				

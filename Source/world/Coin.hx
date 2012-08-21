@@ -1,5 +1,5 @@
 package world;
-import data.Library;
+import data.AssetsLibrary;
 import data.Sound;
 import org.flixel.FlxPoint;
 import states.GameState;
@@ -26,7 +26,7 @@ class Coin extends WarpSprite {
 				snd = Sound.MONEY;
 				value = 1;
 			case BIG:
-				loadGraphic(Library.getFilename(Image.FRUIT));
+				loadGraphic(AssetsLibrary.getFilename(Image.FRUIT));
 				snd = Sound.FRUIT;
 				switch (cast(FlxG.state,GameState).levelNumber % 3) {
 					case 0:

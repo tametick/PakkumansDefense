@@ -1,7 +1,7 @@
 package states;
 
 import com.eclecticdesignstudio.motion.Actuate;
-import data.Library;
+import data.AssetsLibrary;
 import data.Score;
 import org.flixel.FlxG;
 import org.flixel.FlxSave;
@@ -23,7 +23,7 @@ class HighScoreState extends BasicState {
 		
 		FlxG.fade(0, 0.5, true, null, true);
 		
-		add(new FlxSprite(0,0,Library.getFilename(Image.HIGHSCORE)));
+		add(new FlxSprite(0,0,AssetsLibrary.getFilename(Image.HIGHSCORE)));
 		
 		scores = new FlxSave();
 		scores.bind("HighScores");
@@ -42,7 +42,7 @@ class HighScoreState extends BasicState {
 		}
 		
 		
-		title = newText(0, Library.tileSize, FlxG.width, "High Scores",Colors.WHITE,"center");
+		title = newText(0, AssetsLibrary.tileSize, FlxG.width, "High Scores",Colors.WHITE,"center");
 		title.setSize(16);
 		
 		print(sc);
@@ -64,7 +64,7 @@ class HighScoreState extends BasicState {
 			newText(185, y, FlxG.width, "Kills: " + s.kills, color);
 			
 				
-			y += Library.tileSize;
+			y += AssetsLibrary.tileSize;
 		}
 		
 	}

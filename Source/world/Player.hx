@@ -2,7 +2,7 @@ package world;
 
 import air.update.events.StatusFileUpdateErrorEvent;
 import com.eclecticdesignstudio.motion.Actuate;
-import data.Library;
+import data.AssetsLibrary;
 import data.Image;
 import data.Sound;
 import nme.display.Bitmap;
@@ -63,7 +63,7 @@ class Player extends WarpSprite {
 			Lib.current.addEventListener(TransformGestureEvent.GESTURE_SWIPE , swipe);
 		}*/
 		
-		loadGraphic(Library.getFilename(Image.PAKKU), true, true, 5, 5);
+		loadGraphic(AssetsLibrary.getFilename(Image.PAKKU), true, true, 5, 5);
 		addAnimation("walk", [0, 1], 5);
 		play("walk");
 		
@@ -71,7 +71,7 @@ class Player extends WarpSprite {
 		
 		
 		arrow = new FlxSprite();
-		arrow.loadGraphic(Library.getFilename(Image.ARROW), true, false, 16, 16);
+		arrow.loadGraphic(AssetsLibrary.getFilename(Image.ARROW), true, false, 16, 16);
 		arrow.addAnimation("N", [0]);
 		arrow.addAnimation("S", [1]);
 		arrow.addAnimation("W", [2]);
@@ -97,7 +97,7 @@ class Player extends WarpSprite {
 			case CtrlMode.GAMEPAD_L:
 				clkMap = Image.CLICK_MAP_PAD_L;
 		}
-		clickMap = Library.getImage(clkMap);
+		clickMap = AssetsLibrary.getImage(clkMap);
 	}
 	
 	public function explode() {
@@ -181,7 +181,7 @@ class Player extends WarpSprite {
 		}
 		#end
 		if (touch != prevtouch && touch!=null) {
-			Utils.play(Library.getSound(CLICK));
+			Utils.play(AssetsLibrary.getSound(CLICK));
 		}
 		executeCurrentCommand();
 			
@@ -263,10 +263,10 @@ class Player extends WarpSprite {
 				arrow.play("N");
 				touch = null;
 			} else if (touch == TOWER) {
-				if (level.player.coins >= Library.towerCost || Library.debug) {
+				if (level.player.coins >= AssetsLibrary.towerCost || AssetsLibrary.debug) {
 					spawnTower();
 				} else {
-					Utils.play(Library.getSound(Sound.ERROR));
+					Utils.play(AssetsLibrary.getSound(Sound.ERROR));
 				}
 				touch = null;
 			}
@@ -315,18 +315,18 @@ class Player extends WarpSprite {
 				var j = jj;
 				
 				if (j < 0) {
-					j = Library.levelW - 1;
-				} else if (j >= Library.levelW ) {
+					j = AssetsLibrary.levelW - 1;
+				} else if (j >= AssetsLibrary.levelW ) {
 					j = 0;
 				}
 				
 				if (i < 0) {
-					i = Library.levelH - 1;
-				} else if (i >= Library.levelH) {
+					i = AssetsLibrary.levelH - 1;
+				} else if (i >= AssetsLibrary.levelH) {
 					i = 0;
 				}
 				
-				var fakeMouse:FlxPoint = new FlxPoint(j * Library.tileSize, i * Library.tileSize);
+				var fakeMouse:FlxPoint = new FlxPoint(j * AssetsLibrary.tileSize, i * AssetsLibrary.tileSize);
 				var towerThere:Bool = false;
 				
 				for (k in level.towers.members) {
@@ -339,8 +339,8 @@ class Player extends WarpSprite {
 				
 				if (!(j == tileX && i== tileY)) {
 					if (!level.isFree(j, i) && !towerThere) {
-						Utils.play(Library.getSound(Sound.CASH_REGISTER));
-						level.player.coins -= Library.towerCost;				
+						Utils.play(AssetsLibrary.getSound(Sound.CASH_REGISTER));
+						level.player.coins -= AssetsLibrary.towerCost;				
 						cast(FlxG.state, GameState).coinCounter.text="$: " + level.player.coins;
 						level.buildTower(fakeMouse);
 						cast(FlxG.state, GameState).towerCounter.text = "Towers: " + level.towers.length;
@@ -381,11 +381,11 @@ class Player extends WarpSprite {
 		if (level.activePowerups.exists(Type.enumConstructor(PowerupType.HASTE))) {
 			duration = 0.12;
 		}
-		var rawX = this.x + dx * Library.tileSize;
-		var rawY = this.y + dy * Library.tileSize;
+		var rawX = this.x + dx * AssetsLibrary.tileSize;
+		var rawY = this.y + dy * AssetsLibrary.tileSize;
 		
-		var xShift = (Library.tileSize-width) / 2;
-		var yShift = (Library.tileSize-height) / 2;
+		var xShift = (AssetsLibrary.tileSize-width) / 2;
+		var yShift = (AssetsLibrary.tileSize-height) / 2;
 		var nextPixelX = rawX<0?rawX:Utils.getPositionSnappedToGrid(rawX) + xShift;
 		var nextPixelY = rawY<0?rawY:Utils.getPositionSnappedToGrid(rawY) + yShift;
 		

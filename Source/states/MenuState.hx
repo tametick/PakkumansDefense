@@ -6,7 +6,7 @@ import org.flixel.FlxSave;
 import org.flixel.FlxSprite;
 import org.flixel.FlxState;
 import org.flixel.FlxText;
-import data.Library;
+import data.AssetsLibrary;
 import org.flixel.plugin.photonstorm.FlxGridOverlay;
 import utils.Colors;
 import utils.Utils;
@@ -27,11 +27,11 @@ class MenuState extends BasicState {
 		if (SettingsState.settings.data.sounds == null) {
 			SettingsState.settings.data.sounds= true;
 		}
-		Library.music = SettingsState.settings.data.music;
-		Library.sounds = SettingsState.settings.data.sounds;
+		AssetsLibrary.music = SettingsState.settings.data.music;
+		AssetsLibrary.sounds = SettingsState.settings.data.sounds;
 		
 		
-		Utils.playMusic(Library.getMusic(MENU));
+		Utils.playMusic(AssetsLibrary.getMusic(MENU));
 		
 		#if keyboard
 		FlxG.mouse.show();
@@ -39,7 +39,7 @@ class MenuState extends BasicState {
 		
 		FlxG.fade(0, 0.5, true, null, true);
 		
-		bg = new FlxSprite(0, 0, Library.getFilename(Image.BG));
+		bg = new FlxSprite(0, 0, AssetsLibrary.getFilename(Image.BG));
 		add(bg);
 		var t;
 		#if keyboard

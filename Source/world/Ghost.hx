@@ -4,7 +4,7 @@ import com.eclecticdesignstudio.motion.Actuate;
 import org.flixel.FlxG;
 import org.flixel.FlxPoint;
 import org.flixel.FlxSprite;
-import data.Library;
+import data.AssetsLibrary;
 import data.Image;
 import org.flixel.FlxU;
 import utils.Colors;
@@ -22,7 +22,7 @@ class Ghost extends WarpSprite {
 		super(level);
 		this.type = Type.createEnum(GhostType, type);
 		
-		loadGraphic(Library.getFilename(Image.GHOST), true, true, 5, 5);
+		loadGraphic(AssetsLibrary.getFilename(Image.GHOST), true, true, 5, 5);
 		addAnimation("walk", [0, 1], 5);
 		play("walk");
 		setColor(shade = Reflect.field(Colors, type));
@@ -90,8 +90,8 @@ class Ghost extends WarpSprite {
 						
 						var p = level.lookAround(tx, ty);
 						
-						tx = Std.int(p.x*Library.tileSize);		
-						ty = Std.int(p.y * Library.tileSize);
+						tx = Std.int(p.x*AssetsLibrary.tileSize);		
+						ty = Std.int(p.y * AssetsLibrary.tileSize);
 					}
 				}
 					

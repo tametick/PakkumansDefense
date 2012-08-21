@@ -1,6 +1,6 @@
 package ui;
 
-import data.Library;
+import data.AssetsLibrary;
 import utils.Utils;
 import org.flixel.plugin.photonstorm.FlxButtonPlus;
 
@@ -41,7 +41,7 @@ class Selectable extends FlxButtonPlus {
 		}
 		
 		if(!noSound) {
-			Utils.play(Library.getSound(CLICK));
+			Utils.play(AssetsLibrary.getSound(CLICK));
 			
 			// don't check the parent if setting silently (normally that's just init code)
 			if (owner != null) {
