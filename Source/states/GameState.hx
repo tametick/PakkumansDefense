@@ -15,7 +15,6 @@ import nme.display.Shape;
 import nme.display.StageQuality;
 import nme.geom.Point;
 import nme.Lib;
-import nme.ui.MultitouchInputMode;
 import nme.Vector;
 import org.flixel.FlxG;
 import org.flixel.FlxGroup;
@@ -774,8 +773,13 @@ class GameState extends BasicState {
 	}
 	
 	function hideInfoText(info:FlxText, visible:Bool) {
+		if (members == null) {
+			info.destroy();
+			return;
+		}
+		
 		info.visible = visible;
-		if (!visible && info!=null) {
+		if (!visible && info!=null ) {
 			remove(info);
 			info.destroy();
 		}
