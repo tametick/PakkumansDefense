@@ -3,6 +3,8 @@ package states;
 import com.eclecticdesignstudio.motion.Actuate;
 import com.eclecticdesignstudio.motion.easing.Linear;
 import data.Library;
+import data.Image;
+import data.Sound;
 import data.Score;
 import haxe.Log;
 import nme.display.Bitmap;
@@ -600,7 +602,8 @@ class GameState extends BasicState {
 			}
 			if (sec != level.player.lastbeep) {
 				level.player.lastbeep = sec;
-				Utils.play(Library.getSound(TIMER));
+				var s = Sound.TIMER;
+				Utils.play(Library.getSound(s));
 			}
 			
 		}

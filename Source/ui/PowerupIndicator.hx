@@ -1,5 +1,6 @@
 package ui;
 import data.Library;
+import data.Image;
 import nme.display.BitmapData;
 import org.flixel.FlxSprite;
 import utils.Colors;

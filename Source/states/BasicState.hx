@@ -9,6 +9,7 @@ import org.flixel.FlxG;
 import org.flixel.FlxPoint;
 import org.flixel.FlxState;
 import org.flixel.FlxText;
+import data.Image;
 
 class BasicState extends FlxState {
 	static var settings:Bitmap;

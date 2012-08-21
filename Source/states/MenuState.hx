@@ -10,6 +10,7 @@ import data.Library;
 import org.flixel.plugin.photonstorm.FlxGridOverlay;
 import utils.Colors;
 import utils.Utils;
+import data.Image;
 
 class MenuState extends BasicState {
 	var bg:FlxSprite;

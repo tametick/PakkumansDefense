@@ -1,6 +1,8 @@
 package world;
 
 import data.Library;
+import data.Image;
+import data.Sound;
 import world.Powerup;
 
 import org.flixel.FlxG;

@@ -9,6 +9,7 @@ import ui.Radio;
 import ui.Tick;
 import utils.Colors;
 import states.GameState;
+import data.Image;
 
 class SettingsState extends BasicState {
 	var title:FlxText;

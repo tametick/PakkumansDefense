@@ -10,6 +10,7 @@ import org.flixel.plugin.photonstorm.FlxButtonPlus;
 import org.flixel.plugin.photonstorm.FlxGridOverlay;
 import data.Library;
 import utils.Colors;
+import data.Image;
 
 class LevelSelectState extends BasicState {
 	static var levelsW = 8;

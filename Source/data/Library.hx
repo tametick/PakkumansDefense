@@ -9,6 +9,9 @@ import org.flixel.FlxG;
 import org.flixel.FlxSave;
 import states.SettingsState;
 import states.GameState;
+import data.Image;
+import data.Music;
+import data.Sound;
 
 class Library {
 	public static inline var tileSize = 8;
@@ -56,7 +59,7 @@ class Library {
 		return cast(assets.get(name), Font);
 	}
 	
-	public static function getSound(s:Sound):nme.media.Sound {
+	public static function getSound(s:data.Sound):nme.media.Sound {
 		var name = Library.getFilename(s);
 		if (!assets.exists(name)){
 			assets.set(name, Assets.getSound(name));
@@ -87,54 +90,7 @@ class Library {
 	
 }
 
-enum Image {
-	BG;
-	HUD_OVERLAY;
-	BUTTONS_OVERLAY_T;
-	BUTTONS_OVERLAY_T2;
-	BUTTONS_OVERLAY_T2R;
-	HIGHSCORE;
-	LEVEL_SELECT;
-	CURSOR;
-	GHOST;
-	PAKKU;
-	ARROW;
-	BIG_ARROW;
-	TOWER;
-	BUTTON;
-	BUTTON_ACTIVE;
-	TICK;
-	TICK_SELECTED;
-	RADIO;
-	RADIO_SELECTED;
-	CLICK_MAP;
-	CLICK_MAP_PAD;
-	CLICK_MAP_PAD_L;
-	CASH;
-	FREEZE;
-	SHOTGUN;
-	FRUIT;
-	HASTE;
-	SETTINGS;
-	SETTINGS_OK;
-	CONFUSION;
-	INSTATOWER;
-}
 
-enum Sound {
-	CLICK;
-	CASH_REGISTER;
-	GHOST_HIT;
-	MONEY;
-	TOWER_SHOT;
-	DEATH;
-	POWERUP;
-	ERROR;
-	FRUIT;
-	TIMER;
-}
 
-enum Music {
-	THEME;
-	MENU;
-}
+
+

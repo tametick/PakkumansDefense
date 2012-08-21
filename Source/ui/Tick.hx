@@ -1,5 +1,6 @@
 package ui;
 import data.Library;
+import data.Image;
 import org.flixel.FlxSprite;
 
 

@@ -1,5 +1,6 @@
 package world;
 import data.Library;
+import data.Image;
 import org.flixel.FlxG;
 import org.flixel.FlxPoint;
 import utils.Colors;

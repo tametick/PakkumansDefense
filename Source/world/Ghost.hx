@@ -5,6 +5,7 @@ import org.flixel.FlxG;
 import org.flixel.FlxPoint;
 import org.flixel.FlxSprite;
 import data.Library;
+import data.Image;
 import org.flixel.FlxU;
 import utils.Colors;
 import states.GameState;

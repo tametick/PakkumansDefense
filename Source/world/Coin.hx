@@ -1,9 +1,11 @@
 package world;
 import data.Library;
+import data.Sound;
 import org.flixel.FlxPoint;
 import states.GameState;
 import utils.Colors;
 import org.flixel.FlxG;
+import data.Image;
 
 
 class Coin extends WarpSprite {

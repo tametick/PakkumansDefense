@@ -3,6 +3,8 @@ package world;
 import air.update.events.StatusFileUpdateErrorEvent;
 import com.eclecticdesignstudio.motion.Actuate;
 import data.Library;
+import data.Image;
+import data.Sound;
 import nme.display.Bitmap;
 import nme.Lib;
 import nme.ui.Multitouch;
@@ -286,7 +288,7 @@ class Player extends WarpSprite {
 		}
 	}
 	
-	public function swipe(e:TransformGestureEvent){
+/*	public function swipe(e:TransformGestureEvent){
 		if (e.offsetX == 1) {
 			touch = RIGHT; 
 		} else
@@ -302,7 +304,7 @@ class Player extends WarpSprite {
 			touch = TOWER;
 		}
 		
-	}
+	}*/
 	public function spawnTower() {
 		thinking = false;
 		
