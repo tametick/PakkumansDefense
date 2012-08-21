@@ -287,7 +287,7 @@ class Player extends WarpSprite {
 			touch = TOWER;
 		}
 	}
-	
+	/*
 /*	public function swipe(e:TransformGestureEvent){
 		if (e.offsetX == 1) {
 			touch = RIGHT; 
@@ -305,6 +305,7 @@ class Player extends WarpSprite {
 		}
 		
 	}*/
+	*/
 	public function spawnTower() {
 		thinking = false;
 		
