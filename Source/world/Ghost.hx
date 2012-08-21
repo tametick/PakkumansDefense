@@ -12,7 +12,7 @@ import world.Powerup;
 import utils.Utils;
 
 class Ghost extends WarpSprite {
-	var shade:UInt;
+	var shade:Int;
 	var type:GhostType;
 	public var bloodSplosion:Splosion;
 

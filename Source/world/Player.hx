@@ -19,7 +19,6 @@ import utils.Colors;
 import utils.Utils;
 import nme.display.BitmapData;
 import world.Powerup;
-import flash.events.TransformGestureEvent;
 
 class Player extends WarpSprite {
 	public var coins:Int;
