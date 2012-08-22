@@ -67,8 +67,6 @@ class GameState extends BasicState {
 	public var screenWidth:Int;
 	public var screenHeight:Int;
 	
-	var mouse:FlxText;
-	
 	public var help:Int;
 	var help1:FlxGroup;
 	var help2:FlxGroup;
@@ -312,10 +310,7 @@ class GameState extends BasicState {
 		
 		screenWidth = Std.int(FlxG.width * 2 / 3);
 		screenHeight = Std.int(FlxG.height * 2 / 3);
-		
-		mouse = new FlxText(0, 0, 40);
-		mouse.scrollFactor.x = mouse.scrollFactor.y = 0;
-		
+				
 		if (hud == null) {
 			hud = new Bitmap(AssetsLibrary.getImage(Image.HUD_OVERLAY));
 			hud.width *= 2;
@@ -495,10 +490,6 @@ class GameState extends BasicState {
 		
 		FlxG.camera.scroll.y = -AssetsLibrary.tileSize * 1.5;
 		FlxG.camera.scroll.x = -gap/2;
-		
-		if (AssetsLibrary.debug) {
-			add(mouse);
-		}
 			
 		FlxG.camera.setZoom(3);
 		
