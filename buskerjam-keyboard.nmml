@@ -28,4 +28,6 @@
 	<haxedef name="fdb" if="target_flash" />
 	<haxedef name="keyboard" if="target_flash" />
 	
+	<set name="VSDEBUG" value="C:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\Common7\\IDE\\VCExpress.exe" />
+	
 </project>

@@ -1,0 +1,1 @@
+nme run buskerjam-keyboard.nmml windows -debug -vsdebug
