@@ -558,13 +558,14 @@ class GameState extends BasicState {
 		
 		bg = FlxGridOverlay.create(AssetsLibrary.tileSize, AssetsLibrary.tileSize, Std.int(level.width), Std.int(level.height), false, true, c0, c1);
 		
-				TileSheetManager.setTileSheetIndex(level.getTileSheetIndex(), -TileSheetManager.getMaxIndex());
+		#if !flash
+		TileSheetManager.setTileSheetIndex(level.getTileSheetIndex(), -TileSheetManager.getMaxIndex());
 		TileSheetManager.setTileSheetIndex(bg.getTileSheetIndex(), -TileSheetManager.getMaxIndex());
 		//TileSheetManager.setTileSheetIndex(level.coin.getTileSheetIndex(), TileSheetManager.getMaxIndex());
 		TileSheetManager.setTileSheetIndex(level.player.getTileSheetIndex(), TileSheetManager.getMaxIndex());
 		TileSheetManager.setTileSheetIndex(level.player.arrow.getTileSheetIndex(), TileSheetManager.getMaxIndex());
-
-		level.player.getTileSheetIndex();
+		#end
+		
 		add(bg);
 		add(level);
 		add(level.coins);
