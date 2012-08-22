@@ -80,10 +80,12 @@ class Level extends FlxTilemap {
 		var y = 0;
 		
 		var bigCX, bigCY;
+		var tries = 0;
 		do {
 			bigCX = Utils.randomInt(Std.int(AssetsLibrary.levelW / 2)-2)+1;
-			bigCY = Utils.randomInt(Std.int(AssetsLibrary.levelH / 2)-2)+1;
-		} while(map[bigCY*(AssetsLibrary.levelW)+bigCX]!=0);
+			bigCY = Utils.randomInt(Std.int(AssetsLibrary.levelH / 2) - 2) + 1;
+			tries++;
+		} while(map[bigCY*(AssetsLibrary.levelW)+bigCX]!=0 && tries<100);
 
 		for (mi in 0...map.length) {
 			if (x >= AssetsLibrary.levelW) {
@@ -150,7 +152,7 @@ class Level extends FlxTilemap {
 			
 			posTaken = FlxG.overlap(ghosts, g);
 			tries++;
-		} while (FlxU.getDistance(pos, playerPos) < 5 || posTaken || tries>20 || FlxU.getDistance(movePoint(pos, 10), movePoint(playerPos, 10)) < 5);
+		} while ((FlxU.getDistance(pos, playerPos) < 5 || posTaken  || FlxU.getDistance(movePoint(pos, 10), movePoint(playerPos, 10)) < 5)&& tries<50);
 		
 		if(g!=null)
 			ghosts.add(g);
@@ -198,11 +200,12 @@ class Level extends FlxTilemap {
 		var x = 0;
 		var y = 0;
 		var map = getData();
-		
+		var tries = 0;
 		do {
+			tries++;
 			x = Utils.randomInt(AssetsLibrary.levelW);
 			y = Utils.randomInt(AssetsLibrary.levelH);			
-		} while (Utils.get(map, AssetsLibrary.levelW, x, y) != 0);
+		} while (Utils.get(map, AssetsLibrary.levelW, x, y) != 0 && tries<100);
 		
 		return new FlxPoint(x, y);
 	}
