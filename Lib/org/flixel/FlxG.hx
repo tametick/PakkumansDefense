@@ -691,7 +691,7 @@ class FlxG
 		return sound;
 	}
 	
-	#if android
+	#if !flash
 	private static var _soundCache:Hash<Sound> = new Hash<Sound>();
 	private static var _soundTransform:SoundTransform = new SoundTransform();
 	

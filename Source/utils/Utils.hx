@@ -36,12 +36,21 @@ class Utils {
 	}
 	#end
 	
+	#if flash
 	public static function play(snd:nme.media.Sound) {
+	#else
+	public static function play(snd:String) {
+	#end
 		if(AssetsLibrary.sounds) {
 			FlxG.play(snd);
 		}
 	}
+	
+	#if flash
 	public static function playMusic(mus:nme.media.Sound) {
+	#else
+	public static function playMusic(mus:String) {
+	#end
 		var vol = 0.0;
 		if(AssetsLibrary.music) {
 			vol = 1;

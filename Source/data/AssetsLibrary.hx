@@ -59,6 +59,7 @@ class AssetsLibrary {
 		return cast(assets.get(name), Font);
 	}
 	
+	#if flash
 	public static function getSound(s:data.Sound):nme.media.Sound {
 		var name = AssetsLibrary.getFilename(s);
 		if (!assets.exists(name)){
@@ -66,7 +67,14 @@ class AssetsLibrary {
 		}
 		return cast(assets.get(name), nme.media.Sound);
 	}
+
+	#else
+	public static function getSound(s:data.Sound):String {
+		return AssetsLibrary.getFilename(s);
+	}
+	#end
 	
+	#if flash
 	public static function getMusic(s:Music):nme.media.Sound {
 		var name = AssetsLibrary.getFilename(s);
 		if (!assets.exists(name)){
@@ -74,6 +82,11 @@ class AssetsLibrary {
 		}
 		return cast(assets.get(name), nme.media.Sound);
 	}
+	#else
+	public static function getMusic(s:Music):String {
+		return AssetsLibrary.getFilename(s);
+	}
+	#end
 		
 	public static function getFilename(i:Dynamic):String {
 		var suffix = "";
