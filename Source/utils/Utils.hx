@@ -20,7 +20,8 @@ class Utils {
 		return null;
 	}
 	
-	public static function arrayToVector<T>(arr:Array<T>):Vector<T> {
+	//public static function arrayToVector<T>(arr:Array<T>):Vector<T> {
+	public static function arrayToVector(arr:Array<Float>):Vector<Float> {
 		#if flash
 		return Vector.ofArray(arr);
 		#else
