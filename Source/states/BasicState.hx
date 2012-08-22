@@ -10,7 +10,7 @@ import nme.Lib;
 import org.flixel.FlxG;
 import org.flixel.FlxPoint;
 import org.flixel.FlxState;
-import org.flixel.FlxText;
+import org.flixel.FlxTextField;
 import data.Image;
 
 class BasicState extends FlxState {
@@ -99,7 +99,7 @@ function goBack() {
 	}
 	
 	function newText(x:Float, y:Float, w:Int, text:String, color:Int, ?alignment:String=null) {
-		var text = new FlxText(x,y,w,text);
+		var text = new FlxTextField(x,y,w,text);
 		text.setColor(color);
 		text.setFont(AssetsLibrary.getFont().fontName);
 		if(alignment!=null)

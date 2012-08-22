@@ -4,7 +4,7 @@ import org.flixel.FlxG;
 import org.flixel.FlxGroup;
 import org.flixel.FlxSave;
 import org.flixel.FlxSprite;
-import org.flixel.FlxText;
+import org.flixel.FlxTextField;
 import ui.Radio;
 import ui.Tick;
 import utils.Colors;
@@ -12,7 +12,7 @@ import states.GameState;
 import data.Image;
 
 class SettingsState extends BasicState {
-	var title:FlxText;
+	var title:FlxTextField;
 	var buttons:FlxGroup;
 	var labels:FlxGroup;
 	

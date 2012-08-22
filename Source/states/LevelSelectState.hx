@@ -5,7 +5,7 @@ import org.flixel.FlxG;
 import org.flixel.FlxGroup;
 import org.flixel.FlxSave;
 import org.flixel.FlxSprite;
-import org.flixel.FlxText;
+import org.flixel.FlxTextField;
 import org.flixel.plugin.photonstorm.FlxButtonPlus;
 import org.flixel.plugin.photonstorm.FlxGridOverlay;
 import data.AssetsLibrary;
@@ -17,7 +17,7 @@ class LevelSelectState extends BasicState {
 	static var levelsH = 5;
 
 	var levels:FlxSave;
-	var title:FlxText;
+	var title:FlxTextField;
 	var buttons:FlxGroup;
 	
 	override public function create() {

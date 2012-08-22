@@ -7,7 +7,7 @@ import org.flixel.FlxG;
 import org.flixel.FlxSave;
 import org.flixel.FlxSprite;
 import org.flixel.FlxState;
-import org.flixel.FlxText;
+import org.flixel.FlxTextField;
 import org.flixel.plugin.photonstorm.FlxGridOverlay;
 import utils.Colors;
 import data.Image;
@@ -17,7 +17,7 @@ class HighScoreState extends BasicState {
 	static var scoresToShow = 16;
 	
 	var scores:FlxSave;
-	var title:FlxText;
+	var title:FlxTextField;
 	override public function create() {
 		super.create();
 		

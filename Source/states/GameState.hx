@@ -25,7 +25,7 @@ import org.flixel.FlxPoint;
 import org.flixel.FlxSave;
 import org.flixel.FlxSprite;
 import org.flixel.FlxState;
-import org.flixel.FlxText;
+import org.flixel.FlxTextField;
 import org.flixel.plugin.photonstorm.baseTypes.Bullet;
 import org.flixel.plugin.photonstorm.FlxGridOverlay;
 import org.flixel.system.input.Input;
@@ -70,6 +70,9 @@ class GameState extends BasicState {
 	public var help:Int;
 	var help1:FlxGroup;
 	var help2:FlxGroup;
+	
+	var help1Text:FlxTextField;
+	var help2Text:FlxTextField;
 
 	public static var controlScheme(getCtrlScheme, never):CtrlMode;
 	static function getCtrlScheme():CtrlMode {		
@@ -140,11 +143,11 @@ class GameState extends BasicState {
 		return levelNumber;
 	}
 	
-	var levelCounter:FlxText;
-	public var coinCounter:FlxText;
-	var ghostCounter:FlxText;
-	public var towerCounter:FlxText;
-	public var timeCounter:FlxText;
+	var levelCounter:FlxTextField;
+	public var coinCounter:FlxTextField;
+	var ghostCounter:FlxTextField;
+	public var towerCounter:FlxTextField;
+	public var timeCounter:FlxTextField;
 	
 	var killedGhosts:Int;
 	var spawnRate:Float;
@@ -337,7 +340,7 @@ class GameState extends BasicState {
 		help1.add(help1Bg);
 		
 		#if keyboard
-		var help1Text = new FlxText(-2, 0, screenWidth, "Arrows/WASD to change direction");
+		help1Text = new FlxTextField(-2, 0, screenWidth, "Arrows/WASD to change direction");
 		#else
 	/*	var instructions;
 		var instructions1;
@@ -352,7 +355,7 @@ class GameState extends BasicState {
 				instructions = "Swipe to change direction";
 				instructions1 = "Tap to build towers";
 		}*/
-		var help1Text = new FlxText( -2, 0, screenWidth, instructions);
+		help1Text = new FlxTextField( -2, 0, screenWidth, instructions);
 		var w1:FlxSprite = null, e1:FlxSprite = null, n1:FlxSprite = null, s1:FlxSprite = null;
 		if(controlScheme==CtrlMode.OVERLAY) {
 			w1 = new FlxSprite(0, 0);
@@ -396,9 +399,9 @@ class GameState extends BasicState {
 		help2.add(help2Bg);
 		
 		#if keyboard
-		var help2Text = new FlxText(0, 0, screenWidth, "Space bar to build towers");
+		help2Text = new FlxTextField(0, 0, screenWidth, "Space bar to build towers");
 		#else
-		var help2Text = new FlxText(0, 0, screenWidth, instructions1);
+		help2Text = new FlxTextField(0, 0, screenWidth, instructions1);
 		if(controlScheme==CtrlMode.OVERLAY) {
 			var w2 = new FlxSprite(0, 0);
 			var e2 = new FlxSprite(0, 0);
@@ -612,10 +615,12 @@ class GameState extends BasicState {
 				if (help == 1) {
 					help = 2;
 					remove(help1);
+					help1Text.kill();
 					add(help2);
 				} else {
 					help = 3;
 					remove(help2);
+					help2Text.kill();
 				}
 			}
 			
@@ -775,7 +780,7 @@ class GameState extends BasicState {
 		Actuate.timer(1).onComplete(hideInfoText, [powerupInfo, false] );
 	}
 	
-	function hideInfoText(info:FlxText, visible:Bool) {
+	function hideInfoText(info:FlxTextField, visible:Bool) {
 		if (members == null) {
 			info.destroy();
 			return;
