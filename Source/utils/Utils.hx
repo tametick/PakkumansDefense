@@ -20,20 +20,21 @@ class Utils {
 		return null;
 	}
 	
-	//public static function arrayToVector<T>(arr:Array<T>):Vector<T> {
+	
+	#if flash
 	public static function arrayToVector(arr:Array<Float>):Vector<Float> {
-		#if flash
 		return Vector.ofArray(arr);
-		#else
+	}
+	#else
+	public static function arrayToVector<T>(arr:Array<T>):Vector<T> {
 		var vect:Vector<T> = new Vector<T>();
 		var j = 0;
 		for (i in arr) {
 			vect.insert(j++, i);
 		}
-		return vect;
-		
-		#end
+		return vect;	
 	}
+	#end
 	
 	public static function play(snd:nme.media.Sound) {
 		if(AssetsLibrary.sounds) {
