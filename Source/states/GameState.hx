@@ -17,6 +17,7 @@ import nme.display.Shape;
 import nme.display.StageQuality;
 import nme.geom.Point;
 import nme.Lib;
+import nme.text.TextField;
 import nme.Vector;
 import org.flixel.FlxG;
 import org.flixel.FlxGroup;
@@ -143,11 +144,11 @@ class GameState extends BasicState {
 		return levelNumber;
 	}
 	
-	var levelCounter:FlxTextField;
-	public var coinCounter:FlxTextField;
-	var ghostCounter:FlxTextField;
-	public var towerCounter:FlxTextField;
-	public var timeCounter:FlxTextField;
+	var levelCounter:TextField;
+	public var coinCounter:TextField;
+	var ghostCounter:TextField;
+	public var towerCounter:TextField;
+	public var timeCounter:TextField;
 	
 	var killedGhosts:Int;
 	var spawnRate:Float;
@@ -446,25 +447,22 @@ class GameState extends BasicState {
 		level.player.setClickMap();
 		//add(cursor);
 		
-		levelCounter = newText(0, -1, Std.int(FlxG.width - level.width - 8), "Level "+levelNumber,Colors.LGREEN);
-		levelCounter.scrollFactor.x = 0;
-		levelCounter.scrollFactor.y = 0;
+		var zoom = 3;
 		
-		timeCounter = newText(screenWidth/5, -1, Std.int(FlxG.width - level.width - 8), "2:00",Colors.ORANGE);
-		timeCounter.scrollFactor.x = 0;
-		timeCounter.scrollFactor.y = 0;
+		levelCounter = Utils.newTextField(0*zoom, 1, "Level " + levelNumber, Colors.LGREEN);
+		FlxG._game.addChildAt(levelCounter, index);
 		
-		coinCounter = newText(screenWidth/6*2, -1, Std.int(FlxG.width - level.width - 8), "$: "+AssetsLibrary.towerCost,Colors.LBLUE);
-		coinCounter.scrollFactor.x = 0;
-		coinCounter.scrollFactor.y = 0;
+		timeCounter = Utils.newTextField(zoom * screenWidth / 5, 1, "2:00", Colors.ORANGE);
+		FlxG._game.addChildAt(timeCounter, index);
 		
-		ghostCounter = newText(screenWidth/6*3, -1, Std.int(FlxG.width - level.width - 8), "Kills: 0", Colors.PINK);
-		ghostCounter.scrollFactor.x = 0;
-		ghostCounter.scrollFactor.y = 0;
+		coinCounter = Utils.newTextField(zoom * screenWidth / 6 * 2, 1, "$: " + AssetsLibrary.towerCost, Colors.LBLUE);
+		FlxG._game.addChildAt(coinCounter, index);
 		
-		towerCounter = newText(screenWidth/6*4.5, -1, Std.int(FlxG.width - level.width - 8), "Towers: 0",Colors.YELLOW);
-		towerCounter.scrollFactor.x = 0;
-		towerCounter.scrollFactor.y = 0;
+		ghostCounter = Utils.newTextField(zoom * screenWidth / 6 * 3, 1, "Kills: 0", Colors.PINK);
+		FlxG._game.addChildAt(ghostCounter, index);
+		
+		towerCounter = Utils.newTextField(zoom * screenWidth / 6 * 4.5, 1, "Towers: 0", Colors.YELLOW);
+		FlxG._game.addChildAt(towerCounter, index);
 		
 		FlxG.worldBounds.x -= 50; 
 		FlxG.worldBounds.y -= 50;
@@ -478,7 +476,7 @@ class GameState extends BasicState {
 		FlxG.camera.scroll.y = -AssetsLibrary.tileSize * 1.5;
 		FlxG.camera.scroll.x = -gap/2;
 			
-		FlxG.camera.setZoom(3);
+		FlxG.camera.setZoom(zoom);
 		
 	}
 	
@@ -583,9 +581,9 @@ class GameState extends BasicState {
 		timeCounter.text += min;
 		if(level.player.time<10){
 			if (dec < 0.5) {
-				timeCounter.setColor(Colors.RED);
+				timeCounter.textColor = Colors.RED;
 			} else {
-				timeCounter.setColor(Colors.ORANGE);
+				timeCounter.textColor = Colors.ORANGE;
 			}
 			if (sec != level.player.lastbeep) {
 				level.player.lastbeep = sec;
@@ -799,13 +797,13 @@ class GameState extends BasicState {
 		
 		bg.destroy();
 		bg = null;
-		levelCounter.destroy();
+		//levelCounter.destroy();
 		levelCounter = null;
-		coinCounter.destroy();
+		//coinCounter.destroy();
 		coinCounter = null;
-		ghostCounter.destroy();
+		//ghostCounter.destroy();
 		ghostCounter = null;
-		towerCounter.destroy();
+		//towerCounter.destroy();
 		towerCounter = null;
 		
 		up = null;

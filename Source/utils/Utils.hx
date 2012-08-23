@@ -201,7 +201,7 @@ class Utils {
 		return arr;
 	}
 	
-	public static function newTextField(text:String, size:Int, color:Int, underline:Bool = false):TextField {
+	public static function newTextField(x:Float, y:Float,text:String, color:Int, ?size:Int=24,  underline:Bool = false):TextField {
 		var label = new TextField();
 		var format = new TextFormat();
 		format.font = "eight2empire";
@@ -213,6 +213,8 @@ class Utils {
 		label.text = text;
 		format = null;
 		label.textColor = color;
+		label.x = x;
+		label.y = y;
 		
 		return label;
 	}
