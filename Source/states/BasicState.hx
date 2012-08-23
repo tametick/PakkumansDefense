@@ -98,7 +98,7 @@ class BasicState extends FlxState {
 		return false;
 	}
 	
-	function newText(x:Float, y:Float, w:Int, text:String, color:Int, ?alignment:String=null) {
+	function newText(x:Float, y:Float, w:Int, text:String, color:Int, ?alignment:String=null):FlxTextField {
 		var text = new FlxTextField(x,y,w,text);
 		text.setColor(color);
 		text.setFont(AssetsLibrary.getFont().fontName);

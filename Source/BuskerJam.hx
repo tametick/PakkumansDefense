@@ -84,6 +84,7 @@ class BuskerJam extends FlxGame {
 	static function nothing(e:Event) {	}
 	
 	public function new() {
+		SettingsState.initSettings();
 		if(AssetsLibrary.debug) {
 			super(240, 160, GameState, 2, 30, 30);
 			forceDebugger = true;

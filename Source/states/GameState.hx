@@ -755,7 +755,7 @@ class GameState extends BasicState {
 	
 	function showInfoText(text:String, x:Float, y:Float, destX:Float, destY:Float, color:Int) {
 		var powerupInfo = newText(0, 0, Std.int(FlxG.width - level.width - 8), "a",Colors.LGREEN);
-		powerupInfo.visible = true;
+		powerupInfo.setVisibility(true);
 		powerupInfo.text = text;
 		powerupInfo.x = x;
 		powerupInfo.y = y;
@@ -773,7 +773,8 @@ class GameState extends BasicState {
 		info.visible = visible;
 		if (!visible && info!=null ) {
 			remove(info);
-			info.destroy();
+			info.kill();
+			// todo - check that not .destroy()-ing doesn't leak memory
 		}
 	}
 	

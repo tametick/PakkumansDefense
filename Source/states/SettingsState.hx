@@ -23,6 +23,19 @@ class SettingsState extends BasicState {
 	
 	public static var settings:FlxSave;
 	
+	public static function initSettings() {
+		SettingsState.settings = new FlxSave();
+		SettingsState.settings.bind("Settings");
+		if (SettingsState.settings.data.music == null) {
+			SettingsState.settings.data.music = true;
+		}
+		if (SettingsState.settings.data.sounds == null) {
+			SettingsState.settings.data.sounds= true;
+		}
+		AssetsLibrary.music = SettingsState.settings.data.music;
+		AssetsLibrary.sounds = SettingsState.settings.data.sounds;
+	}
+	
 	override public function create() {
 		super.create();
 		
