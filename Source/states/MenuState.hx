@@ -5,7 +5,7 @@ import org.flixel.FlxG;
 import org.flixel.FlxSave;
 import org.flixel.FlxSprite;
 import org.flixel.FlxState;
-import org.flixel.FlxText;
+import org.flixel.FlxTextField;
 import data.AssetsLibrary;
 import org.flixel.plugin.photonstorm.FlxGridOverlay;
 import utils.Colors;
@@ -14,21 +14,10 @@ import data.Image;
 
 class MenuState extends BasicState {
 	var bg:FlxSprite;
-	var text:FlxText;
+	var text:FlxTextField;
 
 	override public function create():Void {
 		super.create();
-		
-		SettingsState.settings = new FlxSave();
-		SettingsState.settings.bind("Settings");
-		if (SettingsState.settings.data.music == null) {
-			SettingsState.settings.data.music = true;
-		}
-		if (SettingsState.settings.data.sounds == null) {
-			SettingsState.settings.data.sounds= true;
-		}
-		AssetsLibrary.music = SettingsState.settings.data.music;
-		AssetsLibrary.sounds = SettingsState.settings.data.sounds;
 		
 		
 		Utils.playMusic(AssetsLibrary.getMusic(MENU));
@@ -75,11 +64,11 @@ class MenuState extends BasicState {
 	}
 	
 	override public function destroy():Void {
-		super.destroy();
-		
 		bg.destroy();
 		bg = null;
 		text.destroy();
 		text = null;
+		
+		super.destroy();
 	}
 }

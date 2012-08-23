@@ -17,6 +17,7 @@ import nme.display.Shape;
 import nme.display.StageQuality;
 import nme.geom.Point;
 import nme.Lib;
+import nme.text.TextField;
 import nme.Vector;
 import org.flixel.FlxG;
 import org.flixel.FlxGroup;
@@ -25,7 +26,7 @@ import org.flixel.FlxPoint;
 import org.flixel.FlxSave;
 import org.flixel.FlxSprite;
 import org.flixel.FlxState;
-import org.flixel.FlxText;
+import org.flixel.FlxTextField;
 import org.flixel.plugin.photonstorm.baseTypes.Bullet;
 import org.flixel.plugin.photonstorm.FlxGridOverlay;
 import org.flixel.system.input.Input;
@@ -67,11 +68,12 @@ class GameState extends BasicState {
 	public var screenWidth:Int;
 	public var screenHeight:Int;
 	
-	var mouse:FlxText;
-	
 	public var help:Int;
 	var help1:FlxGroup;
 	var help2:FlxGroup;
+	
+	var help1Text:FlxTextField;
+	var help2Text:FlxTextField;
 
 	public static var controlScheme(getCtrlScheme, never):CtrlMode;
 	static function getCtrlScheme():CtrlMode {		
@@ -142,11 +144,11 @@ class GameState extends BasicState {
 		return levelNumber;
 	}
 	
-	var levelCounter:FlxText;
-	public var coinCounter:FlxText;
-	var ghostCounter:FlxText;
-	public var towerCounter:FlxText;
-	public var timeCounter:FlxText;
+	var levelCounter:TextField;
+	public var coinCounter:TextField;
+	var ghostCounter:TextField;
+	public var towerCounter:TextField;
+	public var timeCounter:TextField;
 	
 	var killedGhosts:Int;
 	var spawnRate:Float;
@@ -168,22 +170,6 @@ class GameState extends BasicState {
 		Lib.stage.quality = StageQuality.LOW;
 		return bmp;
 	}
-	/*
-	function drawRectangle(v1x:Float, v1y:Float, v2x:Float, v2y:Float, v3x:Float, v3y:Float,v4x:Float, v4y:Float, ?alpha = 0.2, ?color = 0xffffff):Bitmap {
-		Lib.stage.quality = StageQuality.BEST;
-		var shape = new Shape();
-		//shape.graphics.lineStyle(1, color, alpha, false, null, null,JointStyle.ROUND);
-		shape.graphics.beginFill(color, alpha);
-		var rectangle = Vector.ofArray([v1x, v1y, v2x, v2y, v3x, v3y, v4x, v4y]);
-		shape.graphics.drawRect(rectangle);
-		shape.graphics.endFill();
-		
-		var bmp = new Bitmap(new BitmapData(160, 160, true, 0x00000000),PixelSnapping.AUTO,true);
-		bmp.bitmapData.draw(shape);
-		Lib.stage.quality = StageQuality.LOW;
-		return bmp;
-	}
-	*/
 	
 	public static function initController(scheme:CtrlMode) {
 		SettingsState.settings.data.controlScheme = Type.enumConstructor(scheme);
@@ -312,10 +298,7 @@ class GameState extends BasicState {
 		
 		screenWidth = Std.int(FlxG.width * 2 / 3);
 		screenHeight = Std.int(FlxG.height * 2 / 3);
-		
-		mouse = new FlxText(0, 0, 40);
-		mouse.scrollFactor.x = mouse.scrollFactor.y = 0;
-		
+				
 		if (hud == null) {
 			hud = new Bitmap(AssetsLibrary.getImage(Image.HUD_OVERLAY));
 			hud.width *= 2;
@@ -342,7 +325,7 @@ class GameState extends BasicState {
 		help1.add(help1Bg);
 		
 		#if keyboard
-		var help1Text = new FlxText(-2, 0, screenWidth, "Arrows/WASD to change direction");
+		help1Text = new FlxTextField(-2, 0, screenWidth, "Arrows/WASD to change direction");
 		#else
 	/*	var instructions;
 		var instructions1;
@@ -357,7 +340,7 @@ class GameState extends BasicState {
 				instructions = "Swipe to change direction";
 				instructions1 = "Tap to build towers";
 		}*/
-		var help1Text = new FlxText( -2, 0, screenWidth, instructions);
+		help1Text = new FlxTextField( -2, 0, screenWidth, instructions);
 		var w1:FlxSprite = null, e1:FlxSprite = null, n1:FlxSprite = null, s1:FlxSprite = null;
 		if(controlScheme==CtrlMode.OVERLAY) {
 			w1 = new FlxSprite(0, 0);
@@ -401,9 +384,9 @@ class GameState extends BasicState {
 		help2.add(help2Bg);
 		
 		#if keyboard
-		var help2Text = new FlxText(0, 0, screenWidth, "Space bar to build towers");
+		help2Text = new FlxTextField(0, 0, screenWidth, "Space bar to build towers");
 		#else
-		var help2Text = new FlxText(0, 0, screenWidth, instructions1);
+		help2Text = new FlxTextField(0, 0, screenWidth, instructions1);
 		if(controlScheme==CtrlMode.OVERLAY) {
 			var w2 = new FlxSprite(0, 0);
 			var e2 = new FlxSprite(0, 0);
@@ -464,25 +447,22 @@ class GameState extends BasicState {
 		level.player.setClickMap();
 		//add(cursor);
 		
-		levelCounter = newText(0, -1, Std.int(FlxG.width - level.width - 8), "Level "+levelNumber,Colors.LGREEN);
-		levelCounter.scrollFactor.x = 0;
-		levelCounter.scrollFactor.y = 0;
+		var zoom = 3;
 		
-		timeCounter = newText(screenWidth/5, -1, Std.int(FlxG.width - level.width - 8), "2:00",Colors.ORANGE);
-		timeCounter.scrollFactor.x = 0;
-		timeCounter.scrollFactor.y = 0;
+		levelCounter = Utils.newTextField(0*zoom, 1, "Level " + levelNumber, Colors.LGREEN);
+		FlxG._game.addChildAt(levelCounter, index);
 		
-		coinCounter = newText(screenWidth/6*2, -1, Std.int(FlxG.width - level.width - 8), "$: "+AssetsLibrary.towerCost,Colors.LBLUE);
-		coinCounter.scrollFactor.x = 0;
-		coinCounter.scrollFactor.y = 0;
+		timeCounter = Utils.newTextField(zoom * screenWidth / 5, 1, "2:00", Colors.ORANGE);
+		FlxG._game.addChildAt(timeCounter, index);
 		
-		ghostCounter = newText(screenWidth/6*3, -1, Std.int(FlxG.width - level.width - 8), "Kills: 0", Colors.PINK);
-		ghostCounter.scrollFactor.x = 0;
-		ghostCounter.scrollFactor.y = 0;
+		coinCounter = Utils.newTextField(zoom * screenWidth / 6 * 2, 1, "$: " + AssetsLibrary.towerCost, Colors.LBLUE);
+		FlxG._game.addChildAt(coinCounter, index);
 		
-		towerCounter = newText(screenWidth/6*4.5, -1, Std.int(FlxG.width - level.width - 8), "Towers: 0",Colors.YELLOW);
-		towerCounter.scrollFactor.x = 0;
-		towerCounter.scrollFactor.y = 0;
+		ghostCounter = Utils.newTextField(zoom * screenWidth / 6 * 3, 1, "Kills: 0", Colors.PINK);
+		FlxG._game.addChildAt(ghostCounter, index);
+		
+		towerCounter = Utils.newTextField(zoom * screenWidth / 6 * 4.5, 1, "Towers: 0", Colors.YELLOW);
+		FlxG._game.addChildAt(towerCounter, index);
 		
 		FlxG.worldBounds.x -= 50; 
 		FlxG.worldBounds.y -= 50;
@@ -495,12 +475,8 @@ class GameState extends BasicState {
 		
 		FlxG.camera.scroll.y = -AssetsLibrary.tileSize * 1.5;
 		FlxG.camera.scroll.x = -gap/2;
-		
-		if (AssetsLibrary.debug) {
-			add(mouse);
-		}
 			
-		FlxG.camera.setZoom(3);
+		FlxG.camera.setZoom(zoom);
 		
 	}
 	
@@ -578,9 +554,9 @@ class GameState extends BasicState {
 		add(level.powerupEffect);
 		
 		for (i in powerupIndicator) {
-					i.visible = false;
-					add(i);
-				}
+			i.visible = false;
+			add(i);
+		}
 		
 			
 		if(towerCounter!=null) {
@@ -605,9 +581,9 @@ class GameState extends BasicState {
 		timeCounter.text += min;
 		if(level.player.time<10){
 			if (dec < 0.5) {
-				timeCounter.setColor(Colors.RED);
+				timeCounter.textColor = Colors.RED;
 			} else {
-				timeCounter.setColor(Colors.ORANGE);
+				timeCounter.textColor = Colors.ORANGE;
 			}
 			if (sec != level.player.lastbeep) {
 				level.player.lastbeep = sec;
@@ -621,10 +597,12 @@ class GameState extends BasicState {
 				if (help == 1) {
 					help = 2;
 					remove(help1);
+					help1Text.kill();
 					add(help2);
 				} else {
 					help = 3;
 					remove(help2);
+					help2Text.kill();
 				}
 			}
 			
@@ -775,7 +753,11 @@ class GameState extends BasicState {
 	
 	function showInfoText(text:String, x:Float, y:Float, destX:Float, destY:Float, color:Int) {
 		var powerupInfo = newText(0, 0, Std.int(FlxG.width - level.width - 8), "a",Colors.LGREEN);
-		powerupInfo.visible = true;
+		#if flash
+		powerupInfo.visible=true;
+		#else
+		powerupInfo.setVisibility(true);
+		#end
 		powerupInfo.text = text;
 		powerupInfo.x = x;
 		powerupInfo.y = y;
@@ -784,16 +766,21 @@ class GameState extends BasicState {
 		Actuate.timer(1).onComplete(hideInfoText, [powerupInfo, false] );
 	}
 	
-	function hideInfoText(info:FlxText, visible:Bool) {
+	function hideInfoText(info:FlxTextField, visible:Bool) {
 		if (members == null) {
 			info.destroy();
 			return;
 		}
 		
-		info.visible = visible;
+		#if flash
+		info.visible=visible;
+		#else
+		info.setVisibility(visible);
+		#end
 		if (!visible && info!=null ) {
 			remove(info);
-			info.destroy();
+			info.kill();
+			// todo - check that not .destroy()-ing doesn't leak memory
 		}
 	}
 	
@@ -810,13 +797,13 @@ class GameState extends BasicState {
 		
 		bg.destroy();
 		bg = null;
-		levelCounter.destroy();
+		//levelCounter.destroy();
 		levelCounter = null;
-		coinCounter.destroy();
+		//coinCounter.destroy();
 		coinCounter = null;
-		ghostCounter.destroy();
+		//ghostCounter.destroy();
 		ghostCounter = null;
-		towerCounter.destroy();
+		//towerCounter.destroy();
 		towerCounter = null;
 		
 		up = null;

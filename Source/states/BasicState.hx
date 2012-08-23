@@ -10,7 +10,7 @@ import nme.Lib;
 import org.flixel.FlxG;
 import org.flixel.FlxPoint;
 import org.flixel.FlxState;
-import org.flixel.FlxText;
+import org.flixel.FlxTextField;
 import data.Image;
 
 class BasicState extends FlxState {
@@ -56,29 +56,27 @@ class BasicState extends FlxState {
 				#if flash
 				NativeApplication.nativeApplication.exit();
 				#end
-				}else{
-					BuskerJam.backButton = false;
-					goBack();
-				}
-		} else	if (settingsButtonPressed() || BuskerJam.menuButton ) {
-						BuskerJam.menuButton  = false;
-						if (Std.is(this, SettingsState)) {
-							
-							goBack();
-					
-						}else {
-							BuskerJam.returnToState = Type.getClass(this);
-							FlxG.switchState(new SettingsState());
-						}
-				}
+			} else{
+				BuskerJam.backButton = false;
+				goBack();
+			}
+		} else if (settingsButtonPressed() || BuskerJam.menuButton ) {
+			BuskerJam.menuButton  = false;
+			if (Std.is(this, SettingsState)) {
+				goBack();
+			} else {
+				BuskerJam.returnToState = Type.getClass(this);
+				FlxG.switchState(new SettingsState());
+			}
+		}
 		
 	}
 	
-function goBack() {
+	function goBack() {
 		var s = BuskerJam.returnToState;
 		if (s == null) {
 			s = MenuState;
-			}
+		}
 		BuskerJam.returnToState = null;
 		FlxG.switchState(Type.createInstance(s, []));
 	}
@@ -93,18 +91,23 @@ function goBack() {
 		var x = mousePoint.x * FlxG.camera.getScale().x; 
 		var y = mousePoint.y * FlxG.camera.getScale().y;
 		if (x > settings.x && x < settings.x + settings.width && y > settings.y && y < settings.y + settings.height) {
-			FlxG.mouse.reset(); return true;
+			FlxG.mouse.reset(); 
+			return true;
 		}
-	return false;
+		
+		return false;
 	}
 	
-	function newText(x:Float, y:Float, w:Int, text:String, color:Int, ?alignment:String=null) {
-		var text = new FlxText(x,y,w,text);
+	function newText(x:Float, y:Float, w:Int, text:String, color:Int, ?alignment:String=null):FlxTextField {
+		var text = new FlxTextField(x,y,w,text);
 		text.setColor(color);
 		text.setFont(AssetsLibrary.getFont().fontName);
 		if(alignment!=null)
 		text.setAlignment(alignment);
 		add(text);
+		#if !flash
+		text.setVisibility(true);
+		#end
 		
 		return text;
 	}	

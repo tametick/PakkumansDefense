@@ -7,7 +7,7 @@ import org.flixel.FlxG;
 import org.flixel.FlxSave;
 import org.flixel.FlxSprite;
 import org.flixel.FlxState;
-import org.flixel.FlxText;
+import org.flixel.FlxTextField;
 import org.flixel.plugin.photonstorm.FlxGridOverlay;
 import utils.Colors;
 import data.Image;
@@ -17,7 +17,7 @@ class HighScoreState extends BasicState {
 	static var scoresToShow = 16;
 	
 	var scores:FlxSave;
-	var title:FlxText;
+	var title:FlxTextField;
 	override public function create() {
 		super.create();
 		
@@ -44,11 +44,15 @@ class HighScoreState extends BasicState {
 		
 		title = newText(0, AssetsLibrary.tileSize, FlxG.width, "High Scores",Colors.WHITE,"center");
 		title.setSize(16);
+		#if !flash
+		// bug, in other targets it doesn't calculate height properly
+		title.height = 19.95;
+		#end
 		
 		print(sc);
 	}
 	
-	function print(scores:Array<Dynamic>) {
+	function print(scores:Array<Dynamic>) {		
 		var y = title.y + title.height;
 		
 		var pos = 0;

@@ -4,7 +4,7 @@ import org.flixel.FlxG;
 import org.flixel.FlxGroup;
 import org.flixel.FlxSave;
 import org.flixel.FlxSprite;
-import org.flixel.FlxText;
+import org.flixel.FlxTextField;
 import ui.Radio;
 import ui.Tick;
 import utils.Colors;
@@ -12,7 +12,7 @@ import states.GameState;
 import data.Image;
 
 class SettingsState extends BasicState {
-	var title:FlxText;
+	var title:FlxTextField;
 	var buttons:FlxGroup;
 	var labels:FlxGroup;
 	
@@ -22,6 +22,19 @@ class SettingsState extends BasicState {
 	var dpadTick:Tick;
 	
 	public static var settings:FlxSave;
+	
+	public static function initSettings() {
+		SettingsState.settings = new FlxSave();
+		SettingsState.settings.bind("Settings");
+		if (SettingsState.settings.data.music == null) {
+			SettingsState.settings.data.music = true;
+		}
+		if (SettingsState.settings.data.sounds == null) {
+			SettingsState.settings.data.sounds= true;
+		}
+		AssetsLibrary.music = SettingsState.settings.data.music;
+		AssetsLibrary.sounds = SettingsState.settings.data.sounds;
+	}
 	
 	override public function create() {
 		super.create();

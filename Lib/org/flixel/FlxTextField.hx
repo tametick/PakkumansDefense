@@ -70,6 +70,10 @@ class FlxTextField extends FlxText
 	 */
 	override public function destroy():Void
 	{
+		if (_textFields == null)
+			return;
+		
+		
 		for (tf in _textFields)
 		{
 			if (tf != null && tf.parent != null)
@@ -478,5 +482,9 @@ class FlxTextField extends FlxText
 			}
 		}
 	}
+}
+
+#else
+class FlxTextField extends FlxText {
 }
 #end

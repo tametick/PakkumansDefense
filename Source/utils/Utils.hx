@@ -2,6 +2,9 @@ package utils;
 
 import data.AssetsLibrary;
 import nme.media.Sound;
+import nme.text.TextField;
+import nme.text.TextFieldAutoSize;
+import nme.text.TextFormat;
 import nme.Vector;
 import org.flixel.FlxG;
 import org.flixel.FlxPoint;
@@ -198,5 +201,21 @@ class Utils {
 		return arr;
 	}
 	
-	
+	public static function newTextField(x:Float, y:Float,text:String, color:Int, ?size:Int=24,  underline:Bool = false):TextField {
+		var label = new TextField();
+		var format = new TextFormat();
+		format.font = "eight2empire";
+		format.size = size;
+		format.underline = underline;
+		label.defaultTextFormat = format;
+		label.selectable = false;
+		label.autoSize = TextFieldAutoSize.LEFT;
+		label.text = text;
+		format = null;
+		label.textColor = color;
+		label.x = x;
+		label.y = y;
+		
+		return label;
+	}
 }
