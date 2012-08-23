@@ -556,9 +556,9 @@ class GameState extends BasicState {
 		add(level.powerupEffect);
 		
 		for (i in powerupIndicator) {
-					i.visible = false;
-					add(i);
-				}
+			i.visible = false;
+			add(i);
+		}
 		
 			
 		if(towerCounter!=null) {
@@ -755,7 +755,11 @@ class GameState extends BasicState {
 	
 	function showInfoText(text:String, x:Float, y:Float, destX:Float, destY:Float, color:Int) {
 		var powerupInfo = newText(0, 0, Std.int(FlxG.width - level.width - 8), "a",Colors.LGREEN);
+		#if flash
+		powerupInfo.visible=true;
+		#else
 		powerupInfo.setVisibility(true);
+		#end
 		powerupInfo.text = text;
 		powerupInfo.x = x;
 		powerupInfo.y = y;
@@ -770,7 +774,11 @@ class GameState extends BasicState {
 			return;
 		}
 		
-		info.visible = visible;
+		#if flash
+		info.visible=visible;
+		#else
+		info.setVisibility(visible);
+		#end
 		if (!visible && info!=null ) {
 			remove(info);
 			info.kill();
