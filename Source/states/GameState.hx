@@ -169,22 +169,6 @@ class GameState extends BasicState {
 		Lib.stage.quality = StageQuality.LOW;
 		return bmp;
 	}
-	/*
-	function drawRectangle(v1x:Float, v1y:Float, v2x:Float, v2y:Float, v3x:Float, v3y:Float,v4x:Float, v4y:Float, ?alpha = 0.2, ?color = 0xffffff):Bitmap {
-		Lib.stage.quality = StageQuality.BEST;
-		var shape = new Shape();
-		//shape.graphics.lineStyle(1, color, alpha, false, null, null,JointStyle.ROUND);
-		shape.graphics.beginFill(color, alpha);
-		var rectangle = Vector.ofArray([v1x, v1y, v2x, v2y, v3x, v3y, v4x, v4y]);
-		shape.graphics.drawRect(rectangle);
-		shape.graphics.endFill();
-		
-		var bmp = new Bitmap(new BitmapData(160, 160, true, 0x00000000),PixelSnapping.AUTO,true);
-		bmp.bitmapData.draw(shape);
-		Lib.stage.quality = StageQuality.LOW;
-		return bmp;
-	}
-	*/
 	
 	public static function initController(scheme:CtrlMode) {
 		SettingsState.settings.data.controlScheme = Type.enumConstructor(scheme);

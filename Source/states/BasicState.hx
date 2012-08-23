@@ -76,7 +76,7 @@ class BasicState extends FlxState {
 		var s = BuskerJam.returnToState;
 		if (s == null) {
 			s = MenuState;
-			}
+		}
 		BuskerJam.returnToState = null;
 		FlxG.switchState(Type.createInstance(s, []));
 	}
