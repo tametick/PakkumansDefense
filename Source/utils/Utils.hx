@@ -207,12 +207,13 @@ class Utils {
 		format.font = "eight2empire";
 		format.size = size;
 		format.underline = underline;
+		format.color = color& 0x00ffffff;
 		label.defaultTextFormat = format;
 		label.selectable = false;
 		label.autoSize = TextFieldAutoSize.LEFT;
 		label.text = text;
 		format = null;
-		label.textColor = color;
+		//label.textColor = color;
 		label.x = x;
 		label.y = y;
 		

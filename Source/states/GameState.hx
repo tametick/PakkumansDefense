@@ -708,7 +708,7 @@ class GameState extends BasicState {
 		}
 		
 		if (coin.value > 1) {
-			showInfoText("$" + coin.value + "!", c.x, c.y, 4*AssetsLibrary.tileSize, 0, Colors.LBLUE);
+			showInfoText("$" + coin.value + "!", c.x, c.y, 4*AssetsLibrary.tileSize, 0, Colors.LBLUE );
 		}
 	}
 	
@@ -761,7 +761,7 @@ class GameState extends BasicState {
 		powerupInfo.text = text;
 		powerupInfo.x = x;
 		powerupInfo.y = y;
-		powerupInfo.setColor(color);
+		powerupInfo.setColor(color & 0x00ffffff);
 		Actuate.tween(powerupInfo, 1, { x: destX, y: destY });
 		Actuate.timer(1).onComplete(hideInfoText, [powerupInfo, false] );
 	}

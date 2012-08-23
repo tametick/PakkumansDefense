@@ -67,7 +67,6 @@ class BuskerJam extends FlxGame {
 		
 		buySprite.x = 0;
 		buySprite.y = 320-26;
-
 		
 		#end
 	}
