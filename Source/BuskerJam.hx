@@ -72,15 +72,14 @@ class BuskerJam extends FlxGame {
 		#end
 	}
 	
-	public function new() {
-		
-		
+	public function new() {		
 		#if iphone
 		Lib.current.stage.addEventListener(Event.RESIZE, init);
 		#else
 		addEventListener(Event.ADDED_TO_STAGE, init);
 		#end
-		
+		SettingsState.initSettings();
+
 		if(AssetsLibrary.debug) {
 			super(240, 160, GameState, 2, 30, 30);
 			forceDebugger = true;
