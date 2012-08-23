@@ -1,4 +1,5 @@
 import data.AssetsLibrary;
+import haxe.Log;
 import nme.display.Bitmap;
 import nme.events.Event;
 import nme.events.TouchEvent;
@@ -40,20 +41,23 @@ class BuskerJam extends FlxGame {
 	public static var label:TextField;
 	#end
 	
-	public static function main () {
+	public static function main () {		
 		Lib.current.addChild (new BuskerJam());
-		Lib.current.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, nothing,false,0,true);
+	}
+	static function nothing(e:Event) {	}
+	
+	private function init(e) {
+		multiTouchSupported = nme.ui.Multitouch.supportsTouchEvents;
 		
-		multiTouchSupported = Multitouch.supportsTouchEvents;
-		if (multiTouchSupported){
+		if (multiTouchSupported) {
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			Lib.current.stage.addEventListener(TouchEvent.TOUCH_BEGIN, touchBegin,false,0,true);
 			Lib.current.stage.addEventListener(TouchEvent.TOUCH_MOVE, touchMove,false,0,true);
-			
 			Lib.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyHandler,false,0,true);
 		}
-		
 		#if keyboard
+		Lib.current.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, nothing,false,0,true);
+		
 		var buySprite = new Sprite();
 		buySprite.buttonMode = true;
 		buySprite.addEventListener(MouseEvent.CLICK, clickBuy, false, 0, true);
@@ -81,25 +85,37 @@ class BuskerJam extends FlxGame {
 		format = null;
 		#end
 	}
-	static function nothing(e:Event) {	}
 	
 	public function new() {
+		
+		
+		#if iphone
+		Lib.current.stage.addEventListener(Event.RESIZE, init);
+		#else
+		addEventListener(Event.ADDED_TO_STAGE, init);
+		#end
+		
 		if(AssetsLibrary.debug) {
 			super(240, 160, GameState, 2, 30, 30);
 			forceDebugger = true;
 		} else {
 			super(240, 160, MenuState, 2, 30, 30);
 		}
+		
 	}
 		
 	static function touchBegin(e:TouchEvent):Void {  
-		if (Std.is(FlxG.state, GameState))	{					
+		if (Std.is(FlxG.state, GameState))	{
 			var g = cast(FlxG.state, GameState);
+			var pl = g.level.player;
+			pl.x = 0; pl.y = 0;
+			
 			if (g.help < 3) {
 				return;
 			}	
-			var pl=g.level.player;
-			pl.touch=pl.getCommand(e.stageX, e.stageY);
+			
+			pl.touch = pl.getCommand(e.stageX, e.stageY);
+			
 		}
 	}
 	
