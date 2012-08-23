@@ -105,6 +105,9 @@ class BasicState extends FlxState {
 		if(alignment!=null)
 		text.setAlignment(alignment);
 		add(text);
+		#if !flash
+		text.setVisibility(true);
+		#end
 		
 		return text;
 	}	

@@ -7,8 +7,6 @@ import utils.Colors;
 #if keyboard
 import nme.display.Sprite;
 import nme.text.TextField;
-import nme.text.TextFormat;
-import nme.text.TextFieldAutoSize;
 import nme.net.URLRequest;
 #end
 import nme.ui.Multitouch;
@@ -58,19 +56,7 @@ class BuskerJam extends FlxGame {
 		buySprite.buttonMode = true;
 		buySprite.addEventListener(MouseEvent.CLICK, clickBuy, false, 0, true);
 		
-		label = new TextField();
-		var format = new TextFormat();
-		
-		format.font = "eight2empire";
-		format.size = 24;
-		format.underline = true;
-		label.defaultTextFormat = format;
-		label.selectable = false;
-		
-		label.autoSize = TextFieldAutoSize.LEFT;
-		label.text = "Now out for Android!";
-		
-		label.textColor = 0xBC6DBC;
+		label = utils.Utils.newTextField("Now out for Android!",24, 0xBC6DBC, true);
 
 		buySprite.addChild(label);		
 		Lib.current.stage.addChild(buySprite);
@@ -78,7 +64,7 @@ class BuskerJam extends FlxGame {
 		buySprite.x = 0;
 		buySprite.y = 320-26;
 
-		format = null;
+		
 		#end
 	}
 	static function nothing(e:Event) {	}
