@@ -44,11 +44,15 @@ class HighScoreState extends BasicState {
 		
 		title = newText(0, AssetsLibrary.tileSize, FlxG.width, "High Scores",Colors.WHITE,"center");
 		title.setSize(16);
+		#if !flash
+		// bug, in other targets it doesn't calculate height properly
+		title.height = 19.95;
+		#end
 		
 		print(sc);
 	}
 	
-	function print(scores:Array<Dynamic>) {
+	function print(scores:Array<Dynamic>) {		
 		var y = title.y + title.height;
 		
 		var pos = 0;
