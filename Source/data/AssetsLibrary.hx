@@ -93,7 +93,7 @@ class AssetsLibrary {
 		if (Type.getEnum(i) == data.Image) {
 			suffix = ".png";
 		} else if (Type.getEnum(i) == data.Sound) {
-			suffix = ".mp3";
+			suffix = ".wav";
 		} else if (Type.getEnum(i) == data.Music) {
 			suffix = ".mp3";
 		}
