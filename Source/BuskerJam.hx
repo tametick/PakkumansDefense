@@ -1,6 +1,7 @@
 import data.AssetsLibrary;
 import haxe.Log;
 import nme.display.Bitmap;
+import nme.display.StageAlign;
 import nme.events.Event;
 import nme.events.TouchEvent;
 import nme.Lib;
@@ -45,13 +46,17 @@ class BuskerJam extends FlxGame {
 	static function nothing(e:Event) {	}
 	
 	private function init(e) {
+		Lib.current.stage.align = StageAlign.BOTTOM_RIGHT;
+		
 		multiTouchSupported = nme.ui.Multitouch.supportsTouchEvents;
 		
 		if (multiTouchSupported) {
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			Lib.current.stage.addEventListener(TouchEvent.TOUCH_BEGIN, touchBegin,false,0,true);
 			Lib.current.stage.addEventListener(TouchEvent.TOUCH_MOVE, touchMove,false,0,true);
-			Lib.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyHandler,false,0,true);
+			Lib.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyHandler, false, 0, true);
+			Lib.current.stage.addEventListener(KeyboardEvent.KEY_UP, stopKey,false,0,true);
+
 		}
 		#if keyboard
 		Lib.current.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, nothing,false,0,true);
@@ -67,8 +72,12 @@ class BuskerJam extends FlxGame {
 		
 		buySprite.x = 0;
 		buySprite.y = 320-26;
-
+		#end
 		
+		#if iphone
+		Lib.current.stage.removeEventListener(Event.RESIZE, init);
+		#else
+		removeEventListener(Event.ADDED_TO_STAGE, init);
 		#end
 	}
 	
@@ -122,16 +131,28 @@ class BuskerJam extends FlxGame {
 		}
 	}
 	
-	static function keyHandler(event:KeyboardEvent):Void {
-		/*
-		switch (event.keyCode){
-			case Keyboard.BACK:
-				backButton = true;
-				event.preventDefault();
-			case Keyboard.MENU:
-				menuButton = true;
-		}*/
+	static function stopKey(event:KeyboardEvent):Void {
+		if (event.keyCode == 27 ) {
+			event.stopImmediatePropagation();
+			event.stopPropagation();
+			event.keyCode = -1;
+		}
 	}
+	
+	static function keyHandler(event:KeyboardEvent):Void {
+		#if android
+		switch (event.keyCode){
+			case 27:
+				backButton = true;
+				event.stopImmediatePropagation();
+				event.stopPropagation();
+			case 0x01000012:
+				menuButton = true;
+		}
+		#end
+	}
+	
+	
 	
 	#if keyboard
 	static function clickBuy(e : Event) {
