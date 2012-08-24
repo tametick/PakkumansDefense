@@ -469,7 +469,7 @@ class GameState extends BasicState {
 		FlxG.worldBounds.width += 100; 
 		FlxG.worldBounds.height += 100;
 		
-		add(help1);
+		add(help1); 
 		
 		var gap = screenWidth - AssetsLibrary.levelW * AssetsLibrary.tileSize;
 		

@@ -89,16 +89,22 @@ class AssetsLibrary {
 	#end
 		
 	public static function getFilename(i:Dynamic):String {
+		var prefix = "assets/";
 		var suffix = "";
 		if (Type.getEnum(i) == data.Image) {
 			suffix = ".png";
 		} else if (Type.getEnum(i) == data.Sound) {
+			prefix = "sounds/";
+			#if flash
+			suffix = ".mp3";
+			#else
 			suffix = ".wav";
+			#end
 		} else if (Type.getEnum(i) == data.Music) {
 			suffix = ".mp3";
 		}
 	
-		return "assets/" + Type.enumConstructor(i).toLowerCase() + suffix;
+		return prefix + Type.enumConstructor(i).toLowerCase() + suffix;
 	}
 	
 }

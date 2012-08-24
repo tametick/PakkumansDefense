@@ -1,0 +1,10 @@
+--- Player.hx
++++ Player.hx
+@@ -20,6 +20,7 @@
+ import nme.display.BitmapData;
+ import world.Powerup;
+ import flash.events.TransformGestureEvent;
++import com.eclecticdesignstudio.motion.actuators.GenericActuator;
+ 
+ class Player extends WarpSprite {
+ 	public var coins:Int;

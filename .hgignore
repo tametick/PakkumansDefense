@@ -23,3 +23,4 @@ MobilePD/debug_token.bar
 MobilePD/mobilePD.bar
 MobilePD/pd.swf
 author.p12
+*.hash
