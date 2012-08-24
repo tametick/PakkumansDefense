@@ -57,6 +57,18 @@ class GameState extends BasicState {
 	static var instructions:String;
 	static var instructions1:String;
 
+	var levelCounter:TextField;
+	public var coinCounter:TextField;
+	var ghostCounter:TextField;
+	public var towerCounter:TextField;
+	public var timeCounter:TextField;
+	
+	var killedGhosts:Int;
+	var spawnRate:Float;
+	var counter:Float;
+	
+	var cursor:FlxSprite;
+	
 	static var powerupIndicator:Hash<PowerupIndicator>;
 	
 	var bg: FlxSprite;
@@ -143,18 +155,6 @@ class GameState extends BasicState {
 			
 		return levelNumber;
 	}
-	
-	var levelCounter:TextField;
-	public var coinCounter:TextField;
-	var ghostCounter:TextField;
-	public var towerCounter:TextField;
-	public var timeCounter:TextField;
-	
-	var killedGhosts:Int;
-	var spawnRate:Float;
-	var counter:Float;
-	
-	var cursor:FlxSprite;
 	
 	static function drawTriangle(v1x:Float, v1y:Float, v2x:Float, v2y:Float, v3x:Float, v3y:Float, ?alpha = 0.2, ?color = 0xffffff):Bitmap {
 		Lib.stage.quality = StageQuality.BEST;

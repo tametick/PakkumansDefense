@@ -69,11 +69,19 @@ class SettingsState extends BasicState {
 		x -= 25;
 		#end
 		
+		#if !flash
+		title.height = 19.95;
+		#end
+		
 		var music = newText(x, y += title.height + AssetsLibrary.tileSize, FlxG.width, "Music", Colors.YELLOW);
 		music.setSize(16);
 		labels.add(music);
 		var musicTick = new Tick(x - 24, y, function() { AssetsLibrary.setMusic(!AssetsLibrary.music); }, AssetsLibrary.music );
 		buttons.add(musicTick);
+		
+		#if !flash
+		music.height = 19.95;
+		#end
 		
 		var sounds = newText(x, y += music.height, FlxG.width, "Sounds", Colors.YELLOW);
 		sounds.setSize(16);
