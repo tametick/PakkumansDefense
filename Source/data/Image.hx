@@ -32,4 +32,5 @@ enum Image {
 	SETTINGS_OK;
 	CONFUSION;
 	INSTATOWER;
+	GET_IT_ON_PLAY;
 }

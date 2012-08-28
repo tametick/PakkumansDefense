@@ -1,6 +1,7 @@
 package states;
 
 import com.eclecticdesignstudio.motion.Actuate;
+import nme.Lib;
 import org.flixel.FlxG;
 import org.flixel.FlxSave;
 import org.flixel.FlxSprite;
@@ -19,13 +20,7 @@ class MenuState extends BasicState {
 	override public function create():Void {
 		super.create();
 		
-		
-		Utils.playMusic(AssetsLibrary.getMusic(MENU));
-		
-		#if keyboard
-		FlxG.mouse.show();
-		#end
-		
+		Utils.playMusic(AssetsLibrary.getMusic(MENU));		
 		FlxG.fade(0, 0.5, true, null, true);
 		
 		bg = new FlxSprite(0, 0, AssetsLibrary.getFilename(Image.BG));
@@ -40,6 +35,14 @@ class MenuState extends BasicState {
 		
 		toggleText();
 	}	
+	
+	override function init() {
+		#if keyboard
+		FlxG.mouse.show();
+		var mouseIndex = FlxG._game.getChildIndex(FlxG._game._mouse);
+		FlxG._game.addChildAt(BuskerJam.androidBuySprite, mouseIndex);
+		#end
+	}
 	
 	function toggleText() {
 		if (members == null)

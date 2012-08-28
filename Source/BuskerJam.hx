@@ -35,9 +35,7 @@ class BuskerJam extends FlxGame {
 	public static var menuButton;
 	public static var backButton;
 	
-	#if keyboard
-	public static var label:TextField;
-	#end
+	public static var androidBuySprite:Sprite;
 	
 	public static function main () {		
 		Lib.current.addChild (new BuskerJam());
@@ -56,18 +54,15 @@ class BuskerJam extends FlxGame {
 		#if keyboard
 		Lib.current.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, nothing,false,0,true);
 		
-		var buySprite = new Sprite();
-		buySprite.buttonMode = true;
-		buySprite.addEventListener(MouseEvent.CLICK, clickBuy, false, 0, true);
+		androidBuySprite = new Sprite();
+		androidBuySprite.buttonMode = true;
+		androidBuySprite.addEventListener(MouseEvent.CLICK, clickBuy, false, 0, true);
 		
-		label = utils.Utils.newTextField("Now out for Android!",24, 0xBC6DBC, true);
-
-		buySprite.addChild(label);		
-		Lib.current.stage.addChild(buySprite);
 		
-		buySprite.x = 0;
-		buySprite.y = 320-26;
-		
+		var label = new Bitmap(AssetsLibrary.getImage(data.Image.GET_IT_ON_PLAY));
+		androidBuySprite.addChild(label);		
+		androidBuySprite.x = 0;
+		androidBuySprite.y = 320-label.height;
 		#end
 	}
 	
