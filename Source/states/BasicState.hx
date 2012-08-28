@@ -19,7 +19,11 @@ class BasicState extends FlxState {
 	static var okBmp:BitmapData;
 	static var mouseIndex:Int;
 	
+	var inited:Bool;
+	
 	override public function create() {
+		inited = false;
+		mouseIndex = FlxG._game.getChildIndex(FlxG._game._mouse);
 		super.create();
 		
 		if(settings==null) {
@@ -28,7 +32,6 @@ class BasicState extends FlxState {
 			settings.height *= 2;
 			settings.y = 320 - settings.height - 4;
 			settings.x = 480 - settings.width - 4;
-			mouseIndex = FlxG._game.getChildIndex(FlxG._game._mouse);
 			okBmp = AssetsLibrary.getImage(Image.SETTINGS_OK);
 		}
 		
@@ -37,9 +40,16 @@ class BasicState extends FlxState {
 		}
 	}
 	
+	function init() {
+	}
+	
 	var mousePoint:FlxPoint;
 	override public function update() {
 		super.update();
+		if (!inited) {
+			init();
+			inited = true;
+		}
 		
 		
 		if ( Std.is(this, GameState) || Std.is(this, HighScoreState) ) {

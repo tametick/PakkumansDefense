@@ -276,11 +276,7 @@ class GameState extends BasicState {
 		}
 	}
 	
-	override public function create():Void {
-		#if keyboard
-		BuskerJam.label.textColor = Colors.DBLUE;
-		#end
-		
+	override public function create():Void {		
 		super.create();
 		
 		var sc = SettingsState.settings.data.controlScheme==null?null:Type.createEnum(CtrlMode,SettingsState.settings.data.controlScheme);
@@ -824,10 +820,6 @@ class GameState extends BasicState {
 		}
 		
 		powerupIndicator = null;
-		
-		#if keyboard
-		BuskerJam.label.textColor = 0xBC6DBC;
-		#end
 	}
 	
 }
