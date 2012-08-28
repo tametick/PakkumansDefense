@@ -34,8 +34,9 @@ class BuskerJam extends FlxGame {
 	public static var multiTouchSupported;
 	public static var menuButton;
 	public static var backButton;
-	
+	#if keyboard
 	public static var androidBuySprite:Sprite;
+	#end
 	
 	public static function main () {		
 		Lib.current.addChild (new BuskerJam());
@@ -61,12 +62,12 @@ class BuskerJam extends FlxGame {
 		
 		var label = new Bitmap(AssetsLibrary.getImage(data.Image.GET_IT_ON_PLAY));
 		androidBuySprite.addChild(label);		
-		androidBuySprite.x = 0;
-		androidBuySprite.y = 320-label.height;
+		androidBuySprite.x = 6;
+		androidBuySprite.y = 320-label.height - 6;
 		#end
 	}
 	
-	public function new() {		
+	public function new() {
 		#if iphone
 		Lib.current.stage.addEventListener(Event.RESIZE, init);
 		#else
@@ -80,7 +81,6 @@ class BuskerJam extends FlxGame {
 		} else {
 			super(240, 160, MenuState, 2, 30, 30);
 		}
-		
 	}
 		
 	static function touchBegin(e:TouchEvent):Void {  
