@@ -48,6 +48,7 @@ class BasicState extends FlxState {
 			
 			var w = Lib.current.stage.stageWidth;
 			var h = Lib.current.stage.stageHeight;
+			
 			var ratio = w / h;
 			
 			if (w/h < 480/320) {
@@ -73,7 +74,7 @@ class BasicState extends FlxState {
 			inited = true;
 		}
 		
-		
+		settings.visible = false;
 		if ( Std.is(this, GameState) || Std.is(this, HighScoreState) ) {
 			return;
 		} else if (Std.is(this, SettingsState)) {
@@ -81,7 +82,7 @@ class BasicState extends FlxState {
 		} else {
 			settings.bitmapData = settingsBmp;
 		}
-		
+		settings.visible = true;
 		
 		if (BuskerJam.backButton) {
 			if (Std.is(this, MenuState)) {
