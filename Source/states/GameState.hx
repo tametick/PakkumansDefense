@@ -446,9 +446,14 @@ class GameState extends BasicState {
 		var zoom = 3;
 		
 		levelCounter = Utils.newTextField(0*zoom, 1, "Level " + levelNumber, Colors.LGREEN);
+		#if keyboard
 		FlxG._game.addChildAt(levelCounter, index);
+		#else
+		// does this fix anything?
+		Lib.current.addChild(levelCounter);
+		#end
 		
-		timeCounter = Utils.newTextField(zoom * screenWidth / 5, 1, "2:00", Colors.ORANGE);
+		timeCounter = Utils.newTextField(zoom * screenWidth / 5, 1, "1:30", Colors.ORANGE);
 		FlxG._game.addChildAt(timeCounter, index);
 		
 		coinCounter = Utils.newTextField(zoom * screenWidth / 6 * 2, 1, "$: " + AssetsLibrary.towerCost, Colors.LBLUE);
@@ -583,11 +588,16 @@ class GameState extends BasicState {
 	}
 	
 	var up:FlxPoint;
+	var ticks = 0;
 	override public function update() {
 		
 		super.update();
 		
-		updateCounters();
+		ticks++;
+		if(ticks>=10) {
+			updateCounters();
+			ticks = 0;
+		}
 		
 		if (level.player.time < 10) {
 			var sec = Std.int(level.player.time);
@@ -809,6 +819,10 @@ class GameState extends BasicState {
 		bg.destroy();
 		bg = null;
 		//levelCounter.destroy();
+		
+		#if !keyboard
+		Lib.current.removeChild(levelCounter);
+		#end
 		levelCounter = null;
 		//coinCounter.destroy();
 		coinCounter = null;

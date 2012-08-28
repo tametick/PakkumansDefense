@@ -207,21 +207,16 @@ class Utils {
 		var label = new TextField();
 		label.width = 120;
 		label.text = text;
-		label.selectable = false;
+		//label.selectable = false;
 		label.textColor = color;
 		label.x = x;
 		label.y = y;
 		
-		var format = new TextFormat("eight2empire", size, color, false, false, underline, null, null, TextFieldAutoSize.LEFT);
-		/*
-		format.font = "eight2empire";
-		format.size = size;
-		format.underline = underline;
-		format.color = color& 0x00ffffff;
-		label.autoSize = TextFieldAutoSize.LEFT;
-		*/
+		var counterFormat = new TextFormat("eight2empire", size, color, false, false, underline, null, null, TextFieldAutoSize.LEFT);
 		
-		label.defaultTextFormat = format;
+		label.defaultTextFormat = counterFormat;
+		label.setTextFormat(counterFormat);
+		label.visible = true;
 		
 		return label;
 	}
