@@ -40,12 +40,11 @@ class BuskerJam extends FlxGame {
 	#end
 	
 	public static function main () {		
-		Lib.current.addChild (new BuskerJam());
+		Lib.current.addChild (new BuskerJam()); 
 	}
 	static function nothing(e:Event) {	}
 	
-	private function init(e) {
-		Lib.current.stage.align = StageAlign.BOTTOM_RIGHT;
+	private static function init(e) {
 		
 		multiTouchSupported = nme.ui.Multitouch.supportsTouchEvents;
 		
@@ -53,13 +52,16 @@ class BuskerJam extends FlxGame {
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			Lib.current.stage.addEventListener(TouchEvent.TOUCH_BEGIN, touchBegin,false,0,true);
 			Lib.current.stage.addEventListener(TouchEvent.TOUCH_MOVE, touchMove,false,0,true);
-			Lib.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyHandler, false, 0, true);
-			Lib.current.stage.addEventListener(KeyboardEvent.KEY_UP, stopKey,false,0,true);
+			
 
 		}
+		
+		Lib.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyHandler);
+		Lib.current.stage.addEventListener(KeyboardEvent.KEY_UP, stopKey);
+		
 		#if keyboard
 		Lib.current.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, nothing,false,0,true);
-		
+	
 		androidBuySprite = new Sprite();
 		androidBuySprite.buttonMode = true;
 		androidBuySprite.addEventListener(MouseEvent.CLICK, clickBuy, false, 0, true);
@@ -73,16 +75,15 @@ class BuskerJam extends FlxGame {
 		#if iphone
 		Lib.current.stage.removeEventListener(Event.RESIZE, init);
 		#else
-		removeEventListener(Event.ADDED_TO_STAGE, init);
+		Lib.current.stage.removeEventListener(Event.ADDED_TO_STAGE, init);
 		#end
+		
+		
 	}
 	
-	public function new() {
-		#if iphone
-		Lib.current.stage.addEventListener(Event.RESIZE, init);
-		#else
-		addEventListener(Event.ADDED_TO_STAGE, init);
-		#end
+	public function new() {		
+		
+		
 		SettingsState.initSettings();
 
 		if(AssetsLibrary.debug) {
@@ -91,9 +92,18 @@ class BuskerJam extends FlxGame {
 		} else {
 			super(240, 160, MenuState, 2, 30, 30);
 		}
+		
+		
+		#if iphone
+		Lib.current.stage.addEventListener(Event.RESIZE, init);
+		#else
+		addEventListener(Event.ADDED_TO_STAGE, init);
+		#end
+		
 	}
 		
 	static function touchBegin(e:TouchEvent):Void {  
+		trace("touch");
 		if (Std.is(FlxG.state, GameState))	{
 			var g = cast(FlxG.state, GameState);
 			var pl = g.level.player;
@@ -126,23 +136,23 @@ class BuskerJam extends FlxGame {
 		}
 	}
 	
-	static function stopKey(event:KeyboardEvent):Void {
-		if (event.keyCode == 27 ) {
-			event.stopImmediatePropagation();
-			event.stopPropagation();
-			event.keyCode = -1;
+	static function stopKey(e:KeyboardEvent):Void {
+		if (e.keyCode == 27 ) { 
+			e.stopImmediatePropagation();
+			e.stopPropagation();
 		}
 	}
 	
 	static function keyHandler(event:KeyboardEvent):Void {
 		#if android
+		
 		switch (event.keyCode){
 			case 27:
 				backButton = true;
 				event.stopImmediatePropagation();
 				event.stopPropagation();
-			case 0x01000012:
-				menuButton = true;
+			//case 0x01000012: not picked up
+			//	menuButton = true;
 		}
 		#end
 	}
