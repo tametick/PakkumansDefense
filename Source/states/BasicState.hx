@@ -20,6 +20,7 @@ class BasicState extends FlxState {
 	static var mouseIndex:Int;
 	
 	var inited:Bool;
+	static var centered:Bool = false;
 	
 	override public function create() {
 		inited = false;
@@ -41,6 +42,27 @@ class BasicState extends FlxState {
 	}
 	
 	function init() {
+		#if !desktop
+		if(!centered) {
+			centered = true;
+			
+			var w = Lib.current.stage.stageWidth;
+			var h = Lib.current.stage.stageHeight;
+			var ratio = w / h;
+			
+			if (w/h < 480/320) {
+				// black bars on top & buttom
+				var currHeight = w * 2/3;
+				var barHeight = h - currHeight;
+				FlxG._game.y = barHeight/3;
+			} else {
+				// black bars on left and right
+				var currWidth = h * 1.5;
+				var barWidth = w - currWidth;
+				FlxG._game.x = barWidth/3;
+			}
+		}
+		#end
 	}
 	
 	var mousePoint:FlxPoint;

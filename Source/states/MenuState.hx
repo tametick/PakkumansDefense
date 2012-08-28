@@ -37,6 +37,8 @@ class MenuState extends BasicState {
 	}	
 	
 	override function init() {
+		super.init();
+		
 		#if keyboard
 		FlxG.mouse.show();
 		var mouseIndex = FlxG._game.getChildIndex(FlxG._game._mouse);
