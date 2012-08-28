@@ -50,8 +50,8 @@ class BuskerJam extends FlxGame {
 		
 		if (multiTouchSupported) {
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
-			Lib.current.stage.addEventListener(TouchEvent.TOUCH_BEGIN, touchBegin,false,0,true);
-			Lib.current.stage.addEventListener(TouchEvent.TOUCH_MOVE, touchMove,false,0,true);
+			Lib.current.stage.addEventListener(TouchEvent.TOUCH_BEGIN, touchBegin);
+			Lib.current.stage.addEventListener(TouchEvent.TOUCH_MOVE, touchMove);
 			
 
 		}
@@ -103,12 +103,11 @@ class BuskerJam extends FlxGame {
 	}
 		
 	static function touchBegin(e:TouchEvent):Void {  
-		trace("touch");
+		
 		if (Std.is(FlxG.state, GameState))	{
 			var g = cast(FlxG.state, GameState);
 			var pl = g.level.player;
-			pl.x = 0; pl.y = 0;
-			
+						
 			if (g.help < 3) {
 				return;
 			}	

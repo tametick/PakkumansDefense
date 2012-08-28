@@ -88,7 +88,12 @@ class BasicState extends FlxState {
 				#if flash
 				NativeApplication.nativeApplication.exit();
 				#end
-			} else{
+				#if android
+				Lib.exit();
+				#end
+			} else if (Std.is(this, HighScoreState)) {
+				
+			} else 	{
 				BuskerJam.backButton = false;
 				goBack();
 			}
