@@ -606,7 +606,6 @@ class GameState extends BasicState {
 		}
 		
 		
-
 		FlxG.overlap(level.player, level.powerups, pickUpPowerup);
 		FlxG.overlap(level.player, level.coins, pickUpCoin);
 		FlxG.overlap(level.player, level.ghosts, gameOver);

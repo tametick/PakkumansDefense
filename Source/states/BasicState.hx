@@ -125,6 +125,7 @@ class BasicState extends FlxState {
 		}
 		
 		mousePoint = FlxG.mouse.getScreenPosition(null, mousePoint);
+		
 		var x = mousePoint.x * FlxG.camera.getScale().x; 
 		var y = mousePoint.y * FlxG.camera.getScale().y;
 		if (x > settings.x && x < settings.x + settings.width && y > settings.y && y < settings.y + settings.height) {

@@ -52,8 +52,6 @@ class BuskerJam extends FlxGame {
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			Lib.current.stage.addEventListener(TouchEvent.TOUCH_BEGIN, touchBegin);
 			Lib.current.stage.addEventListener(TouchEvent.TOUCH_MOVE, touchMove);
-			
-
 		}
 		
 		Lib.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyHandler);

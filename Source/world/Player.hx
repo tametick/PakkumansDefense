@@ -115,6 +115,8 @@ class Player extends WarpSprite {
 	
 	public function getCommand( x:Float, y:Float ):Command {
 		var ix:Int, iy:Int;
+		x -= FlxG._game.x;
+		y -= FlxG._game.y;
 		if(BuskerJam.multiTouchSupported){
 			ix = Std.int(x/460*160);
 			iy = Std.int(y / 320 * 106);
@@ -209,7 +211,8 @@ class Player extends WarpSprite {
 	private function resolveSingleTouch() {
 		
 		var tempx=FlxG.mouse.screenX;
-		var tempy=FlxG.mouse.screenY;
+		var tempy = FlxG.mouse.screenY;
+		
 		if(GameState.controlScheme!=CtrlMode.SWIPE){
 			if (FlxG.mouse.justPressed()) {
 				plTouching = true;
