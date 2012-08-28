@@ -202,20 +202,26 @@ class Utils {
 	}
 	
 	public static function newTextField(x:Float, y:Float,text:String, color:Int, ?size:Int=24,  underline:Bool = false):TextField {
+		color = color & 0x00ffffff;
+		
 		var label = new TextField();
-		var format = new TextFormat();
+		label.width = 120;
+		label.text = text;
+		label.selectable = false;
+		label.textColor = color;
+		label.x = x;
+		label.y = y;
+		
+		var format = new TextFormat("eight2empire", size, color, false, false, underline, null, null, TextFieldAutoSize.LEFT);
+		/*
 		format.font = "eight2empire";
 		format.size = size;
 		format.underline = underline;
 		format.color = color& 0x00ffffff;
-		label.defaultTextFormat = format;
-		label.selectable = false;
 		label.autoSize = TextFieldAutoSize.LEFT;
-		label.text = text;
-		format = null;
-		//label.textColor = color;
-		label.x = x;
-		label.y = y;
+		*/
+		
+		label.defaultTextFormat = format;
 		
 		return label;
 	}

@@ -556,26 +556,42 @@ class GameState extends BasicState {
 		
 			
 		if(towerCounter!=null) {
-			towerCounter.text = "Towers: 0";
-			ghostCounter.text = "Kills: "+level.player.kills;
-			levelCounter.text = "Level " + levelNumber;
-			timeCounter.text = "2:00";
+			updateCounters();
 		}
 		
 		counter = -3;
 	}
 	
-	var up:FlxPoint;
-	override public function update() {
-		super.update();
-		
+	
+	function updateTime() {
 		var min = Std.int(level.player.time) % 60;	
 		var sec = Std.int(level.player.time);
 		var dec = level.player.time-sec;
 		timeCounter.text = (Std.int(sec / 60)) + ":" ;
-		if (min < 10) timeCounter.text += "0";
+		if (min < 10) 
+			timeCounter.text += "0";
+			
 		timeCounter.text += min;
-		if(level.player.time<10){
+	}
+	
+	function updateCounters() {
+		updateTime();
+		ghostCounter.text = "Kills: "+level.player.kills;
+		levelCounter.text = "Level " + levelNumber;
+		coinCounter.text= "$: " + level.player.coins;
+		towerCounter.text = "Towers: " + level.towers.length;
+	}
+	
+	var up:FlxPoint;
+	override public function update() {
+		
+		super.update();
+		
+		updateCounters();
+		
+		if (level.player.time < 10) {
+			var sec = Std.int(level.player.time);
+			var dec = level.player.time-sec;
 			if (dec < 0.5) {
 				timeCounter.textColor = Colors.RED;
 			} else {
