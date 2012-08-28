@@ -773,7 +773,7 @@ class GameState extends BasicState {
 	}
 	
 	function showInfoText(text:String, x:Float, y:Float, destX:Float, destY:Float, color:Int) {
-		var powerupInfo = newText(0, 0, Std.int(FlxG.width - level.width - 8), "a",Colors.LGREEN);
+		var powerupInfo = Utils.newText(0, 0, "a",Colors.LGREEN, Std.int(FlxG.width - level.width - 8));
 		#if flash
 		powerupInfo.visible=true;
 		#else

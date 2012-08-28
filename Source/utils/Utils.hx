@@ -5,9 +5,11 @@ import nme.media.Sound;
 import nme.text.TextField;
 import nme.text.TextFieldAutoSize;
 import nme.text.TextFormat;
+import nme.text.TextFormatAlign;
 import nme.Vector;
 import org.flixel.FlxG;
 import org.flixel.FlxPoint;
+import org.flixel.FlxTextField;
 
 class Utils {
 	public static function next<T>(a:Array<T>, i:T):T {
@@ -212,7 +214,7 @@ class Utils {
 		label.x = x;
 		label.y = y;
 		
-		var counterFormat = new TextFormat("eight2empire", size, color, false, false, underline, null, null, TextFieldAutoSize.LEFT);
+		var counterFormat = new TextFormat("eight2empire", size, color, false, false, underline, null, null, TextFormatAlign.LEFT);
 		
 		label.defaultTextFormat = counterFormat;
 		label.setTextFormat(counterFormat);
@@ -220,4 +222,18 @@ class Utils {
 		
 		return label;
 	}
+	
+	public static function newText(x:Float, y:Float, text:String, color:Int, ?w:Int=240,?alignment:String=null):FlxTextField {
+		var text = new FlxTextField(x,y,w,text);
+		text.setColor(color & 0x00ffffff);
+		text.setFont(AssetsLibrary.getFont().fontName);
+		if(alignment!=null)
+		text.setAlignment(alignment);
+		FlxG.state.add(text);
+		#if !flash
+		text.setVisibility(true);
+		#end
+		
+		return text;
+	}	
 }

@@ -31,7 +31,7 @@ class MenuState extends BasicState {
 		#else
 			t = "Tap to Start";
 		#end
-		text = newText(0, FlxG.height / 2 + 20, FlxG.width, t,Colors.WHITE,"center");
+		text = Utils.newText(0, FlxG.height / 2 + 20, t, Colors.WHITE, FlxG.width, "center");
 		
 		toggleText();
 	}	

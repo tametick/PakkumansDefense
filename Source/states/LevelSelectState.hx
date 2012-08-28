@@ -35,7 +35,7 @@ class LevelSelectState extends BasicState {
 			levels.data.highest  = 1;
 		}
 		
-		title = newText(0, AssetsLibrary.tileSize, FlxG.width, "Select Level",Colors.WHITE,"center");
+		title = utils.Utils.newText(0, AssetsLibrary.tileSize, "Select Level",Colors.WHITE,"center");
 		title.setSize(16);
 		
 		
