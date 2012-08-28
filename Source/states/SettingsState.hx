@@ -10,6 +10,7 @@ import ui.Tick;
 import utils.Colors;
 import states.GameState;
 import data.Image;
+import utils.Utils;
 
 class SettingsState extends BasicState {
 	var title:FlxTextField;
@@ -57,7 +58,7 @@ class SettingsState extends BasicState {
 		
 		var y:Float = AssetsLibrary.tileSize;
 		
-		title = newText(0, y, FlxG.width, "Settings",Colors.WHITE,"center");
+		title = utils.Utils.newText(0, y, "Settings",Colors.WHITE,"center");
 		title.setSize(16);
 		
 		labels = new FlxGroup();
@@ -73,7 +74,7 @@ class SettingsState extends BasicState {
 		title.height = 19.95;
 		#end
 		
-		var music = newText(x, y += title.height + AssetsLibrary.tileSize, FlxG.width, "Music", Colors.YELLOW);
+		var music = utils.Utils.newText(x, y += title.height + AssetsLibrary.tileSize, "Music", Colors.YELLOW);
 		music.setSize(16);
 		labels.add(music);
 		var musicTick = new Tick(x - 24, y, function() { AssetsLibrary.setMusic(!AssetsLibrary.music); }, AssetsLibrary.music );
@@ -83,7 +84,7 @@ class SettingsState extends BasicState {
 		music.height = 19.95;
 		#end
 		
-		var sounds = newText(x, y += music.height, FlxG.width, "Sounds", Colors.YELLOW);
+		var sounds = Utils.newText(x, y += music.height, "Sounds", Colors.YELLOW);
 		sounds.setSize(16);
 		labels.add(sounds);
 		var soundTick = new Tick(x - 24, y, function() { AssetsLibrary.setSounds(!AssetsLibrary.sounds); }, AssetsLibrary.sounds );
@@ -93,26 +94,26 @@ class SettingsState extends BasicState {
 		#if !keyboard
 		var controlRadios = new List<Radio>();
 		
-		var ctrlDPad = newText(x, y += music.height, FlxG.width, "Virtual game-pad", Colors.BLUEGRAY);
+		var ctrlDPad = Utils.newText(x, y += music.height, "Virtual game-pad", Colors.BLUEGRAY);
 		ctrlDPad.setSize(16);
 		labels.add(ctrlDPad );
 		dpadRadio= new Radio(controlRadios, x - 24, y, dpadCB, GameState.controlScheme==CtrlMode.GAMEPAD || GameState.controlScheme==CtrlMode.GAMEPAD_L);
 		buttons.add(dpadRadio);
 		
 		
-		var ctrlDPasLeft = newText(x+32, y += music.height, FlxG.width, "Left-handed", Colors.YELLOW);
+		var ctrlDPasLeft = Utils.newText(x+32, y += music.height, "Left-handed", Colors.YELLOW);
 		ctrlDPasLeft.setSize(16);
 		labels.add(ctrlDPasLeft);
 		dpadTick = new Tick(x +32 - 24, y, dpadCBLeft, GameState.controlScheme==CtrlMode.GAMEPAD_L);
 		buttons.add(dpadTick);
 		
-		var ctrlOverlay = newText(x, y +=  music.height, FlxG.width, "Controller overlay", Colors.BLUEGRAY);
+		var ctrlOverlay = Utils.newText(x, y +=  music.height, "Controller overlay", Colors.BLUEGRAY);
 		ctrlOverlay.setSize(16);
 		labels.add(ctrlOverlay );
 		overlayRadio = new Radio(controlRadios, x - 24, y, overlayCB, GameState.controlScheme==CtrlMode.OVERLAY);
 		buttons.add(overlayRadio);
 		
-		var ctrlOverlayBlend = newText(x+32, y += music.height, FlxG.width, "Blend overlay", Colors.YELLOW);
+		var ctrlOverlayBlend = Utils.newText(x+32, y += music.height, "Blend overlay", Colors.YELLOW);
 		ctrlOverlayBlend.setSize(16);
 		labels.add(ctrlOverlayBlend);
 		

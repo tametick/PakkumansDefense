@@ -42,7 +42,7 @@ class HighScoreState extends BasicState {
 		}
 		
 		
-		title = newText(0, AssetsLibrary.tileSize, FlxG.width, "High Scores",Colors.WHITE,"center");
+		title = utils.Utils.newText(0, AssetsLibrary.tileSize, "High Scores",Colors.WHITE,"center");
 		title.setSize(16);
 		#if !flash
 		// bug, in other targets it doesn't calculate height properly
@@ -62,10 +62,10 @@ class HighScoreState extends BasicState {
 			if (s == mostRecentScore)
 				color = Colors.YELLOW;
 				
-			newText(0, y, FlxG.width, pos+".", color);
-			newText(15, y, FlxG.width, "Level: " + s.level, color);
-			newText(95, y, FlxG.width, "Money: " + s.money, color);
-			newText(185, y, FlxG.width, "Kills: " + s.kills, color);
+			utils.Utils.newText(0, y, pos+".", color);
+			utils.Utils.newText(15, y, "Level: " + s.level, color);
+			utils.Utils.newText(95, y,  "Money: " + s.money, color);
+			utils.Utils.newText(185, y, "Kills: " + s.kills, color);
 			
 				
 			y += AssetsLibrary.tileSize;
