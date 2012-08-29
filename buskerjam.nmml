@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
 	
-	<app title="Pakkuman's Defense" file="pd" main="BuskerJam"/>
+	<app title="Pakkuman's Defense" file="PakkumanDefense" main="BuskerJam"/>
 	
 	<set name="PRELOADER_NAME" value="Preloader"/>
 	<set name="SWF_VERSION" value="11.2" />
