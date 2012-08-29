@@ -20,7 +20,7 @@ class BasicState extends FlxState {
 	static var mouseIndex:Int;
 	
 	var inited:Bool;
-	static var centered:Bool = false;
+	public static var centered:Bool = false;
 	
 	override public function create() {
 		inited = false;
@@ -41,7 +41,7 @@ class BasicState extends FlxState {
 		}
 	}
 	
-	function init() {
+	public function init() {
 		#if !desktop
 		if(!centered) {
 			centered = true;

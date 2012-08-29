@@ -52,6 +52,9 @@ class BuskerJam extends FlxGame {
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			Lib.current.stage.addEventListener(TouchEvent.TOUCH_BEGIN, touchBegin);
 			Lib.current.stage.addEventListener(TouchEvent.TOUCH_MOVE, touchMove);
+			#if !desktop
+			Lib.current.stage.addEventListener(Event.ACTIVATE, resume);
+			#end
 		}
 		
 		Lib.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyHandler);
@@ -79,6 +82,8 @@ class BuskerJam extends FlxGame {
 		
 	}
 	
+	
+	
 	public function new() {		
 		
 		
@@ -98,6 +103,13 @@ class BuskerJam extends FlxGame {
 		addEventListener(Event.ADDED_TO_STAGE, init);
 		#end
 		
+	}
+	
+	static function resume(e:Event) {
+		var st = cast(FlxG.state, BasicState);
+		
+		BasicState.centered = false;
+		st.init();
 	}
 		
 	static function touchBegin(e:TouchEvent):Void {  
