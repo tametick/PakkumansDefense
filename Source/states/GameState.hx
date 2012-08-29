@@ -163,6 +163,7 @@ class GameState extends BasicState {
 		//shape.graphics.lineStyle(1, color, alpha, false, null, null,JointStyle.ROUND);
 		shape.graphics.beginFill(color, alpha);
 		var triangle = Utils.arrayToVector([v1x, v1y, v2x, v2y, v3x, v3y]);
+		//Lib.trace(triangle);
 		shape.graphics.drawTriangles(triangle);
 		shape.graphics.endFill();
 		
@@ -269,6 +270,16 @@ class GameState extends BasicState {
 				instructions = "Tap arrows to change direction";	
 				instructions1 = "Tap tower to build towers";
 		}
+		
+		buttonN.x += FlxG.FlxG._game.x;
+		buttonE.x += FlxG.FlxG._game.x;
+		buttonS.x += FlxG.FlxG._game.x;
+		buttonW.x += FlxG.FlxG._game.x;
+
+		buttonN.y += FlxG.FlxG._game.y;
+		buttonE.y += FlxG.FlxG._game.y;
+		buttonS.y += FlxG.FlxG._game.y;
+		buttonW.y += FlxG.FlxG._game.y;
 	}
 	
 	public static function setControllerVisiblity(val:Bool, ?alsoTower:Bool = false) {		
