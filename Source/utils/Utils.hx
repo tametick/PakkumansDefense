@@ -214,7 +214,11 @@ class Utils {
 		label.x = x;
 		label.y = y;
 		
+		#if flash
 		var counterFormat = new TextFormat("eight2empire", size, color, false, false, underline, null, null, TextFormatAlign.LEFT);
+		#else
+		var counterFormat = new TextFormat(AssetsLibrary.getFont().fontName, size, color, false, false, underline, null, null, TextFormatAlign.LEFT);
+		#end
 		
 		label.defaultTextFormat = counterFormat;
 		label.setTextFormat(counterFormat);
