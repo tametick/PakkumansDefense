@@ -271,15 +271,17 @@ class GameState extends BasicState {
 				instructions1 = "Tap tower to build towers";
 		}
 		
-		buttonN.x += FlxG.FlxG._game.x;
-		buttonE.x += FlxG.FlxG._game.x;
-		buttonS.x += FlxG.FlxG._game.x;
-		buttonW.x += FlxG.FlxG._game.x;
-
-		buttonN.y += FlxG.FlxG._game.y;
-		buttonE.y += FlxG.FlxG._game.y;
-		buttonS.y += FlxG.FlxG._game.y;
-		buttonW.y += FlxG.FlxG._game.y;
+		buttonN.x += FlxG._game.x;
+		buttonE.x += FlxG._game.x;
+		buttonS.x += FlxG._game.x;
+		buttonW.x += FlxG._game.x;
+		buttonT.x += FlxG._game.x;
+		
+		buttonN.y += FlxG._game.y;
+		buttonE.y += FlxG._game.y;
+		buttonS.y += FlxG._game.y;
+		buttonW.y += FlxG._game.y;
+		buttonT.y += FlxG._game.y;
 	}
 	
 	public static function setControllerVisiblity(val:Bool, ?alsoTower:Bool = false) {		
