@@ -150,9 +150,10 @@ class GameState extends BasicState {
 		
 		var levels = new FlxSave();
 		levels.bind("Levels");
-		if (levels.data.highest < levelNumber)
-			levels.data.highest = levelNumber;
-			
+		if (levels.data.highest < levelNumber){
+				levels.data.highest = levelNumber;
+				levels.flush();
+			}
 		return levelNumber;
 	}
 	
