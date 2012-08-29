@@ -174,17 +174,6 @@ class GameState extends BasicState {
 	public static function initController(scheme:CtrlMode) {
 		SettingsState.settings.data.controlScheme = Type.enumConstructor(scheme);
 		
-		
-		var dim1, dim2;
-		switch(controlScheme) {
-			default:
-				dim1 = 80;
-				dim2 = 160;	
-			case CtrlMode.GAMEPAD,CtrlMode.GAMEPAD_L:
-				dim1 = 40;
-				dim2 = 80;	
-		}
-		
 		// clean up old controller
 		if (buttonS != null) {
 			if(buttonS.parent != null && buttonS.parent.contains(buttonS)){
@@ -210,6 +199,16 @@ class GameState extends BasicState {
 			}
 			buttonE.bitmapData.dispose();
 			buttonE.bitmapData = null;
+		}
+		
+		var dim1, dim2;
+		switch(controlScheme) {
+			default:
+				dim1 = 80;
+				dim2 = 160;	
+			case CtrlMode.GAMEPAD,CtrlMode.GAMEPAD_L:
+				dim1 = 40;
+				dim2 = 80;	
 		}
 		
 		buttonS = drawTriangle(0, 0, dim2, 0, dim1, dim1);	
@@ -536,11 +535,24 @@ class GameState extends BasicState {
 		bg = FlxGridOverlay.create(AssetsLibrary.tileSize, AssetsLibrary.tileSize, Std.int(level.width), Std.int(level.height), false, true, c0, c1);
 		
 		#if !flash
-		TileSheetManager.setTileSheetIndex(level.getTileSheetIndex(), -TileSheetManager.getMaxIndex());
-		TileSheetManager.setTileSheetIndex(bg.getTileSheetIndex(), -TileSheetManager.getMaxIndex());
-		//TileSheetManager.setTileSheetIndex(level.coin.getTileSheetIndex(), TileSheetManager.getMaxIndex());
+		var aCoin = cast(level.coins.members[0],Coin);
+		
+		// game
+		TileSheetManager.setTileSheetIndex(level.getTileSheetIndex(), 0);
+		TileSheetManager.setTileSheetIndex(bg.getTileSheetIndex(), 0);
+		TileSheetManager.setTileSheetIndex(aCoin.getTileSheetIndex(), TileSheetManager.getMaxIndex());
 		TileSheetManager.setTileSheetIndex(level.player.getTileSheetIndex(), TileSheetManager.getMaxIndex());
 		TileSheetManager.setTileSheetIndex(level.player.arrow.getTileSheetIndex(), TileSheetManager.getMaxIndex());
+		
+		// ui
+		for (h in help1.members) {
+			TileSheetManager.setTileSheetIndex(cast(h,FlxSprite).getTileSheetIndex(), TileSheetManager.getMaxIndex());
+		}
+		for (h in help2.members) {
+			TileSheetManager.setTileSheetIndex(cast(h,FlxSprite).getTileSheetIndex(), TileSheetManager.getMaxIndex());
+		}
+		
+		
 		#end
 		
 		add(bg);
