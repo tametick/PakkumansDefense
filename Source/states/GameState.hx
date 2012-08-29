@@ -100,19 +100,19 @@ class GameState extends BasicState {
 	public function setHighlighted(direction:Command) {
 		switch (direction) {
 			case LEFT:
-				buttonW.alpha = 2;
+				buttonW.alpha = 0.4;
 				
 				//Utils.play(AssetsLibrary.getSound(CLICK));
 			case RIGHT:
-				buttonE.alpha = 2;
+				buttonE.alpha = 0.4;
 				
 				//Utils.play(AssetsLibrary.getSound(CLICK));
 			case UP:
-				buttonN.alpha = 2;
+				buttonN.alpha = 0.4;
 				
 				//Utils.play(AssetsLibrary.getSound(CLICK));
 			case DOWN:
-				buttonS.alpha = 2;
+				buttonS.alpha = 0.4;
 				
 				//Utils.play(AssetsLibrary.getSound(CLICK));
 			case TOWER:
@@ -127,16 +127,16 @@ class GameState extends BasicState {
 	public function setUnhighlighted(direction:Command) {
 		switch (direction) {
 			case LEFT:
-				buttonW.alpha = 1;
+				buttonW.alpha = 0.2;
 				
 			case RIGHT:
-				buttonE.alpha = 1;
+				buttonE.alpha = 0.2;
 				
 			case UP:
-				buttonN.alpha = 1;
+				buttonN.alpha = 0.2;
 				
 			case DOWN:
-				buttonS.alpha = 1;
+				buttonS.alpha = 0.2;
 				
 			case TOWER:
 				buttonT.bitmapData = buttonTData;
@@ -157,7 +157,7 @@ class GameState extends BasicState {
 		return levelNumber;
 	}
 	
-	static function drawTriangle(v1x:Float, v1y:Float, v2x:Float, v2y:Float, v3x:Float, v3y:Float, ?alpha = 0.2, ?color = 0xffffff):Bitmap {
+	static function drawTriangle(v1x:Float, v1y:Float, v2x:Float, v2y:Float, v3x:Float, v3y:Float, ?alpha = 1, ?color = 0xffffff):Bitmap {
 		Lib.stage.quality = StageQuality.BEST;
 		var shape = new Shape();
 		//shape.graphics.lineStyle(1, color, alpha, false, null, null,JointStyle.ROUND);
@@ -215,8 +215,14 @@ class GameState extends BasicState {
 		buttonS = drawTriangle(0, 0, dim2, 0, dim1, dim1);	
 		buttonN = drawTriangle(0,dim1,dim1,0,dim2,dim1);
 		buttonW = drawTriangle(0,dim1,dim1,0,dim1,dim2);
-		buttonE = drawTriangle(0,0,dim1,dim1,0,dim2);
+		buttonE = drawTriangle(0, 0, dim1, dim1, 0, dim2);
+		
+		buttonS.alpha = 	
+		buttonN.alpha = 
+		buttonW.alpha = 
+		buttonE.alpha = 0.2;
 					
+		
 		if (controlScheme == CtrlMode.SWIPE) {
 			setControllerVisiblity(false);
 		}
