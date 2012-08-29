@@ -32,6 +32,7 @@ class HighScoreState extends BasicState {
 			scores.data.scores = new Array<Score>();
 		}
 		var sc:Array<Score> = scores.data.scores;
+		
 		if(mostRecentScore!=null) {
 			sc.push(mostRecentScore);
 		}
@@ -40,7 +41,7 @@ class HighScoreState extends BasicState {
 		if (sc.length > scoresToShow) {
 			sc.splice(scoresToShow, sc.length-scoresToShow);
 		}
-		
+		scores.flush();
 		
 		title = utils.Utils.newText(0, AssetsLibrary.tileSize, "High Scores",Colors.WHITE,"center");
 		title.setSize(16);
@@ -50,6 +51,7 @@ class HighScoreState extends BasicState {
 		#end
 		
 		print(sc);
+		scores.data.scores = sc;
 	}
 	
 	function print(scores:Array<Dynamic>) {		
@@ -94,8 +96,7 @@ class HighScoreState extends BasicState {
 	}
 	
 	override public function destroy() {
-		super.destroy();
-		
+		super.destroy();		
 		scores.close();
 	}
 }

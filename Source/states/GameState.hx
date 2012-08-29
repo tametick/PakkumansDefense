@@ -564,7 +564,11 @@ class GameState extends BasicState {
 			updateCounters();
 		}
 		
-		counter = -3;
+		if(AssetsLibrary.debug) {
+			counter = 0;
+		} else {
+			counter = -3;
+		}
 	}
 	
 	
