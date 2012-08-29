@@ -48,7 +48,6 @@ class GameState extends BasicState {
 	static var buttonN:Bitmap;
 	static var buttonE:Bitmap;
 	static var buttonW:Bitmap;
-
 	
 	static var buttonT:Bitmap;
 	static var buttonTData:BitmapData;
@@ -156,72 +155,49 @@ class GameState extends BasicState {
 			}
 		return levelNumber;
 	}
-	
-	static function drawTriangle(v1x:Float, v1y:Float, v2x:Float, v2y:Float, v3x:Float, v3y:Float, ?alpha = 1, ?color = 0xffffff):Bitmap {
-		Lib.stage.quality = StageQuality.BEST;
-		var shape = new Shape();
-		//shape.graphics.lineStyle(1, color, alpha, false, null, null,JointStyle.ROUND);
-		shape.graphics.beginFill(color, alpha);
-		var triangle = Utils.arrayToVector([v1x, v1y, v2x, v2y, v3x, v3y]);
-		//Lib.trace(triangle);
-		shape.graphics.drawTriangles(triangle);
-		shape.graphics.endFill();
-		
-		var bmp = new Bitmap(new BitmapData(160, 160, true, 0x00000000),PixelSnapping.AUTO,true);
-		bmp.bitmapData.draw(shape);
-		Lib.stage.quality = StageQuality.LOW;
-		return bmp;
-	}
+
 	
 	public static function initController(scheme:CtrlMode) {
 		SettingsState.settings.data.controlScheme = Type.enumConstructor(scheme);
 		
-		// clean up old controller
-		if (buttonS != null) {
-			if(buttonS.parent != null && buttonS.parent.contains(buttonS)){
-				buttonS.parent.removeChild(buttonS);
-			}
-			buttonS.bitmapData.dispose();
-			buttonS.bitmapData = null;
-			
-			if (buttonN.parent != null && buttonN.parent.contains(buttonN)) {
-				buttonN.parent.removeChild(buttonN);
-			}
-			buttonN.bitmapData.dispose();
-			buttonN.bitmapData = null;
-			
-			if (buttonW.parent != null && buttonW.parent.contains(buttonW)) {
-				buttonW.parent.removeChild(buttonW);
-			}
-			buttonW.bitmapData.dispose();
-			buttonW.bitmapData = null;
-			
-			if(buttonE.parent != null && buttonE.parent.contains(buttonE)){
-				buttonE.parent.removeChild(buttonE);
-			}
-			buttonE.bitmapData.dispose();
-			buttonE.bitmapData = null;
-		}
 		
-		var dim1, dim2;
-		switch(controlScheme) {
-			default:
-				dim1 = 80;
-				dim2 = 160;	
-			case CtrlMode.GAMEPAD,CtrlMode.GAMEPAD_L:
-				dim1 = 40;
-				dim2 = 80;	
+		if(buttonE==null){
+			buttonE = new Bitmap(buttonTData = AssetsLibrary.getImage(Image.BUTTONE), PixelSnapping.AUTO, true);
+			buttonW = new Bitmap(buttonTData = AssetsLibrary.getImage(Image.BUTTONW), PixelSnapping.AUTO, true);
+			buttonN = new Bitmap(buttonTData = AssetsLibrary.getImage(Image.BUTTONN), PixelSnapping.AUTO, true);
+			buttonS = new Bitmap(buttonTData = AssetsLibrary.getImage(Image.BUTTONS), PixelSnapping.AUTO, true);
+			
 		}
-		
-		buttonS = drawTriangle(0, 0, dim2, 0, dim1, dim1);	
-		buttonN = drawTriangle(0,dim1,dim1,0,dim2,dim1);
-		buttonW = drawTriangle(0,dim1,dim1,0,dim1,dim2);
-		buttonE = drawTriangle(0, 0, dim1, dim1, 0, dim2);
 		
 		buttonS.alpha = 	
 		buttonN.alpha = 
 		buttonW.alpha = 
 		buttonE.alpha = 0.2;
+		
+		var dim1, dim2,scale;
+		switch(controlScheme) {
+			default:
+				dim1 = 80;
+				dim2 = 160;	
+				buttonE.scaleX = buttonE.scaleY = 1;
+				buttonW.scaleX = buttonW.scaleY = 1;
+				buttonN.scaleX = buttonN.scaleY = 1;
+				buttonS.scaleX = buttonS.scaleY = 1;
+case CtrlMode.GAMEPAD,CtrlMode.GAMEPAD_L:
+				dim1 = 40;
+				dim2 = 80;
+				buttonE.scaleX = buttonE.scaleY = 0.5;
+				buttonW.scaleX = buttonW.scaleY = 0.5;
+				buttonN.scaleX = buttonN.scaleY = 0.5;
+				buttonS.scaleX = buttonS.scaleY = 0.5;
+		}
+		
+		//buttonS = drawTriangle(0, 0, dim2, 0, dim1, dim1);	
+	//	buttonN = drawTriangle(0,dim1,dim1,0,dim2,dim1);
+	//	buttonW = drawTriangle(0,dim1,dim1,0,dim1,dim2);
+	//	buttonE = drawTriangle(0, 0, dim1, dim1, 0, dim2);
+		
+		
 					
 		
 		if (controlScheme == CtrlMode.SWIPE) {
@@ -234,12 +210,15 @@ class GameState extends BasicState {
 			buttonT2DataR = AssetsLibrary.getImage(Image.BUTTONS_OVERLAY_T2R);
 		}
 		
+		
+		
 		var spacer2 = 2 * dim1 + dim2;
 		var spacer1 = dim1 + dim2;
 		
 		
 		switch(controlScheme) {
 			default:
+				buttonN.y = 0;
 				buttonW.y = buttonE.y = 80;
 				buttonE.x = 400;
 				buttonS.x = buttonN.x = 160;
@@ -249,8 +228,9 @@ class GameState extends BasicState {
 				instructions = "Tap edges to change direction";
 				instructions1 = "Tap center to build towers";
 			case CtrlMode.GAMEPAD:
-				buttonN.y = 320-spacer2;
-				buttonW.y = buttonE.y = 320-spacer1;
+				buttonN.y = 320 - spacer2;
+				buttonW.x = 0;
+				buttonW.y = buttonE.y = 320 - spacer1;
 				buttonE.x = spacer1;
 				buttonS.x = buttonN.x = dim1;
 				buttonS.y = 320-dim1;
