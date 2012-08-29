@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
 	
-	<app title="Busker Jam" file="pd" main="BuskerJam"/>
+	<app title="Pakkuman's Defense" file="pd" main="BuskerJam"/>
 	
 	<set name="PRELOADER_NAME" value="Preloader"/>
 	<set name="SWF_VERSION" value="11.2" />
@@ -14,6 +14,19 @@
 	
 	<classpath name="Source" />
 	<classpath name="Lib" />
+	
+	<icon path="MobilePD/icons/ios/icons/icon_57.png" width="57" height="57" if="ios" ></icon>
+	<icon path="MobilePD/icons/ios/icons/icon_72.png" width="72" height="72" if="ios" ></icon>
+	<icon path="MobilePD/icons/ios/icons/icon_114.png" width="114" height="114" if="ios" ></icon>
+	<icon path="MobilePD/icons/ios/icons/icon_144.png" width="144" height="144" if="ios" ></icon>
+
+	<icon path="MobilePD/icons/android/icons/icon_36.png" width="36" height="36" if="android" ></icon>
+	<icon path="MobilePD/icons/android/icons/icon_48.png" width="48" height="48" if="android" ></icon>
+	<icon path="MobilePD/icons/android/icons/icon_57.png" width="57" height="57" if="android" ></icon>
+	<icon path="MobilePD/icons/android/icons/icon_72.png" width="72" height="72" if="android" ></icon>
+	<icon path="MobilePD/icons/android/icons/icon_114.png" width="114" height="114" if="android" ></icon>
+	<icon path="MobilePD/icons/android/icons/icon_144.png" width="144" height="144" if="android" ></icon>
+	<icon path="MobilePD/icons/android/icons/icon_512.png" width="512" height="512" if="android" ></icon>
 	
 	<haxelib name="nme" />
 	<haxelib name="actuate" />
