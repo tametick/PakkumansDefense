@@ -303,11 +303,11 @@ class GameState extends BasicState {
 		var index = FlxG._game.getChildIndex(FlxG._game._mouse);
 		FlxG._game.addChildAt(hud, index);
 		#if !keyboard
-		FlxG._game.addChild(buttonS);
-		FlxG._game.addChild(buttonN);
-		FlxG._game.addChild(buttonW);
-		FlxG._game.addChild(buttonE);
-		FlxG._game.addChild(buttonT);
+		Lib.current.addChild(buttonS);
+		Lib.current.addChild(buttonN);
+		Lib.current.addChild(buttonW);
+		Lib.current.addChild(buttonE);
+		Lib.current.addChild(buttonT);
 		#end
 		
 		Utils.playMusic(AssetsLibrary.getMusic(THEME));
@@ -853,11 +853,11 @@ class GameState extends BasicState {
 		
 		FlxG._game.removeChild(hud);
 		#if !keyboard
-		FlxG._game.removeChild(buttonS);
-		FlxG._game.removeChild(buttonN);
-		FlxG._game.removeChild(buttonW);
-		FlxG._game.removeChild(buttonE);
-		FlxG._game.removeChild(buttonT);
+		Lib.current.removeChild(buttonS);
+		Lib.current.removeChild(buttonN);
+		Lib.current.removeChild(buttonW);
+		Lib.current.removeChild(buttonE);
+		Lib.current.removeChild(buttonT);
 		#end
 		for (i in powerupIndicator.keys()) {
 			powerupIndicator.get(i).destroy();
