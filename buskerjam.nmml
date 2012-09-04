@@ -26,6 +26,7 @@
 	<icon path="MobilePD/icons/android/icons/icon_48.png" width="48" height="48" unless="ios" ></icon>
 	<icon path="MobilePD/icons/android/icons/icon_57.png" width="57" height="57" unless="ios" ></icon>
 	<icon path="MobilePD/icons/android/icons/icon_72.png" width="72" height="72" unless="ios" ></icon>
+	<icon path="MobilePD/icons/blackberry/icon_86.png" width="86" height="86" unless="ios" ></icon>
 	<icon path="MobilePD/icons/android/icons/icon_114.png" width="114" height="114" unless="ios" ></icon>
 	<icon path="MobilePD/icons/android/icons/icon_144.png" width="144" height="144" unless="ios" ></icon>
 	<icon path="MobilePD/icons/android/icons/icon_512.png" width="512" height="512" unless="ios" ></icon>
