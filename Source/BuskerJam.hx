@@ -37,6 +37,7 @@ class BuskerJam extends FlxGame {
 	public static var backButton;
 	#if keyboard
 	public static var androidBuySprite:Sprite;
+	public static var amazonBuySprite:Sprite;
 	#end
 	
 	public static function main () {		
@@ -65,12 +66,22 @@ class BuskerJam extends FlxGame {
 	
 		androidBuySprite = new Sprite();
 		androidBuySprite.buttonMode = true;
-		androidBuySprite.addEventListener(MouseEvent.CLICK, clickBuy, false, 0, true);
+		androidBuySprite.addEventListener(MouseEvent.CLICK, clickBuyAndroid, false, 0, true);
 		
-		var label = new Bitmap(AssetsLibrary.getImage(data.Image.GET_IT_ON_PLAY));
-		androidBuySprite.addChild(label);		
+		var labelAndroid = new Bitmap(AssetsLibrary.getImage(data.Image.GET_IT_ON_PLAY));
+		androidBuySprite.addChild(labelAndroid);		
 		androidBuySprite.x = 6;
-		androidBuySprite.y = 320-label.height - 6;
+		androidBuySprite.y = 320-labelAndroid.height - 6;
+
+		amazonBuySprite = new Sprite();
+		amazonBuySprite.buttonMode = true;
+		amazonBuySprite.addEventListener(MouseEvent.CLICK, clickBuyAmazon, false, 0, true);
+		
+		var labelAmazon = new Bitmap(AssetsLibrary.getImage(data.Image.GET_IT_ON_AMAZON));
+		amazonBuySprite.addChild(labelAmazon);		
+		amazonBuySprite.x = 10+labelAndroid.width;
+		amazonBuySprite.y = 320-labelAmazon.height - 6;
+
 		#end
 		
 		#if iphone
@@ -169,8 +180,13 @@ class BuskerJam extends FlxGame {
 	
 	
 	#if keyboard
-	static function clickBuy(e : Event) {
+	static function clickBuyAndroid(e : Event) {
 		var request : URLRequest = new URLRequest("https://play.google.com/store/apps/details?id=air.tametick.pakkuman");
+		Lib.getURL(request);
+		request = null;
+	}
+	static function clickBuyAmazon(e : Event) {
+		var request : URLRequest = new URLRequest("http://www.amazon.com/gp/product/B0093N88I6");
 		Lib.getURL(request);
 		request = null;
 	}

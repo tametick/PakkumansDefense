@@ -43,6 +43,7 @@ class MenuState extends BasicState {
 		FlxG.mouse.show();
 		var mouseIndex = FlxG._game.getChildIndex(FlxG._game._mouse);
 		FlxG._game.addChildAt(BuskerJam.androidBuySprite, mouseIndex);
+		FlxG._game.addChildAt(BuskerJam.amazonBuySprite, mouseIndex);
 		#end
 	}
 	
