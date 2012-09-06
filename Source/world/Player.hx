@@ -111,15 +111,15 @@ class Player extends WarpSprite {
 		arrow.y = y - 5;
 	}
 	
-
-	
-	public function getCommand( x:Float, y:Float ):Command {
+	static inline var xr = 159/480;
+	static inline var yr = 106/320;
+	public function getCommand(x:Float, y:Float):Command {
 		var ix:Int, iy:Int;
 		x -= FlxG._game.x;
 		y -= FlxG._game.y;
 		if(BuskerJam.multiTouchSupported){
-			ix = Std.int(x/460*160);
-			iy = Std.int(y / 320 * 106);
+			ix = Std.int(x*xr);
+			iy = Std.int(y*yr);
 		} else {
 			ix = Std.int(x);
 			iy=Std.int(y);

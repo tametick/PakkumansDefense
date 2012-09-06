@@ -227,7 +227,7 @@ class GameState extends BasicState {
 				buttonS.y = 320-dim1;
 				buttonT.x = 480-120;
 				buttonT.y = 320 - (spacer2 + 120) / 2;
-				instructions = "Tap arrows to change direction";	
+				instructions = "Touch arrows to change direction";
 				instructions1 = "Tap tower to build towers";
 			case CtrlMode.GAMEPAD_L:
 				buttonN.y = 320-spacer2;
@@ -313,19 +313,7 @@ class GameState extends BasicState {
 		#if keyboard
 		help1Text = new FlxTextField(-2, 0, screenWidth, "Arrows/WASD to change direction");
 		#else
-	/*	var instructions;
-		var instructions1;
-		switch(controlScheme) {
-			case CtrlMode.OVERLAY: 
-				instructions = "Tap edges to change direction";
-				instructions1 = "Tap center to build towers";
-			case CtrlMode.GAMEPAD,CtrlMode.GAMEPAD_L:
-				instructions = "Touch arrows to change direction";	
-				instructions1 = "Touchtower to build towers";
-			case CtrlMode.SWIPE:
-				instructions = "Swipe to change direction";
-				instructions1 = "Tap to build towers";
-		}*/
+
 		help1Text = new FlxTextField( -2, 0, screenWidth, instructions);
 		var w1:FlxSprite = null, e1:FlxSprite = null, n1:FlxSprite = null, s1:FlxSprite = null;
 		if(controlScheme==CtrlMode.OVERLAY) {
