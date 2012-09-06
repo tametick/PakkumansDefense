@@ -48,19 +48,18 @@ class BasicState extends FlxState {
 			
 			var w = Lib.current.stage.stageWidth;
 			var h = Lib.current.stage.stageHeight;
-			
 			var ratio = w / h;
 			
 			if (w/h < 480/320) {
 				// black bars on top & buttom
-				var currHeight = w * 2/3;
-				var barHeight = h - currHeight;
-				FlxG._game.y = barHeight/3;
+				var totalHeight = 480 / ratio;
+				var barHeight = (totalHeight - 320) / 2;
+				FlxG._game.y = barHeight;
 			} else {
 				// black bars on left and right
-				var currWidth = h * 1.5;
-				var barWidth = w - currWidth;
-				FlxG._game.x = barWidth/3;
+				var totalWidth = 320 * ratio;
+				var barWidth = (totalWidth - 480) / 2;
+				FlxG._game.x = barWidth;
 			}
 		}
 		#end
