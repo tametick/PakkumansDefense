@@ -28,7 +28,7 @@ class Player extends WarpSprite {
 	public var arrow:FlxSprite;
 	public var time:Float;
 	public var lastbeep:Int;
-	public static var clickMap:BitmapData;
+	static var clickMap:BitmapData;
 	
 	private var thinking:Bool;
 	private var delay:Int;
@@ -87,7 +87,7 @@ class Player extends WarpSprite {
 	
 	}
 	
-	public static function setClickMap() {
+	public function setClickMap() {		
 		var clkMap;
 		switch(GameState.controlScheme) {
 			default:
@@ -112,15 +112,14 @@ class Player extends WarpSprite {
 	}
 	
 
-	static inline var xr = 480*159;
-	static inline var yr = 320*106;
-	public function getCommand(x:Float, y:Float):Command {
+	
+	public function getCommand( x:Float, y:Float ):Command {
 		var ix:Int, iy:Int;
 		x -= FlxG._game.x;
 		y -= FlxG._game.y;
 		if(BuskerJam.multiTouchSupported){
-			ix = Std.int(x/xr);
-			iy = Std.int(y/yr);
+			ix = Std.int(x/460*160);
+			iy = Std.int(y / 320 * 106);
 		} else {
 			ix = Std.int(x);
 			iy=Std.int(y);

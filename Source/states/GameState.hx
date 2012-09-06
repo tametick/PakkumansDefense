@@ -44,9 +44,6 @@ import world.Player;
 
 class GameState extends BasicState {
 	static var hud:Bitmap;
-	
-	//static var tmpClickMap:Bitmap;
-	
 	static var buttonS:Bitmap;
 	static var buttonN:Bitmap;
 	static var buttonE:Bitmap;
@@ -104,20 +101,25 @@ class GameState extends BasicState {
 			case LEFT:
 				buttonW.alpha = 0.4;
 				
+				//Utils.play(AssetsLibrary.getSound(CLICK));
 			case RIGHT:
 				buttonE.alpha = 0.4;
 				
+				//Utils.play(AssetsLibrary.getSound(CLICK));
 			case UP:
 				buttonN.alpha = 0.4;
 				
+				//Utils.play(AssetsLibrary.getSound(CLICK));
 			case DOWN:
 				buttonS.alpha = 0.4;
 				
+				//Utils.play(AssetsLibrary.getSound(CLICK));
 			case TOWER:
 				if (level.player.coins < AssetsLibrary.towerCost) {
 					buttonT.bitmapData = buttonT2DataR;
 				} else {
 					buttonT.bitmapData = buttonT2Data;
+					//Utils.play(AssetsLibrary.getSound(CLICK));
 				}
 		}
 	}
@@ -225,7 +227,7 @@ class GameState extends BasicState {
 				buttonS.y = 320-dim1;
 				buttonT.x = 480-120;
 				buttonT.y = 320 - (spacer2 + 120) / 2;
-				instructions = "Touch an arrow to change direction";
+				instructions = "Tap arrows to change direction";	
 				instructions1 = "Tap tower to build towers";
 			case CtrlMode.GAMEPAD_L:
 				buttonN.y = 320-spacer2;
@@ -266,7 +268,6 @@ class GameState extends BasicState {
 	
 	override public function create():Void {		
 		super.create();
-		Player.setClickMap();
 		
 		var sc = SettingsState.settings.data.controlScheme==null?null:Type.createEnum(CtrlMode,SettingsState.settings.data.controlScheme);
 		if (sc == null) {
@@ -293,13 +294,6 @@ class GameState extends BasicState {
 		var index = FlxG._game.getChildIndex(FlxG._game._mouse);
 		FlxG._game.addChildAt(hud, index);
 		#if !keyboard
-		/*if (tmpClickMap == null) {
-			tmpClickMap = new Bitmap(Player.clickMap);
-			tmpClickMap.width = 480;
-			tmpClickMap.height = 320;
-		}
-		
-		Lib.current.addChild(tmpClickMap);*/
 		Lib.current.addChild(buttonS);
 		Lib.current.addChild(buttonN);
 		Lib.current.addChild(buttonW);
@@ -319,7 +313,19 @@ class GameState extends BasicState {
 		#if keyboard
 		help1Text = new FlxTextField(-2, 0, screenWidth, "Arrows/WASD to change direction");
 		#else
-
+	/*	var instructions;
+		var instructions1;
+		switch(controlScheme) {
+			case CtrlMode.OVERLAY: 
+				instructions = "Tap edges to change direction";
+				instructions1 = "Tap center to build towers";
+			case CtrlMode.GAMEPAD,CtrlMode.GAMEPAD_L:
+				instructions = "Touch arrows to change direction";	
+				instructions1 = "Touchtower to build towers";
+			case CtrlMode.SWIPE:
+				instructions = "Swipe to change direction";
+				instructions1 = "Tap to build towers";
+		}*/
 		help1Text = new FlxTextField( -2, 0, screenWidth, instructions);
 		var w1:FlxSprite = null, e1:FlxSprite = null, n1:FlxSprite = null, s1:FlxSprite = null;
 		if(controlScheme==CtrlMode.OVERLAY) {
@@ -424,6 +430,7 @@ class GameState extends BasicState {
 		
 		//cursor = new Cursor();
 		newLevel();
+		level.player.setClickMap();
 		//add(cursor);
 		
 		var zoom = 3;
@@ -840,7 +847,6 @@ class GameState extends BasicState {
 		
 		FlxG._game.removeChild(hud);
 		#if !keyboard
-		//Lib.current.removeChild(tmpClickMap);
 		Lib.current.removeChild(buttonS);
 		Lib.current.removeChild(buttonN);
 		Lib.current.removeChild(buttonW);
