@@ -1,6 +1,5 @@
 package world;
 
-import com.eclecticdesignstudio.motion.Actuate;
 import org.flixel.FlxG;
 import org.flixel.FlxPoint;
 import org.flixel.FlxSprite;

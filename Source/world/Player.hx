@@ -291,24 +291,6 @@ class Player extends WarpSprite {
 		}
 	}
 
-/*	public function swipe(e:TransformGestureEvent){
-		if (e.offsetX == 1) {
-			touch = RIGHT; 
-		} else
-		if (e.offsetX == -1) {
-			touch = LEFT; 
-		} else
-		if (e.offsetY == 1) {
-			touch = DOWN; 
-		} else
-		if (e.offsetY == -1) {
-			touch = UP; 
-		} else {
-			touch = TOWER;
-		}
-		
-	}*/
-
 	public function spawnTower() {
 		thinking = false;
 		
@@ -379,27 +361,33 @@ class Player extends WarpSprite {
 	
 	
 	function startMoving(dx:Int, dy:Int) {
-		isMoving = true;
+		isMoving = true;		
+		
+		var rawX = this.x + dx * AssetsLibrary.tileSize;
+		var rawY = this.y + dy * AssetsLibrary.tileSize;
+		var dirX = rawX < 0? -1:1;
+		var dirY = rawY < 0? -1:1;
+		
+		var xShift = (AssetsLibrary.tileSize-width) / 2;
+		var yShift = (AssetsLibrary.tileSize-height) / 2;
+		var nextPixelX = Utils.getPositionSnappedToGrid(rawX) + dirX*xShift;
+		var nextPixelY = Utils.getPositionSnappedToGrid(rawY) + dirY*yShift;
+		
+		// move
 		var duration = 0.2;
 		if (level.activePowerups.exists(Type.enumConstructor(PowerupType.HASTE))) {
 			duration = 0.12;
 		}
-		var rawX = this.x + dx * AssetsLibrary.tileSize;
-		var rawY = this.y + dy * AssetsLibrary.tileSize;
-		
-		var xShift = (AssetsLibrary.tileSize-width) / 2;
-		var yShift = (AssetsLibrary.tileSize-height) / 2;
-		var nextPixelX = rawX<0?rawX:Utils.getPositionSnappedToGrid(rawX) + xShift;
-		var nextPixelY = rawY<0?rawY:Utils.getPositionSnappedToGrid(rawY) + yShift;
-		
-		// move
 		Actuate.tween(this, duration, {x: nextPixelX, y: nextPixelY}).onComplete(stopped);
+		/*
+		var speed = AssetsLibrary.tileSize/duration;
+		velocity.x = speed * dx;
+		velocity.y = speed * dy;
+		*/
 	}
-	
+
 	public function stopped() {
 		isMoving = false;
-		
-		
 	}
 }
 

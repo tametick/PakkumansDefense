@@ -150,9 +150,9 @@ class GameState extends BasicState {
 		var levels = new FlxSave();
 		levels.bind("Levels");
 		if (levels.data.highest < levelNumber){
-				levels.data.highest = levelNumber;
-				levels.flush();
-			}
+			levels.data.highest = levelNumber;
+			levels.flush();
+		}
 		return levelNumber;
 	}
 
@@ -166,7 +166,6 @@ class GameState extends BasicState {
 			buttonW = new Bitmap(buttonTData = AssetsLibrary.getImage(Image.BUTTONW), PixelSnapping.AUTO, true);
 			buttonN = new Bitmap(buttonTData = AssetsLibrary.getImage(Image.BUTTONN), PixelSnapping.AUTO, true);
 			buttonS = new Bitmap(buttonTData = AssetsLibrary.getImage(Image.BUTTONS), PixelSnapping.AUTO, true);
-			
 		}
 		
 		buttonS.alpha = 	
@@ -183,22 +182,14 @@ class GameState extends BasicState {
 				buttonW.scaleX = buttonW.scaleY = 1;
 				buttonN.scaleX = buttonN.scaleY = 1;
 				buttonS.scaleX = buttonS.scaleY = 1;
-case CtrlMode.GAMEPAD,CtrlMode.GAMEPAD_L:
+			case CtrlMode.GAMEPAD,CtrlMode.GAMEPAD_L:
 				dim1 = 40;
 				dim2 = 80;
 				buttonE.scaleX = buttonE.scaleY = 0.5;
 				buttonW.scaleX = buttonW.scaleY = 0.5;
 				buttonN.scaleX = buttonN.scaleY = 0.5;
 				buttonS.scaleX = buttonS.scaleY = 0.5;
-		}
-		
-		//buttonS = drawTriangle(0, 0, dim2, 0, dim1, dim1);	
-	//	buttonN = drawTriangle(0,dim1,dim1,0,dim2,dim1);
-	//	buttonW = drawTriangle(0,dim1,dim1,0,dim1,dim2);
-	//	buttonE = drawTriangle(0, 0, dim1, dim1, 0, dim2);
-		
-		
-					
+		}	
 		
 		if (controlScheme == CtrlMode.SWIPE) {
 			setControllerVisiblity(false);
@@ -652,6 +643,9 @@ case CtrlMode.GAMEPAD,CtrlMode.GAMEPAD_L:
 		FlxG.overlap(level.player, level.coins, pickUpCoin);
 		FlxG.overlap(level.player, level.ghosts, gameOver);
 		FlxG.overlap(level.bullets, level.ghosts, killGhost);
+		/*if(level!=null&&level.alive && level.player!=null&&level.player.alive) {
+			FlxG.collide(level.player, level);
+		}*/
 		
 		//check if powerups need to be removed from field
 		for (p in level.powerups.members) {
