@@ -39,11 +39,13 @@ class MenuState extends BasicState {
 	override function init() {
 		super.init();
 		
-		#if keyboard
+		#if flash
 		FlxG.mouse.show();
 		var mouseIndex = FlxG._game.getChildIndex(FlxG._game._mouse);
 		FlxG._game.addChildAt(BuskerJam.androidBuySprite, mouseIndex);
 		FlxG._game.addChildAt(BuskerJam.amazonBuySprite, mouseIndex);
+		FlxG._game.addChildAt(BuskerJam.blackberryBuySprite, mouseIndex);
+		FlxG._game.addChildAt(BuskerJam.iosBuySprite, mouseIndex);
 		#end
 	}
 	

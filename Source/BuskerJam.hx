@@ -1,4 +1,6 @@
 import data.AssetsLibrary;
+import data.Image;
+import data.Music;
 import haxe.Log;
 import nme.display.Bitmap;
 import nme.display.StageAlign;
@@ -6,7 +8,7 @@ import nme.events.Event;
 import nme.events.TouchEvent;
 import nme.Lib;
 import utils.Colors;
-#if keyboard
+#if flash
 import nme.display.Sprite;
 import nme.text.TextField;
 import nme.net.URLRequest;
@@ -35,9 +37,11 @@ class BuskerJam extends FlxGame {
 	public static var multiTouchSupported;
 	public static var menuButton;
 	public static var backButton;
-	#if keyboard
+	#if flash
 	public static var androidBuySprite:Sprite;
 	public static var amazonBuySprite:Sprite;
+	public static var blackberryBuySprite:Sprite;
+	public static var iosBuySprite:Sprite;
 	#end
 	
 	public static function main () {		
@@ -45,7 +49,7 @@ class BuskerJam extends FlxGame {
 	}
 	static function nothing(e:Event) {	}
 	
-	private static function init(e) {
+	static function init(e) {
 		
 		multiTouchSupported = nme.ui.Multitouch.supportsTouchEvents;
 		
@@ -61,27 +65,14 @@ class BuskerJam extends FlxGame {
 		Lib.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyHandler);
 		Lib.current.stage.addEventListener(KeyboardEvent.KEY_UP, stopKey);
 		
-		#if keyboard
+		#if flash
 		Lib.current.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, nothing,false,0,true);
 	
-		androidBuySprite = new Sprite();
-		androidBuySprite.buttonMode = true;
-		androidBuySprite.addEventListener(MouseEvent.CLICK, clickBuyAndroid, false, 0, true);
+		androidBuySprite = addBuySprite("https://play.google.com/store/apps/details?id=air.tametick.pakkuman", data.Image.GET_IT_ON_PLAY, 0);
+		iosBuySprite = addBuySprite("", data.Image.GET_IT_ON_APP_STORE, 1);
+		amazonBuySprite = addBuySprite("http://www.amazon.com/gp/product/B0093N88I6", data.Image.GET_IT_ON_AMAZON, 2);
+		blackberryBuySprite = addBuySprite("", data.Image.GET_IT_ON_BLACKBERRY, 3);
 		
-		var labelAndroid = new Bitmap(AssetsLibrary.getImage(data.Image.GET_IT_ON_PLAY));
-		androidBuySprite.addChild(labelAndroid);		
-		androidBuySprite.x = 6;
-		androidBuySprite.y = 320-labelAndroid.height - 6;
-
-		amazonBuySprite = new Sprite();
-		amazonBuySprite.buttonMode = true;
-		amazonBuySprite.addEventListener(MouseEvent.CLICK, clickBuyAmazon, false, 0, true);
-		
-		var labelAmazon = new Bitmap(AssetsLibrary.getImage(data.Image.GET_IT_ON_AMAZON));
-		amazonBuySprite.addChild(labelAmazon);		
-		amazonBuySprite.x = 10+labelAndroid.width;
-		amazonBuySprite.y = 320-labelAmazon.height - 6;
-
 		#end
 		
 		#if iphone
@@ -89,10 +80,28 @@ class BuskerJam extends FlxGame {
 		#else
 		Lib.current.stage.removeEventListener(Event.ADDED_TO_STAGE, init);
 		#end
-		
-		
 	}
 	
+	#if flash
+	static function addBuySprite(clickBuy:String, img:data.Image, position:Int):Sprite {
+		var buySprite = new Sprite();
+		buySprite.buttonMode = true;
+		buySprite.addEventListener(MouseEvent.CLICK, function(d:Dynamic) { goToUrl(clickBuy); } , false, 0, true);
+		
+		var label = new Bitmap(AssetsLibrary.getImage(img));
+		buySprite.addChild(label);		
+		buySprite.x = 2 + Std.int(position/2)*(label.width+2);
+		buySprite.y = 320 - (label.height+2)*(1+position%2);
+		
+		return buySprite;
+	}
+	
+	static function goToUrl(url:String) {
+		var request = new URLRequest(url);
+		Lib.getURL(request);
+		request = null;
+	}
+	#end
 	
 	
 	public function new() {		
@@ -176,20 +185,5 @@ class BuskerJam extends FlxGame {
 		}
 		#end
 	}
-	
-	
-	
-	#if keyboard
-	static function clickBuyAndroid(e : Event) {
-		var request : URLRequest = new URLRequest("https://play.google.com/store/apps/details?id=air.tametick.pakkuman");
-		Lib.getURL(request);
-		request = null;
-	}
-	static function clickBuyAmazon(e : Event) {
-		var request : URLRequest = new URLRequest("http://www.amazon.com/gp/product/B0093N88I6");
-		Lib.getURL(request);
-		request = null;
-	}
-	#end
 
 }
