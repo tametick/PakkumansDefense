@@ -83,8 +83,6 @@ class Ghost extends WarpSprite {
 					bloodSplosion.explode(x, y);
 					
 					var tw:Dynamic = level.towers.members[Utils.randomIntInRange(0, towers-1)];
-					trace(Type.getClass(tw));
-					
 					if (tw != null) {
 						
 						tx = Utils.pixelToTile(tw.x);

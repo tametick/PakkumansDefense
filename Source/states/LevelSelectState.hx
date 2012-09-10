@@ -29,7 +29,7 @@ class LevelSelectState extends BasicState {
 		GameState.startingLevel = 1;
 		
 		levels = new FlxSave();
-		levels.bind("Levels");
+		levels.bind("Levels"); 
 		
 		if (levels.data.highest == null) {
 			levels.data.highest  = 1;
@@ -42,11 +42,15 @@ class LevelSelectState extends BasicState {
 		var shiftX = Std.int((FlxG.width - levelsW*24) / 2);
 		var shiftY = 32;
 		
+		
+		
 		buttons = new FlxGroup(levelsH * levelsW);
 		var inactive = new FlxSprite(0,0,AssetsLibrary.getFilename(Image.BUTTON));
 		var active = new FlxSprite(0, 0, AssetsLibrary.getFilename(Image.BUTTON_ACTIVE));
 		add(buttons);
-		
+
+		var x = 0;
+		var y = 0; 
 		for (y in 0...levelsH) {
 			for (x in 0...levelsW) {
 				var l = y * levelsW + x + 1;
@@ -57,9 +61,15 @@ class LevelSelectState extends BasicState {
 				var b = new FlxButtonPlus(shiftX + 24 * x, shiftY + 24 * y, click, [x, y], "" + l, 16, 16);
 				b.loadGraphic(inactive, active);
 				buttons.add(b);
+				
+				lastX = x;
+				lastY = y;
 			}
 		}
 	}
+	
+	var lastX = 0;
+	var lastY = 0;
 	
 	function click(x:Int, y:Int) {
 		if (active) {
@@ -73,7 +83,7 @@ class LevelSelectState extends BasicState {
 	
 	override public function update():Void {
 		super.update();
-		//if(AssetsLibrary.debug) {
+		if(AssetsLibrary.debug) {
 			if (FlxG.keys.justPressed("ONE")) {
 				click(0%levelsH, Std.int(0/levelsH));
 			} else if (FlxG.keys.justPressed("TWO")) {
@@ -93,7 +103,13 @@ class LevelSelectState extends BasicState {
 			} else if (FlxG.keys.justPressed("NINE")) {
 				click(8%levelsH, Std.int(8/levelsH));
 			}
-		//}
+		} else {
+			if (FlxG.keys.justPressed("SPACE")) {
+				click(lastX, lastY);
+			}
+		}
+		
+		
 	}
 	
 	override public function destroy() {
