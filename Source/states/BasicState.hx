@@ -50,7 +50,7 @@ class BasicState extends FlxState {
 			var h = Lib.current.stage.stageHeight;
 			var ratio = w / h;
 			
-			if (w/h < 480/320) {
+			if (ratio < 480/320) {
 				// black bars on top & buttom
 				var totalHeight = 480 / ratio;
 				var barHeight = (totalHeight - 320) / 2;

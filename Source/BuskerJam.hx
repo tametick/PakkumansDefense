@@ -69,9 +69,9 @@ class BuskerJam extends FlxGame {
 		Lib.current.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, nothing,false,0,true);
 	
 		androidBuySprite = addBuySprite("https://play.google.com/store/apps/details?id=air.tametick.pakkuman", data.Image.GET_IT_ON_PLAY, 0);
-		iosBuySprite = addBuySprite("", data.Image.GET_IT_ON_APP_STORE, 1);
+		iosBuySprite = addBuySprite("http://itunes.apple.com/us/app/pakkumansdefense/id560453722?ls=1&mt=8", data.Image.GET_IT_ON_APP_STORE, 1);
 		amazonBuySprite = addBuySprite("http://www.amazon.com/gp/product/B0093N88I6", data.Image.GET_IT_ON_AMAZON, 2);
-		blackberryBuySprite = addBuySprite("", data.Image.GET_IT_ON_BLACKBERRY, 3);
+		blackberryBuySprite = addBuySprite("https://appworld.blackberry.com/webstore/content/133926/", data.Image.GET_IT_ON_BLACKBERRY, 3);
 		
 		#end
 		
