@@ -56,12 +56,19 @@ class GameState extends BasicState {
 	static var instructions:String;
 	static var instructions1:String;
 
+#if flash	
+	var levelCounter:FlxTextField;
+	public var coinCounter:FlxTextField;
+	var ghostCounter:FlxTextField;
+	public var towerCounter:FlxTextField;
+	public var timeCounter:FlxTextField;
+#else
 	var levelCounter:TextField;
 	public var coinCounter:TextField;
 	var ghostCounter:TextField;
 	public var towerCounter:TextField;
 	public var timeCounter:TextField;
-	
+#end	
 	var killedGhosts:Int;
 	var spawnRate:Float;
 	var counter:Float;
@@ -423,13 +430,29 @@ class GameState extends BasicState {
 		
 		var zoom = 3;
 		
+	#if flash	
+		levelCounter = Utils.newText(0, -1, "Level " + levelNumber, Colors.LGREEN);
+		levelCounter.scrollFactor.x = levelCounter.scrollFactor.y = 0;
+		add(levelCounter);
+		
+		timeCounter = Utils.newText(screenWidth / 5, -1, "1:30", Colors.ORANGE);
+		timeCounter.scrollFactor.x = timeCounter.scrollFactor.y = 0;
+		add(timeCounter);
+		
+		coinCounter = Utils.newText(screenWidth / 6 * 2, -1, "$: " + AssetsLibrary.towerCost, Colors.LBLUE);
+		coinCounter.scrollFactor.x = coinCounter.scrollFactor.y = 0;
+		add(coinCounter);
+		
+		ghostCounter = Utils.newText(screenWidth / 6 * 3, -1, "Kills: 0", Colors.PINK);
+		ghostCounter.scrollFactor.x = ghostCounter.scrollFactor.y = 0;
+		add(ghostCounter);
+		
+		towerCounter = Utils.newText(screenWidth / 6 * 4.5, -1, "Towers: 0", Colors.YELLOW);
+		towerCounter.scrollFactor.x = towerCounter.scrollFactor.y = 0;
+		add(towerCounter);	
+	#else	
 		levelCounter = Utils.newTextField(0*zoom, 1, "Level " + levelNumber, Colors.LGREEN);
-		#if keyboard
 		FlxG._game.addChildAt(levelCounter, index);
-		#else
-		// does this fix anything?
-		Lib.current.addChild(levelCounter);
-		#end
 		
 		timeCounter = Utils.newTextField(zoom * screenWidth / 5, 1, "1:30", Colors.ORANGE);
 		FlxG._game.addChildAt(timeCounter, index);
@@ -442,7 +465,7 @@ class GameState extends BasicState {
 		
 		towerCounter = Utils.newTextField(zoom * screenWidth / 6 * 4.5, 1, "Towers: 0", Colors.YELLOW);
 		FlxG._game.addChildAt(towerCounter, index);
-		
+	#end	
 		FlxG.worldBounds.x -= 50; 
 		FlxG.worldBounds.y -= 50;
 		FlxG.worldBounds.width += 100; 
@@ -598,9 +621,17 @@ class GameState extends BasicState {
 			var sec = Std.int(level.player.time);
 			var dec = level.player.time-sec;
 			if (dec < 0.5) {
+				#if flash
+				timeCounter.setColor(Colors.RED);
+				#else
 				timeCounter.textColor = Colors.RED;
+				#end
 			} else {
+				#if flash
+				timeCounter.setColor(Colors.ORANGE);
+				#else
 				timeCounter.textColor = Colors.ORANGE;
+				#end
 			}
 			if (sec != level.player.lastbeep) {
 				level.player.lastbeep = sec;
@@ -817,10 +848,6 @@ class GameState extends BasicState {
 		bg.destroy();
 		bg = null;
 		//levelCounter.destroy();
-		
-		#if !keyboard
-		Lib.current.removeChild(levelCounter);
-		#end
 		levelCounter = null;
 		//coinCounter.destroy();
 		coinCounter = null;
