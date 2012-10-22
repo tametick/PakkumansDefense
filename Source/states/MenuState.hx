@@ -72,10 +72,12 @@ class MenuState extends BasicState {
 	}
 	
 	override public function destroy():Void {
+		#if flash
 		FlxG._game.removeChild(BuskerJam.androidBuySprite);
 		FlxG._game.removeChild(BuskerJam.amazonBuySprite);
 		FlxG._game.removeChild(BuskerJam.blackberryBuySprite);
 		FlxG._game.removeChild(BuskerJam.iosBuySprite);
+		#end
 		
 		bg.destroy();
 		bg = null;
